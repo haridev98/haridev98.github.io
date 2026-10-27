@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Data Structures Handbook: Individual Method Examples</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            list: '#10b981',    /* Emerald */
+                            tuple: '#a855f7',   /* Purple */
+                            set: '#f59e0b',     /* Amber */
+                            dict: '#f43f5e',    /* Rose */
+                            dark: '#090d16',
+                            card: '#111827',
+                            border: '#1f2937'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+        
+        .code-syntax-kw { color: #f472b6; font-weight: 600; }
+        .code-syntax-fn { color: #60a5fa; }
+        .code-syntax-str { color: #34d399; }
+        .code-syntax-num { color: #fbbf24; }
+        .code-syntax-cm { color: #6b7280; font-style: italic; }
+        .code-syntax-bi { color: #c084fc; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Sticky Header & Search Bar -->
+    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <!-- Title & Badge -->
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 bg-gradient-to-tr from-emerald-600 via-purple-600 to-rose-600 rounded-xl shadow-lg">
+                        <i class="fa-brands fa-python text-2xl text-amber-300"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-400 via-purple-300 to-rose-400 bg-clip-text text-transparent">
+                            Python Data Structures Handbook
+                        </h1>
+                        <p class="text-xs text-slate-400 font-mono">Individual Method & Operation Reference Guide</p>
+                    </div>
+                </div>
+
+                <!-- Live Search Filter -->
+                <div class="relative w-full md:w-96">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="handleSearch()" 
+                        placeholder="Search any method (e.g. setdefault, append, discard)..." 
+                        class="w-full pl-10 pr-10 py-2 bg-slate-950/80 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-400 transition-all">
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 text-xs p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex overflow-x-auto gap-2 mt-3 pt-2 border-t border-slate-800/80 no-scrollbar">
+                <button onclick="switchTab('list')" id="tab-list" class="tab-btn active px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all whitespace-nowrap bg-emerald-600 text-white shadow-lg shadow-emerald-600/30">
+                    <i class="fa-solid fa-list-ol"></i> List (18 Cards)
+                </button>
+                <button onclick="switchTab('tuple')" id="tab-tuple" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+                    <i class="fa-solid fa-lock"></i> Tuple (10 Cards)
+                </button>
+                <button onclick="switchTab('set')" id="tab-set" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+                    <i class="fa-solid fa-layer-group"></i> Set (13 Cards)
+                </button>
+                <button onclick="switchTab('dict')" id="tab-dict" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all whitespace-nowrap text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+                    <i class="fa-solid fa-key"></i> Dictionary (14 Cards)
+                </button>
+                <button onclick="switchTab('matrix')" id="tab-matrix" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all whitespace-nowrap text-sky-400 hover:text-sky-300 hover:bg-slate-800">
+                    <i class="fa-solid fa-table"></i> Comparison Matrix
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Search Filter Banner -->
+        <div id="searchResultsBanner" class="hidden mb-6 p-4 bg-indigo-950/50 border border-indigo-800/60 rounded-xl flex justify-between items-center text-sm text-indigo-300">
+            <span>Found <span id="matchCount" class="font-bold text-white">0</span> matching method cards across all data structures.</span>
+            <button onclick="clearSearch()" class="underline text-indigo-400 hover:text-indigo-200 text-xs">Reset Search Filter</button>
+        </div>
+
+        <!-- LIST SECTION -->
+        <section id="section-list" class="ds-section space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
+                    <i class="fa-solid fa-list-ol text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        List Data Structure <span class="text-xs px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-mono">Mutable</span>
+                        <span class="text-xs px-2.5 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full font-mono">Ordered</span>
+                    </h2>
+                    <p class="text-sm text-slate-400">Detailed individual operational cards for all 18 List methods & syntax constructs.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. Literals & Constructor -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">1. Creation (Literals & list())</h3>
+                        <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold rounded-md uppercase">Creation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Instantiates a new list using square brackets or iterable conversion.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst = [] or list(iterable)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>]
+b = <span class="code-syntax-bi">list</span>(<span class="code-syntax-str">"py"</span>)
+<span class="code-syntax-bi">print</span>(a)
+<span class="code-syntax-bi">print</span>(b)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [1, 2, 3]<br>['p', 'y']
+                    </div>
+                </div>
+
+                <!-- 2. List Comprehension -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">2. List Comprehension</h3>
+                        <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold rounded-md uppercase">Creation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Concise syntax to construct lists based on existing iterables and filters.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> [expr for item in iterable if cond]
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>evens = [x <span class="code-syntax-kw">for</span> x <span class="code-syntax-kw">in</span> <span class="code-syntax-bi">range</span>(<span class="code-syntax-num">6</span>) <span class="code-syntax-kw">if</span> x % <span class="code-syntax-num">2</span> == <span class="code-syntax-num">0</span>]
+<span class="code-syntax-bi">print</span>(evens)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [0, 2, 4]
+                    </div>
+                </div>
+
+                <!-- 3. Index Access -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">3. Index Access</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Accessing</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Retrieves a single element at a zero-based positive or negative index.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst[index]
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-str">'a'</span>, <span class="code-syntax-str">'b'</span>, <span class="code-syntax-str">'c'</span>]
+<span class="code-syntax-bi">print</span>(lst[<span class="code-syntax-num">0</span>], lst[-<span class="code-syntax-num">1</span>])</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        a c
+                    </div>
+                </div>
+
+                <!-- 4. Slicing -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">4. Slicing</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Accessing</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Extracts a subset range of elements using start, stop, and step bounds.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst[start:stop:step]
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>nums = [<span class="code-syntax-num">10</span>, <span class="code-syntax-num">20</span>, <span class="code-syntax-num">30</span>, <span class="code-syntax-num">40</span>, <span class="code-syntax-num">50</span>]
+<span class="code-syntax-bi">print</span>(nums[<span class="code-syntax-num">1</span>:<span class="code-syntax-num">4</span>])
+<span class="code-syntax-bi">print</span>(nums[::-<span class="code-syntax-num">1</span>])</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [20, 30, 40]<br>[50, 40, 30, 20, 10]
+                    </div>
+                </div>
+
+                <!-- 5. append() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">5. append()</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Appends a single element to the right end of the list in O(1) time.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst.append(element)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>]
+lst.<span class="code-syntax-fn">append</span>(<span class="code-syntax-num">3</span>)
+<span class="code-syntax-bi">print</span>(lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [1, 2, 3]
+                    </div>
+                </div>
+
+                <!-- 6. insert() -->
+                <div class="op-card bg-slate-950/60 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">6. insert()</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Inserts an element at a specified index, shifting existing items to the right.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst.insert(index, element)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">10</span>, <span class="code-syntax-num">30</span>]
+lst.<span class="code-syntax-fn">insert</span>(<span class="code-syntax-num">1</span>, <span class="code-syntax-num">20</span>)
+<span class="code-syntax-bi">print</span>(lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [10, 20, 30]
+                    </div>
+                </div>
+
+                <!-- 7. extend() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">7. extend()</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Appends all elements from an iterable to the end of the list in-place.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst.extend(iterable)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>]
+lst.<span class="code-syntax-fn">extend</span>([<span class="code-syntax-num">3</span>, <span class="code-syntax-num">4</span>])
+<span class="code-syntax-bi">print</span>(lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [1, 2, 3, 4]
+                    </div>
+                </div>
+
+                <!-- 8. Concatenation (+) -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">8. Concatenation (+)</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Combines two lists into a new third list using the + operator.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> new_lst = lst1 + lst2
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>]
+b = [<span class="code-syntax-num">3</span>, <span class="code-syntax-num">4</span>]
+res = a + b
+<span class="code-syntax-bi">print</span>(res)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [1, 2, 3, 4]
+                    </div>
+                </div>
+
+                <!-- 9. Slice Assignment -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">9. Slice Assignment</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Replaces or inserts elements within a slice range in-place.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst[i:j] = iterable
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">5</span>]
+lst[<span class="code-syntax-num">1</span>:<span class="code-syntax-num">1</span>] = [<span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>, <span class="code-syntax-num">4</span>]
+<span class="code-syntax-bi">print</span>(lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [1, 2, 3, 4, 5]
+                    </div>
+                </div>
+
+                <!-- 10. remove() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">10. remove()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes the first matching element by value. Raises ValueError if absent.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst.remove(value)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-str">'a'</span>, <span class="code-syntax-str">'b'</span>, <span class="code-syntax-str">'c'</span>]
+lst.<span class="code-syntax-fn">remove</span>(<span class="code-syntax-str">'b'</span>)
+<span class="code-syntax-bi">print</span>(lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        ['a', 'c']
+                    </div>
+                </div>
+
+                <!-- 11. pop() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">11. pop()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes and returns an item at a specified index (defaults to the last item).</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> item = lst.pop([index])
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">10</span>, <span class="code-syntax-num">20</span>, <span class="code-syntax-num">30</span>]
+val = lst.<span class="code-syntax-fn">pop</span>(<span class="code-syntax-num">1</span>)
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-str">"Popped:"</span>, val, <span class="code-syntax-str">"List:"</span>, lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        Popped: 20 List: [10, 30]
+                    </div>
+                </div>
+
+                <!-- 12. del Statement -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">12. del Statement</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Deletes items at a given index or slice, or deletes the whole variable.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> del lst[index] or del lst[i:j]
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>nums = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>, <span class="code-syntax-num">4</span>]
+<span class="code-syntax-kw">del</span> nums[<span class="code-syntax-num">1</span>:<span class="code-syntax-num">3</span>]
+<span class="code-syntax-bi">print</span>(nums)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [1, 4]
+                    </div>
+                </div>
+
+                <!-- 13. clear() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">13. clear()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes all items from the list, leaving an empty list.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst.clear()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">10</span>, <span class="code-syntax-num">20</span>]
+lst.<span class="code-syntax-fn">clear</span>()
+<span class="code-syntax-bi">print</span>(lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        []
+                    </div>
+                </div>
+
+                <!-- 14. sort() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">14. sort()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Manipulation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Sorts list elements in ascending or descending order in-place.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst.sort(key=None, reverse=False)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>nums = [<span class="code-syntax-num">3</span>, <span class="code-syntax-num">1</span>, <span class="code-syntax-num">4</span>, <span class="code-syntax-num">2</span>]
+nums.<span class="code-syntax-fn">sort</span>(reverse=<span class="code-syntax-bi">True</span>)
+<span class="code-syntax-bi">print</span>(nums)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [4, 3, 2, 1]
+                    </div>
+                </div>
+
+                <!-- 15. reverse() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">15. reverse()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Manipulation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Reverses the order of list elements in-place.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> lst.reverse()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>]
+lst.<span class="code-syntax-fn">reverse</span>()
+<span class="code-syntax-bi">print</span>(lst)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        [3, 2, 1]
+                    </div>
+                </div>
+
+                <!-- 16. count() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">16. count()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Utility</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns total number of occurrences of a specified value.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> count_val = lst.count(value)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>, <span class="code-syntax-num">2</span>]
+<span class="code-syntax-bi">print</span>(lst.<span class="code-syntax-fn">count</span>(<span class="code-syntax-num">2</span>))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        3
+                    </div>
+                </div>
+
+                <!-- 17. index() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">17. index()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Utility</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns index of first match of value. Raises ValueError if missing.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> idx = lst.index(value, [start, stop])
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>lst = [<span class="code-syntax-str">'a'</span>, <span class="code-syntax-str">'b'</span>, <span class="code-syntax-str">'c'</span>]
+<span class="code-syntax-bi">print</span>(lst.<span class="code-syntax-fn">index</span>(<span class="code-syntax-str">'b'</span>))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        1
+                    </div>
+                </div>
+
+                <!-- 18. copy() -->
+                <div class="op-card bg-slate-900 border border-emerald-950/80 hover:border-emerald-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">18. copy()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Utility</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns a shallow copy of the existing list.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> shallow_copy = lst.copy()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>orig = [<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>]
+cp = orig.<span class="code-syntax-fn">copy</span>()
+cp.<span class="code-syntax-fn">append</span>(<span class="code-syntax-num">3</span>)
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-str">"Orig:"</span>, orig, <span class="code-syntax-str">"Copy:"</span>, cp)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-emerald-400">
+                        Orig: [1, 2] Copy: [1, 2, 3]
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TUPLE SECTION -->
+        <section id="section-tuple" class="ds-section hidden space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                <div class="p-3 bg-purple-500/10 text-purple-400 rounded-xl border border-purple-500/20">
+                    <i class="fa-solid fa-lock text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        Tuple Data Structure <span class="text-xs px-2.5 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-full font-mono">Immutable</span>
+                        <span class="text-xs px-2.5 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full font-mono">Ordered</span>
+                    </h2>
+                    <p class="text-sm text-slate-400">Detailed individual operational cards for all 10 Tuple operations & methods.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. Literals & Constructor -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">1. Creation (Literals & tuple())</h3>
+                        <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold rounded-md uppercase">Creation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Constructs an immutable tuple using parentheses or constructor.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> t = () or tuple(iterable)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t1 = (<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>)
+t2 = <span class="code-syntax-bi">tuple</span>([<span class="code-syntax-num">4</span>, <span class="code-syntax-num">5</span>])
+<span class="code-syntax-bi">print</span>(t1, t2)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        (1, 2, 3) (4, 5)
+                    </div>
+                </div>
+
+                <!-- 2. Single-element Tuple -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">2. Single-element Tuple</h3>
+                        <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold rounded-md uppercase">Creation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Requires a trailing comma to distinguish a 1-tuple from a parenthesized expression.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> t = (val,)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>single = (<span class="code-syntax-num">42</span>,)
+not_single = (<span class="code-syntax-num">42</span>)
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-bi">type</span>(single), <span class="code-syntax-bi">type</span>(not_single))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        &lt;class 'tuple'&gt; &lt;class 'int'&gt;
+                    </div>
+                </div>
+
+                <!-- 3. Indexing & Slicing -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">3. Indexing & Slicing</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Accessing</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Reads individual elements or sub-slices from the tuple.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> t[index] or t[start:stop]
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t = (<span class="code-syntax-num">10</span>, <span class="code-syntax-num">20</span>, <span class="code-syntax-num">30</span>, <span class="code-syntax-num">40</span>)
+<span class="code-syntax-bi">print</span>(t[<span class="code-syntax-num">0</span>], t[<span class="code-syntax-num">1</span>:<span class="code-syntax-num">3</span>])</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        10 (20, 30)
+                    </div>
+                </div>
+
+                <!-- 4. Unpacking -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">4. Tuple Unpacking</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Accessing</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Assigns tuple elements directly into multiple individual variables.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> a, b, *rest = t
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>pt = (<span class="code-syntax-num">5</span>, <span class="code-syntax-num">10</span>, <span class="code-syntax-num">15</span>, <span class="code-syntax-num">20</span>)
+x, y, *rem = pt
+<span class="code-syntax-bi">print</span>(x, y, rem)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        5 10 [15, 20]
+                    </div>
+                </div>
+
+                <!-- 5. Concatenation (+) -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">5. Concatenation (+)</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Addition</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Merges two tuples into a brand-new tuple object.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> t3 = t1 + t2
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t1 = (<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>)
+t2 = (<span class="code-syntax-num">3</span>, <span class="code-syntax-num">4</span>)
+<span class="code-syntax-bi">print</span>(t1 + t2)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        (1, 2, 3, 4)
+                    </div>
+                </div>
+
+                <!-- 6. Repetition (*) -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">6. Repetition (*)</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Addition</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Duplicates tuple elements N times into a new tuple.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> t_rep = t * n
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t = (<span class="code-syntax-str">'a'</span>, <span class="code-syntax-str">'b'</span>)
+<span class="code-syntax-bi">print</span>(t * <span class="code-syntax-num">3</span>)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        ('a', 'b', 'a', 'b', 'a', 'b')
+                    </div>
+                </div>
+
+                <!-- 7. Workaround Modification -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">7. Workaround Modification</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Manipulation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Converts to a list to modify elements before converting back to tuple.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> tuple(list(t).append(x))
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t = (<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>)
+temp = <span class="code-syntax-bi">list</span>(t)
+temp.<span class="code-syntax-fn">append</span>(<span class="code-syntax-num">3</span>)
+t = <span class="code-syntax-bi">tuple</span>(temp)
+<span class="code-syntax-bi">print</span>(t)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        (1, 2, 3)
+                    </div>
+                </div>
+
+                <!-- 8. del Statement -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">8. del Statement</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Deletes the complete tuple reference (item deletion is forbidden).</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> del tuple_var
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t = (<span class="code-syntax-num">10</span>, <span class="code-syntax-num">20</span>)
+<span class="code-syntax-kw">del</span> t
+<span class="code-syntax-kw">try</span>:
+    <span class="code-syntax-bi">print</span>(t)
+<span class="code-syntax-kw">except</span> <span class="code-syntax-bi">NameError</span> <span class="code-syntax-kw">as</span> e:
+    <span class="code-syntax-bi">print</span>(<span class="code-syntax-str">"Deleted successfully"</span>)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        Deleted successfully
+                    </div>
+                </div>
+
+                <!-- 9. count() -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">9. count()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Utility</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Counts occurrences of a given element in the tuple.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> c = t.count(value)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t = (<span class="code-syntax-num">1</span>, <span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>)
+<span class="code-syntax-bi">print</span>(t.<span class="code-syntax-fn">count</span>(<span class="code-syntax-num">1</span>))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        2
+                    </div>
+                </div>
+
+                <!-- 10. index() -->
+                <div class="op-card bg-slate-900 border border-purple-950/80 hover:border-purple-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">10. index()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Utility</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns index of first match of value in the tuple.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> idx = t.index(value)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>t = (<span class="code-syntax-str">'x'</span>, <span class="code-syntax-str">'y'</span>, <span class="code-syntax-str">'z'</span>)
+<span class="code-syntax-bi">print</span>(t.<span class="code-syntax-fn">index</span>(<span class="code-syntax-str">'y'</span>))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-purple-400">
+                        1
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SET SECTION -->
+        <section id="section-set" class="ds-section hidden space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+                    <i class="fa-solid fa-layer-group text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        Set Data Structure <span class="text-xs px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-mono">Mutable</span>
+                        <span class="text-xs px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full font-mono">Unordered</span>
+                    </h2>
+                    <p class="text-sm text-slate-400">Detailed individual operational cards for all 13 Set methods & set operations.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. Creation -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">1. Creation (Literals & set())</h3>
+                        <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold rounded-md uppercase">Creation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Creates a unique set using curly braces or constructor set().</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s = {1, 2} or set(iterable)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>s = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>}
+empty = <span class="code-syntax-bi">set</span>()
+<span class="code-syntax-bi">print</span>(s, <span class="code-syntax-bi">type</span>(empty))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1, 2, 3} &lt;class 'set'&gt;
+                    </div>
+                </div>
+
+                <!-- 2. add() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">2. add()</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Adds a single unique item to the set in O(1) time.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s.add(element)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>s = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+s.<span class="code-syntax-fn">add</span>(<span class="code-syntax-num">3</span>)
+<span class="code-syntax-bi">print</span>(s)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1, 2, 3}
+                    </div>
+                </div>
+
+                <!-- 3. update() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">3. update()</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Adds elements from one or multiple iterables into the set.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s.update(*iterables)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>s = {<span class="code-syntax-num">1</span>}
+s.<span class="code-syntax-fn">update</span>([<span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>], {<span class="code-syntax-num">4</span>})
+<span class="code-syntax-bi">print</span>(s)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1, 2, 3, 4}
+                    </div>
+                </div>
+
+                <!-- 4. discard() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">4. discard()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes element if present; does NOTHING if missing (safe removal).</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s.discard(element)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>s = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+s.<span class="code-syntax-fn">discard</span>(<span class="code-syntax-num">99</span>)  <span class="code-syntax-cm"># No error raised</span>
+<span class="code-syntax-bi">print</span>(s)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1, 2}
+                    </div>
+                </div>
+
+                <!-- 5. remove() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">5. remove()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes element if present; raises KeyError if missing.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s.remove(element)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>s = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+s.<span class="code-syntax-fn">remove</span>(<span class="code-syntax-num">2</span>)
+<span class="code-syntax-bi">print</span>(s)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1}
+                    </div>
+                </div>
+
+                <!-- 6. pop() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">6. pop()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes and returns an arbitrary element from the set.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> elem = s.pop()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>s = {<span class="code-syntax-num">100</span>, <span class="code-syntax-num">200</span>}
+removed = s.<span class="code-syntax-fn">pop</span>()
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-str">"Removed arbitrary element:"</span>, removed)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        Removed arbitrary element: 100
+                    </div>
+                </div>
+
+                <!-- 7. clear() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">7. clear()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes all elements, resetting to empty set().</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s.clear()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>s = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>}
+s.<span class="code-syntax-fn">clear</span>()
+<span class="code-syntax-bi">print</span>(s)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        set()
+                    </div>
+                </div>
+
+                <!-- 8. union (|) -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">8. union (|)</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Operation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns a new set with elements from both sets.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s1 | s2 or s1.union(s2)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+b = {<span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>}
+<span class="code-syntax-bi">print</span>(a | b)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1, 2, 3}
+                    </div>
+                </div>
+
+                <!-- 9. intersection (&) -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">9. intersection (&)</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Operation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns elements common to both sets.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s1 & s2 or s1.intersection(s2)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+b = {<span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>}
+<span class="code-syntax-bi">print</span>(a & b)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {2}
+                    </div>
+                </div>
+
+                <!-- 10. difference (-) -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">10. difference (-)</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Operation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns elements in first set but absent from second set.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s1 - s2 or s1.difference(s2)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>}
+b = {<span class="code-syntax-num">2</span>, <span class="code-syntax-num">4</span>}
+<span class="code-syntax-bi">print</span>(a - b)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1, 3}
+                    </div>
+                </div>
+
+                <!-- 11. symmetric_difference (^) -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">11. symmetric_difference (^)</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Operation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns elements in either set, but not in both.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s1 ^ s2 or s1.symmetric_difference(s2)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+b = {<span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>}
+<span class="code-syntax-bi">print</span>(a ^ b)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        {1, 3}
+                    </div>
+                </div>
+
+                <!-- 12. issubset() / issuperset() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">12. issubset / issuperset</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Predicates</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Tests boolean containment relationships between sets.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s1.issubset(s2), s1.issuperset(s2)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+b = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>, <span class="code-syntax-num">3</span>}
+<span class="code-syntax-bi">print</span>(a.<span class="code-syntax-fn">issubset</span>(b))
+<span class="code-syntax-bi">print</span>(b.<span class="code-syntax-fn">issuperset</span>(a))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        True<br>True
+                    </div>
+                </div>
+
+                <!-- 13. isdisjoint() -->
+                <div class="op-card bg-slate-900 border border-amber-950/80 hover:border-amber-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">13. isdisjoint()</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Predicates</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns True if two sets have NO elements in common.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> s1.isdisjoint(s2)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>a = {<span class="code-syntax-num">1</span>, <span class="code-syntax-num">2</span>}
+b = {<span class="code-syntax-num">3</span>, <span class="code-syntax-num">4</span>}
+<span class="code-syntax-bi">print</span>(a.<span class="code-syntax-fn">isdisjoint</span>(b))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-400">
+                        True
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DICTIONARY SECTION -->
+        <section id="section-dict" class="ds-section hidden space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                <div class="p-3 bg-rose-500/10 text-rose-400 rounded-xl border border-rose-500/20">
+                    <i class="fa-solid fa-key text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        Dictionary Data Structure <span class="text-xs px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-mono">Mutable</span>
+                        <span class="text-xs px-2.5 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full font-mono">Key-Ordered (3.7+)</span>
+                    </h2>
+                    <p class="text-sm text-slate-400">Detailed individual operational cards for all 14 Dictionary methods & operators.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. Creation -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">1. Creation (Literals & dict())</h3>
+                        <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold rounded-md uppercase">Creation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Constructs key-value pairs using curly braces or dict constructor.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> d = {"k": "v"} or dict(k=v)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d1 = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">1</span>}
+d2 = <span class="code-syntax-bi">dict</span>(b=<span class="code-syntax-num">2</span>)
+<span class="code-syntax-bi">print</span>(d1, d2)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        {'a': 1} {'b': 2}
+                    </div>
+                </div>
+
+                <!-- 2. fromkeys() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">2. fromkeys()</h3>
+                        <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold rounded-md uppercase">Creation</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Creates a new dictionary with specified keys and default value.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> dict.fromkeys(keys_seq, value)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>keys = [<span class="code-syntax-str">'x'</span>, <span class="code-syntax-str">'y'</span>]
+d = <span class="code-syntax-bi">dict</span>.<span class="code-syntax-fn">fromkeys</span>(keys, <span class="code-syntax-num">0</span>)
+<span class="code-syntax-bi">print</span>(d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        {'x': 0, 'y': 0}
+                    </div>
+                </div>
+
+                <!-- 3. Bracket Access -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">3. Bracket Access [key]</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Accessing</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Fetches value associated with key. Raises KeyError if missing.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> val = d[key]
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"name"</span>: <span class="code-syntax-str">"Alice"</span>}
+<span class="code-syntax-bi">print</span>(d[<span class="code-syntax-str">"name"</span>])</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        Alice
+                    </div>
+                </div>
+
+                <!-- 4. get() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">4. get()</h3>
+                        <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[10px] font-semibold rounded-md uppercase">Accessing</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Safely retrieves value for key with custom default fallback.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> val = d.get(key, default)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"age"</span>: <span class="code-syntax-num">25</span>}
+<span class="code-syntax-bi">print</span>(d.<span class="code-syntax-fn">get</span>(<span class="code-syntax-str">"age"</span>, <span class="code-syntax-num">0</span>))
+<span class="code-syntax-bi">print</span>(d.<span class="code-syntax-fn">get</span>(<span class="code-syntax-str">"score"</span>, <span class="code-syntax-[num]">100</span>))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        25<br>100
+                    </div>
+                </div>
+
+                <!-- 5. Key Assignment -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">5. Key Assignment</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Inserts a new key-value pair or updates an existing key's value.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> d[key] = value
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {}
+d[<span class="code-syntax-str">"status"</span>] = <span class="code-syntax-str">"active"</span>
+<span class="code-syntax-bi">print</span>(d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        {'status': 'active'}
+                    </div>
+                </div>
+
+                <!-- 6. update() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">6. update()</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Merges another dictionary or key-value iterable in-place.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> d.update(other_dict)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">1</span>}
+d.<span class="code-syntax-fn">update</span>({<span class="code-syntax-str">"b"</span>: <span class="code-syntax-num">2</span>, <span class="code-syntax-str">"c"</span>: <span class="code-syntax-num">3</span>})
+<span class="code-syntax-bi">print</span>(d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        {'a': 1, 'b': 2, 'c': 3}
+                    </div>
+                </div>
+
+                <!-- 7. setdefault() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">7. setdefault()</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns key value if present; otherwise inserts key with default value.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> val = d.setdefault(key, default)
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">10</span>}
+val = d.<span class="code-syntax-fn">setdefault</span>(<span class="code-syntax-str">"b"</span>, <span class="code-syntax-num">20</span>)
+<span class="code-syntax-bi">print</span>(val, d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        20 {'a': 10, 'b': 20}
+                    </div>
+                </div>
+
+                <!-- 8. Merge Operator (|) -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">8. Merge Operator (|)</h3>
+                        <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-semibold rounded-md uppercase">Insertion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Merges two dictionaries into a new third dictionary (Python 3.9+).</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> d3 = d1 | d2
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d1 = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">1</span>}
+d2 = {<span class="code-syntax-str">"b"</span>: <span class="code-syntax-num">2</span>}
+<span class="code-syntax-bi">print</span>(d1 | d2)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        {'a': 1, 'b': 2}
+                    </div>
+                </div>
+
+                <!-- 9. pop() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">9. pop()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes specified key and returns its value.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> val = d.pop(key, [default])
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"x"</span>: <span class="code-syntax-num">100</span>, <span class="code-syntax-str">"y"</span>: <span class="code-syntax-num">200</span>}
+val = d.<span class="code-syntax-fn">pop</span>(<span class="code-syntax-str">"x"</span>)
+<span class="code-syntax-bi">print</span>(val, d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        100 {'y': 200}
+                    </div>
+                </div>
+
+                <!-- 10. popitem() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">10. popitem()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes and returns the last inserted key-value tuple pair (LIFO).</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> (k, v) = d.popitem()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">1</span>, <span class="code-syntax-str">"b"</span>: <span class="code-syntax-num">2</span>}
+pair = d.<span class="code-syntax-fn">popitem</span>()
+<span class="code-syntax-bi">print</span>(pair, d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        ('b', 2) {'a': 1}
+                    </div>
+                </div>
+
+                <!-- 11. del Statement -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">11. del Statement</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Deletes a specific key entry or the entire dictionary variable.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> del d[key]
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"k1"</span>: <span class="code-syntax-num">10</span>, <span class="code-syntax-str">"k2"</span>: <span class="code-syntax-num">20</span>}
+<span class="code-syntax-kw">del</span> d[<span class="code-syntax-str">"k1"</span>]
+<span class="code-syntax-bi">print</span>(d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        {'k2': 20}
+                    </div>
+                </div>
+
+                <!-- 12. clear() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">12. clear()</h3>
+                        <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-semibold rounded-md uppercase">Deletion</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Removes all items from dictionary, leaving an empty {} dict.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> d.clear()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">1</span>, <span class="code-syntax-str">"b"</span>: <span class="code-syntax-num">2</span>}
+d.<span class="code-syntax-fn">clear</span>()
+<span class="code-syntax-bi">print</span>(d)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        {}
+                    </div>
+                </div>
+
+                <!-- 13. keys() / values() / items() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">13. Dynamic Dict Views</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Views</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns dynamic view objects of dictionary keys, values, or key-value tuple pairs.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> d.keys(), d.values(), d.items()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>d = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">1</span>, <span class="code-syntax-str">"b"</span>: <span class="code-syntax-num">2</span>}
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-bi">list</span>(d.<span class="code-syntax-fn">keys</span>()))
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-bi">list</span>(d.<span class="code-syntax-fn">values</span>()))
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-bi">list</span>(d.<span class="code-syntax-fn">items</span>()))</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        ['a', 'b']<br>[1, 2]<br>[('a', 1), ('b', 2)]
+                    </div>
+                </div>
+
+                <!-- 14. copy() -->
+                <div class="op-card bg-slate-900 border border-rose-950/80 hover:border-rose-500/40 rounded-2xl p-5 shadow-xl transition-all">
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-base font-bold text-white font-mono">14. copy()</h3>
+                        <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold rounded-md uppercase">Utility</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-2">Returns a shallow copy of the dictionary object.</p>
+                    <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 mb-3 font-mono text-xs text-slate-300">
+                        <span class="text-slate-500">Syntax:</span> new_d = d.copy()
+                    </div>
+                    <div class="relative group mb-3">
+                        <button onclick="copyCode(this)" class="absolute right-2 top-2 z-10 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <pre class="bg-slate-950 border border-slate-800 p-3 rounded-xl font-mono text-xs text-slate-200 overflow-x-auto"><code>orig = {<span class="code-syntax-str">"a"</span>: <span class="code-syntax-num">1</span>}
+cp = orig.<span class="code-syntax-fn">copy</span>()
+cp[<span class="code-syntax-str">"b"</span>] = <span class="code-syntax-num">2</span>
+<span class="code-syntax-bi">print</span>(<span class="code-syntax-str">"Orig:"</span>, orig, <span class="code-syntax-str">"Copy:"</span>, cp)</code></pre>
+                    </div>
+                    <div class="bg-black/40 border border-slate-800 p-3 rounded-xl font-mono text-xs text-rose-400">
+                        Orig: {'a': 1} Copy: {'a': 1, 'b': 2}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMARY COMPARISON MATRIX -->
+        <section id="section-matrix" class="ds-section hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
+                    <div class="p-3 bg-sky-500/10 text-sky-400 rounded-xl border border-sky-500/20">
+                        <i class="fa-solid fa-table text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Comprehensive Comparison Matrix</h2>
+                        <p class="text-sm text-slate-400">Side-by-side technical specification of Python built-in data structures.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-800">
+                    <table class="w-full text-left border-collapse font-mono text-xs">
+                        <thead>
+                            <tr class="bg-slate-800/80 text-slate-200 border-b border-slate-700">
+                                <th class="p-4">Property / Method</th>
+                                <th class="p-4 text-emerald-400">List (`list`)</th>
+                                <th class="p-4 text-purple-400">Tuple (`tuple`)</th>
+                                <th class="p-4 text-amber-400">Set (`set`)</th>
+                                <th class="p-4 text-rose-400">Dictionary (`dict`)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 bg-slate-950/40 text-slate-300">
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="p-4 font-bold text-slate-100">Mutability</td>
+                                <td class="p-4 text-emerald-400 font-semibold">Mutable</td>
+                                <td class="p-4 text-rose-400 font-semibold">Immutable</td>
+                                <td class="p-4 text-emerald-400 font-semibold">Mutable</td>
+                                <td class="p-4 text-emerald-400 font-semibold">Mutable</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="p-4 font-bold text-slate-100">Order Guarantees</td>
+                                <td class="p-4">Sequential Index</td>
+                                <td class="p-4">Sequential Index</td>
+                                <td class="p-4 text-slate-500">Unordered</td>
+                                <td class="p-4">Insertion Order (3.7+)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="p-4 font-bold text-slate-100">Duplicate Support</td>
+                                <td class="p-4 text-emerald-400">Allowed</td>
+                                <td class="p-4 text-emerald-400">Allowed</td>
+                                <td class="p-4 text-rose-400">Disallowed (Unique)</td>
+                                <td class="p-4 text-amber-400">Unique Keys</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="p-4 font-bold text-slate-100">Access Lookup Time</td>
+                                <td class="p-4">O(1) by Index</td>
+                                <td class="p-4">O(1) by Index</td>
+                                <td class="p-4">O(1) Hash Membership</td>
+                                <td class="p-4">O(1) Key Lookup</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="p-4 font-bold text-slate-100">Primary Creation</td>
+                                <td class="p-4 text-slate-200">`[1, 2]`</td>
+                                <td class="p-4 text-slate-200">`(1, 2)`</td>
+                                <td class="p-4 text-slate-200">`{1, 2}`</td>
+                                <td class="p-4 text-slate-200">`{"k": "v"}`</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="p-4 font-bold text-slate-100">Insertion Methods</td>
+                                <td class="p-4">`append`, `insert`, `extend`</td>
+                                <td class="p-4 text-slate-500">N/A (+ operator)</td>
+                                <td class="p-4">`add`, `update`</td>
+                                <td class="p-4">`d[k]=v`, `update`, `setdefault`</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="p-4 font-bold text-slate-100">Deletion Methods</td>
+                                <td class="p-4">`remove`, `pop`, `del`, `clear`</td>
+                                <td class="p-4 text-slate-500">`del var`</td>
+                                <td class="p-4">`discard`, `remove`, `pop`, `clear`</td>
+                                <td class="p-4">`pop`, `popitem`, `del`, `clear`</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Python Data Structures Handbook • Interactive Standalone Method Cards Reference</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        function switchTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('.ds-section').forEach(sec => sec.classList.add('hidden'));
+
+            // Reset tab button styling
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'bg-purple-600', 'bg-amber-600', 'bg-rose-600', 'text-white', 'shadow-lg');
+                btn.classList.add('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800');
+            });
+
+            // Show target section
+            const activeSection = document.getElementById(`section-${tabId}`);
+            if (activeSection) {
+                activeSection.classList.remove('hidden');
+            }
+
+            // Highlight target tab button with DS-specific accent
+            const activeTabBtn = document.getElementById(`tab-${tabId}`);
+            if (activeTabBtn) {
+                activeTabBtn.classList.remove('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800');
+                
+                let bgClass = 'bg-emerald-600';
+                if (tabId === 'tuple') bgClass = 'bg-purple-600';
+                if (tabId === 'set') bgClass = 'bg-amber-600';
+                if (tabId === 'dict') bgClass = 'bg-rose-600';
+                if (tabId === 'matrix') bgClass = 'bg-sky-600';
+
+                activeTabBtn.classList.add(bgClass, 'text-white', 'shadow-lg');
+            }
+
+            // Clear search when switching tabs manually
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput && searchInput.value) {
+                clearSearch();
+            }
+        }
+
+        function copyCode(btn) {
+            const pre = btn.nextElementSibling;
+            const codeText = pre.innerText;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = codeText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copied!`;
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+            }, 2000);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const searchBanner = document.getElementById('searchResultsBanner');
+            const matchCountEl = document.getElementById('matchCount');
+
+            if (query.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+                clearSearch();
+                return;
+            }
+
+            // Reveal all tab sections during active search filter
+            document.querySelectorAll('.ds-section').forEach(sec => sec.classList.remove('hidden'));
+            
+            let visibleCards = 0;
+
+            document.querySelectorAll('.op-card').forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.classList.remove('hidden');
+                    visibleCards++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            searchBanner.classList.remove('hidden');
+            matchCountEl.innerText = visibleCards;
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            document.getElementById('searchResultsBanner').classList.add('hidden');
+
+            document.querySelectorAll('.op-card').forEach(card => card.classList.remove('hidden'));
+
+            // Reset back to List tab
+            switchTab('list');
+        }
+    </script>
+</body>
+</html>
