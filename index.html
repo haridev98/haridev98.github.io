@@ -422,7 +422,7 @@ const ICON = {
 $("#reach").innerHTML = [
   ["Email", CONFIG.email, "mailto:" + CONFIG.email],
   ["LinkedIn", "Haridev S", CONFIG.linkedin],
-  ["GitHub", CONFIG.github.replace("https://", ""), CONFIG.github],
+  ["GitHub", CONFIG.github.replace(/\/+$/, "").split("/").pop(), CONFIG.github],
   ["Medium", "@" + CONFIG.medium.split("@")[1], CONFIG.medium]
 ].map(([l, v, h]) => `<li><a href="${esc(h)}"${h.startsWith("http") ? ' target="_blank" rel="noopener"' : ""}><i class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[l]}</svg></i><div><small>${l}</small><span>${esc(v)}</span></div></a></li>`).join("");
 
