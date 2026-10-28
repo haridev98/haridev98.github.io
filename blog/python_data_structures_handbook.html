@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>try{var t=localStorage.getItem("theme")}catch(e){}document.documentElement.dataset.theme=t==="dark"||t==="light"?t:(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light")</script>
+    <meta name="theme-color" content="#F5F7FA" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0E1626" media="(prefers-color-scheme: dark)">
     <title>Python Data Structures Handbook: Individual Method Examples</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Newsreader:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -28,7 +31,8 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
+                        display: ['Newsreader', 'Georgia', 'serif'],
                         mono: ['Fira Code', 'monospace']
                     }
                 }
@@ -57,32 +61,144 @@
         .code-syntax-num { color: #fbbf24; }
         .code-syntax-cm { color: #6b7280; font-style: italic; }
         .code-syntax-bi { color: #c084fc; }
+
+        /* ===== Theme synced with index.html ===== */
+        :root{--bg:#F5F7FA;--ink:#14213D;--ink2:#2B3A5C;--muted:#5B6578;--muted2:#66718A;--line:#D9DEE8;--line2:#C8D0DE;--signal:#2F5BEA;--glass:rgba(255,255,255,.72);--glass-line:rgba(255,255,255,.9);--glass-shadow:0 6px 24px rgba(30,50,110,.1);--card:rgba(255,255,255,.82);--code:#EEF2FA;--out:#E6ECF8;--chip:#E8EDF6;--chip-h:#DCE4F3;--wash:linear-gradient(160deg,#E6EEFF 0%,#EFEBFF 48%,#E3F5F2 100%);--orb:.5;--display:"Newsreader",Georgia,"Times New Roman",serif;--body:"IBM Plex Sans",system-ui,sans-serif;--c-emerald:#047857;--c-purple:#7c3aed;--c-amber:#b45309;--c-rose:#e11d48;--c-sky:#0369a1;--c-indigo:#4338ca;--k:#be185d;--f:#1d4ed8;--s:#047857;--n:#b45309;--cm:#6b7280;--bi:#7e22ce;color-scheme:light}
+        :root[data-theme="dark"]{color-scheme:dark;--bg:#0E1626;--ink:#E8EDF6;--ink2:#C5CEE0;--muted:#A3AFC4;--muted2:#8794AD;--line:#27344D;--line2:#33425F;--signal:#7C9BFF;--glass:rgba(255,255,255,.075);--glass-line:rgba(255,255,255,.13);--glass-shadow:0 6px 24px rgba(0,0,0,.35);--card:rgba(22,34,56,.82);--code:#0B1322;--out:rgba(0,0,0,.32);--chip:#1E2B45;--chip-h:#27385A;--wash:linear-gradient(160deg,#0F1B38 0%,#17183A 50%,#0C2230 100%);--orb:.4;--c-emerald:#34d399;--c-purple:#c084fc;--c-amber:#fbbf24;--c-rose:#fb7185;--c-sky:#38bdf8;--c-indigo:#818cf8;--k:#f472b6;--f:#60a5fa;--s:#34d399;--n:#fbbf24;--cm:#7a8699;--bi:#c084fc}
+        html{scroll-behavior:smooth}
+        html[data-theme] body{background:var(--wash) fixed,var(--bg);color:var(--ink);font-family:var(--body);position:relative;isolation:isolate;transition:background .4s,color .4s}
+        ::-webkit-scrollbar-track{background:var(--bg)}
+        ::-webkit-scrollbar-thumb{background:var(--line2)}
+        ::-webkit-scrollbar-thumb:hover{background:var(--muted2)}
+        html[data-theme] .code-syntax-kw{color:var(--k)}
+        html[data-theme] .code-syntax-fn{color:var(--f)}
+        html[data-theme] .code-syntax-str{color:var(--s)}
+        html[data-theme] .code-syntax-num{color:var(--n)}
+        html[data-theme] .code-syntax-cm{color:var(--cm)}
+        html[data-theme] .code-syntax-bi{color:var(--bi)}
+
+        /* text */
+        html[data-theme] .text-white,html[data-theme] .text-slate-100,html[data-theme] .text-slate-200{color:var(--ink)}
+        html[data-theme] .text-slate-300{color:var(--ink2)}
+        html[data-theme] .text-slate-400{color:var(--muted)}
+        html[data-theme] .text-slate-500{color:var(--muted2)}
+        html[data-theme] .tab-btn.text-white{color:#fff}
+        html[data-theme] .hover\:text-slate-200:hover{color:var(--ink)}
+        html[data-theme] .hover\:text-sky-300:hover{color:var(--c-sky)}
+        html[data-theme] .hover\:text-indigo-200:hover{color:var(--c-indigo)}
+        html[data-theme] .text-emerald-400{color:var(--c-emerald)}
+        html[data-theme] .text-purple-400{color:var(--c-purple)}
+        html[data-theme] .text-amber-400{color:var(--c-amber)}
+        html[data-theme] .text-rose-400{color:var(--c-rose)}
+        html[data-theme] .text-sky-400{color:var(--c-sky)}
+        html[data-theme] .text-indigo-300,html[data-theme] .text-indigo-400{color:var(--c-indigo)}
+        html[data-theme] .placeholder-slate-400::placeholder{color:var(--muted)}
+
+        /* surfaces */
+        html[data-theme] .bg-slate-900{background:var(--card)}
+        html[data-theme] .bg-slate-950{background:var(--code)}
+        html[data-theme] .bg-slate-950\/40,html[data-theme] .bg-slate-950\/60{background:color-mix(in srgb,var(--code) 55%,transparent)}
+        html[data-theme] .bg-slate-950\/80{background:var(--glass)}
+        html[data-theme] .bg-slate-800,html[data-theme] .bg-slate-800\/80{background:var(--chip)}
+        html[data-theme] .bg-black\/40{background:var(--out)}
+        html[data-theme] .bg-indigo-950\/50{background:color-mix(in srgb,var(--signal) 10%,transparent)}
+        html[data-theme] .hover\:bg-slate-700:hover{background:var(--chip-h)}
+        html[data-theme] .hover\:bg-slate-800:hover{background:var(--chip)}
+        html[data-theme] .hover\:bg-slate-800\/30:hover{background:color-mix(in srgb,var(--signal) 8%,transparent)}
+        html[data-theme] .shadow-xl{box-shadow:var(--glass-shadow)}
+
+        /* borders */
+        html[data-theme] .border-slate-800,html[data-theme] .border-slate-800\/80{border-color:var(--line)}
+        html[data-theme] .border-slate-700,html[data-theme] .border-slate-700\/80{border-color:var(--line2)}
+        html[data-theme] .divide-slate-800\/60>:not([hidden])~:not([hidden]){border-color:var(--line)}
+        html[data-theme] .border-indigo-800\/60{border-color:color-mix(in srgb,var(--signal) 35%,transparent)}
+        html[data-theme] .border-emerald-950\/80{border-color:color-mix(in srgb,var(--c-emerald) 24%,var(--line))}
+        html[data-theme] .border-purple-950\/80{border-color:color-mix(in srgb,var(--c-purple) 24%,var(--line))}
+        html[data-theme] .border-amber-950\/80{border-color:color-mix(in srgb,var(--c-amber) 24%,var(--line))}
+        html[data-theme] .border-rose-950\/80{border-color:color-mix(in srgb,var(--c-rose) 24%,var(--line))}
+        html[data-theme] .hover\:border-emerald-500\/40:hover{border-color:color-mix(in srgb,var(--c-emerald) 60%,transparent)}
+        html[data-theme] .hover\:border-purple-500\/40:hover{border-color:color-mix(in srgb,var(--c-purple) 60%,transparent)}
+        html[data-theme] .hover\:border-amber-500\/40:hover{border-color:color-mix(in srgb,var(--c-amber) 60%,transparent)}
+        html[data-theme] .hover\:border-rose-500\/40:hover{border-color:color-mix(in srgb,var(--c-rose) 60%,transparent)}
+        html[data-theme] .focus\:border-indigo-500:focus{border-color:var(--signal)}
+
+        /* headings use the site's serif */
+        html[data-theme] main h2{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,3.2vw,2.2rem);letter-spacing:-.005em;line-height:1.15}
+        .hdr-title{font-family:var(--display);font-weight:600;font-size:clamp(1.3rem,2.4vw,1.7rem);line-height:1.15;letter-spacing:-.005em;color:var(--ink)}
+        .ic-badge{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:1.35rem;background:linear-gradient(135deg,#3B6BFF,#6D63F2);box-shadow:0 8px 20px -8px rgba(47,91,234,.55)}
+
+        /* header + footer glass */
+        .app-header{background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--glass-line);box-shadow:0 1px 0 color-mix(in srgb,var(--signal) 22%,transparent),0 8px 24px -16px color-mix(in srgb,var(--signal) 55%,transparent)}
+        .site-footer{margin-top:16px;background:var(--glass);border-top:1px solid var(--glass-line);color:var(--muted)}
+
+        /* back to home */
+        .home-btn{display:inline-flex;align-items:center;gap:8px;flex:none;padding:8px 16px;border-radius:12px;border:1px solid var(--glass-line);background:var(--glass);box-shadow:var(--glass-shadow);color:var(--ink);font:600 .9rem/1.3 var(--body);text-decoration:none;white-space:nowrap;transition:transform .2s,border-color .2s}
+        .home-btn:hover{border-color:var(--signal);transform:translateY(-2px)}
+        .home-btn:focus-visible,.toggle:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+
+        /* theme toggle: sun and moon morph */
+        .toggle{flex:none;width:40px;height:40px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--glass-line);background:var(--glass);box-shadow:var(--glass-shadow);color:#E8940A;cursor:pointer;transition:border-color .25s,box-shadow .25s,transform .2s,color .35s}
+        :root[data-theme="dark"] .toggle{color:#C7D4FF}
+        .toggle:hover{border-color:var(--signal);box-shadow:0 0 0 4px color-mix(in srgb,var(--signal) 16%,transparent),var(--glass-shadow)}
+        .toggle:active{transform:scale(.92)}
+        .toggle svg{width:22px;height:22px;overflow:visible}
+        .ti-core{transform-box:fill-box;transform-origin:center;transform:scale(.7);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+        .ti-cut{transform:translate(10px,-10px);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+        .ti-rays{transform-box:fill-box;transform-origin:center;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .35s}
+        :root[data-theme="dark"] .ti-core{transform:none}
+        :root[data-theme="dark"] .ti-cut{transform:none}
+        :root[data-theme="dark"] .ti-rays{transform:rotate(90deg) scale(.4);opacity:0}
+
+        /* background orbs and top waves */
+        .orbs{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+        .orbs i{position:absolute;border-radius:50%;opacity:var(--orb);will-change:transform;animation:float 18s ease-in-out infinite alternate;background:radial-gradient(circle,var(--c) 0,transparent 66%)}
+        .orbs i:nth-child(1){width:46vmax;height:46vmax;--c:#4F7BFF;top:-14vmax;left:-12vmax}
+        .orbs i:nth-child(2){width:38vmax;height:38vmax;--c:#8B7CF6;top:8vh;right:-12vmax;animation-duration:22s;animation-delay:-6s}
+        .orbs i:nth-child(3){width:42vmax;height:42vmax;--c:#2FC4B2;bottom:-16vmax;left:12vw;opacity:calc(var(--orb) - .1);animation-duration:26s;animation-delay:-3s}
+        @keyframes float{to{transform:translate(60px,50px) scale(1.15)}}
+        .waves{position:absolute;inset:0 0 auto 0;height:360px;overflow:hidden;z-index:-1;pointer-events:none;will-change:transform,opacity}
+        .w{position:absolute;top:0;left:0;width:200%;will-change:transform;animation:wave 26s linear infinite}
+        .w path{fill:var(--wc)}
+        .w1{height:360px;--wc:rgba(47,196,178,.12);animation-duration:34s;animation-direction:reverse}
+        .w2{height:310px;--wc:rgba(139,124,246,.15);animation-duration:26s}
+        .w3{height:260px;--wc:rgba(79,123,255,.2);animation-duration:19s}
+        :root[data-theme="dark"] .w1{--wc:rgba(79,209,197,.12)}
+        :root[data-theme="dark"] .w2{--wc:rgba(139,124,246,.17)}
+        :root[data-theme="dark"] .w3{--wc:rgba(124,155,255,.22)}
+        @keyframes wave{to{transform:translateX(-50%)}}
+
+        /* smooth page-to-page transition */
+        @view-transition{navigation:auto}
+        @keyframes vt-out{to{opacity:0;transform:translateY(-28px) scale(.99)}}
+        @keyframes vt-in{from{opacity:0;transform:translateY(36px)}}
+        ::view-transition-old(root){animation:vt-out .3s ease both}
+        ::view-transition-new(root){animation:vt-in .55s cubic-bezier(.2,.7,.2,1) both}
+
+        @media (prefers-reduced-motion:reduce){.w,.orbs i{animation:none}.ti-core,.ti-cut,.ti-rays{transition:none}html{scroll-behavior:auto}::view-transition-old(root),::view-transition-new(root){animation:none}}
+        @media print{.orbs,.waves,.toggle,.home-btn{display:none!important}}
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+<body class="font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+    <div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="waves" aria-hidden="true"><svg class="w w1" viewBox="0 0 2400 200" preserveAspectRatio="none"><path d="M0 100C200 40 400 40 600 100S1000 160 1200 100S1600 40 1800 100S2200 160 2400 100V0H0Z"/></svg><svg class="w w2" viewBox="0 0 2400 200" preserveAspectRatio="none"><path d="M0 100C200 40 400 40 600 100S1000 160 1200 100S1600 40 1800 100S2200 160 2400 100V0H0Z"/></svg><svg class="w w3" viewBox="0 0 2400 200" preserveAspectRatio="none"><path d="M0 100C200 40 400 40 600 100S1000 160 1200 100S1600 40 1800 100S2200 160 2400 100V0H0Z"/></svg></div>
 
     <!-- Sticky Header & Search Bar -->
-    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 shadow-2xl">
+    <header class="app-header relative md:sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <!-- Title & Badge -->
-                <div class="flex items-center space-x-3">
-                    <div class="p-2.5 bg-gradient-to-tr from-emerald-600 via-purple-600 to-rose-600 rounded-xl shadow-lg">
-                        <i class="fa-brands fa-python text-2xl text-amber-300"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-400 via-purple-300 to-rose-400 bg-clip-text text-transparent">
-                            Python Data Structures Handbook
-                        </h1>
-                        <p class="text-xs text-slate-400 font-mono">Individual Method & Operation Reference Guide</p>
+            <div class="flex flex-wrap items-center gap-3 md:gap-4">
+                <a class="home-btn order-1" href="../index.html#blog"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to home</span></a>
+                <button class="toggle order-2 ml-auto md:order-4 md:ml-0" id="theme" type="button" aria-label="Switch to dark theme"><svg viewBox="0 0 24 24" aria-hidden="true"><mask id="tm"><rect width="24" height="24" fill="#fff"/><circle class="ti-cut" cx="17" cy="7" r="6.5" fill="#000"/></mask><g class="ti-core"><circle cx="12" cy="12" r="8" fill="currentColor" mask="url(#tm)"/></g><g class="ti-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.3 12h2.5M17.87 17.87l1.77 1.77M12 20.3v2.5M6.13 17.87l-1.77 1.77M3.7 12H1.2M6.13 6.13 4.36 4.36M12 3.7V1.2M17.87 6.13l1.77-1.77"/></g></svg></button>
+                <div class="order-3 w-full md:w-auto md:flex-1 md:order-2 flex items-center gap-3 min-w-0">
+                    <span class="ic-badge"><i class="fa-brands fa-python"></i></span>
+                    <div class="min-w-0">
+                        <h1 class="hdr-title">Python Data Structures Handbook</h1>
+                        <p class="text-xs text-slate-400 font-mono">Individual Method &amp; Operation Reference Guide</p>
                     </div>
                 </div>
-
-                <!-- Live Search Filter -->
-                <div class="relative w-full md:w-96">
+                <div class="relative order-4 w-full md:w-80 md:order-3">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" id="searchInput" oninput="handleSearch()" 
-                        placeholder="Search any method (e.g. setdefault, append, discard)..." 
+                    <input type="text" id="searchInput" oninput="handleSearch()"
+                        placeholder="Search any method (e.g. setdefault, append, discard)..."
                         class="w-full pl-10 pr-10 py-2 bg-slate-950/80 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-slate-200 placeholder-slate-400 transition-all">
                     <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 text-xs p-1">
                         <i class="fa-solid fa-xmark"></i>
@@ -1431,9 +1547,10 @@ cp[<span class="code-syntax-str">"b"</span>] = <span class="code-syntax-num">2</
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-400">
-        <div class="max-w-7xl mx-auto px-4">
+    <footer class="site-footer py-6 text-xs">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p>Python Data Structures Handbook • Interactive Standalone Method Cards Reference</p>
+            <a class="home-btn" href="../index.html#blog"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to home</span></a>
         </div>
     </footer>
 
@@ -1537,6 +1654,20 @@ cp[<span class="code-syntax-str">"b"</span>] = <span class="code-syntax-num">2</
             // Reset back to List tab
             switchTab('list');
         }
+    </script>
+    <script>
+        /* theme toggle, shared with index.html through localStorage */
+        (function(){
+            var root=document.documentElement,tg=document.getElementById("theme");
+            function lab(){tg.setAttribute("aria-label",root.dataset.theme==="dark"?"Switch to light theme":"Switch to dark theme")}
+            lab();
+            tg.addEventListener("click",function(){var n=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=n;try{localStorage.setItem("theme",n)}catch(e){}lab()});
+            addEventListener("storage",function(e){if(e.key==="theme"&&(e.newValue==="dark"||e.newValue==="light")){root.dataset.theme=e.newValue;lab()}});
+        })();
+        /* waves drift down and fade as the page scrolls beneath the banner */
+        (function(){var w=document.querySelector(".waves");if(!w||matchMedia("(prefers-reduced-motion:reduce)").matches)return;var t=0;
+            function f(){t=0;var y=Math.min(scrollY,700);w.style.transform="translateY("+(y*.3).toFixed(1)+"px)";w.style.opacity=(1-y/760).toFixed(3)}
+            addEventListener("scroll",function(){if(!t)t=requestAnimationFrame(f)},{passive:true});f()})();
     </script>
 </body>
 </html>

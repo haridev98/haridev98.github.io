@@ -107,6 +107,11 @@ header nav a{transition:background .25s,color .25s}:root{--glass:rgba(255,255,25
 @media (prefers-reduced-motion:reduce){.projects{scroll-behavior:auto}}
 .proj{box-shadow:0 3px 12px rgba(30,50,110,.08)}.proj:hover{box-shadow:0 6px 16px rgba(47,91,234,.16)}.logo{display:inline-block;padding:8px 0}
 footer a{display:inline-block;padding:10px 4px}
+.social{display:flex;gap:10px}
+footer .social a{display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:12px;border:1px solid color-mix(in srgb,var(--muted) 35%,transparent);color:var(--muted);transition:color .2s,border-color .2s,background-color .2s,transform .2s}
+.social svg{width:20px;height:20px;fill:currentColor}
+footer .social a:hover,footer .social a:focus-visible{color:var(--signal);border-color:var(--signal);transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){footer .social a{transition:none}footer .social a:hover{transform:none}}
 .rcard{min-width:0}
 .skillgrid,.courses{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))}
 .dots button{position:relative}.dots button::after{content:"";position:absolute;inset:-14px -5px}
@@ -130,6 +135,91 @@ h3{font-weight:600}
 .cform .status{min-height:0}
 .cform .status:empty{display:none}
 @media (max-width:760px){.contact-grid{gap:16px}.contact-grid .reach{grid-auto-rows:auto;gap:12px}.contact-grid .reach li a{padding:14px 16px;gap:12px}.contact-grid .reach span{font-size:.88rem;overflow-wrap:normal;word-break:normal}.contact-grid .reach div{min-width:0}}
+
+/* background: a little more color, still quiet */
+:root{--wash:linear-gradient(160deg,#E6EEFF 0%,#EFEBFF 48%,#E3F5F2 100%);--orb:.5}
+:root[data-theme="dark"]{--wash:linear-gradient(160deg,#0F1B38 0%,#17183A 50%,#0C2230 100%);--orb:.4}
+body{background:var(--wash) fixed,var(--bg)}
+.orbs i:nth-child(1){--c:#4F7BFF}
+.orbs i:nth-child(2){--c:#9B8CFF}
+.orbs i:nth-child(3){display:block;--c:#2FC4B2;opacity:calc(var(--orb) - .1)}
+
+.toggle{width:40px;height:40px;color:#E8940A;transition:border-color .25s,box-shadow .25s,transform .2s,color .35s}
+:root[data-theme="dark"] .toggle{color:#C7D4FF}
+.toggle:hover{border-color:var(--signal);box-shadow:0 0 0 4px color-mix(in srgb,var(--signal) 16%,transparent),var(--glass-shadow)}
+.toggle:active{transform:scale(.92)}
+.toggle svg{width:22px;height:22px;overflow:visible}
+
+/* theme toggle: sun and moon morph */
+.ti-core{transform-box:fill-box;transform-origin:center;transform:scale(.7);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.ti-cut{transform:translate(10px,-10px);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.ti-rays{transform-box:fill-box;transform-origin:center;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .35s}
+:root[data-theme="dark"] .ti-core{transform:none}
+:root[data-theme="dark"] .ti-cut{transform:none}
+:root[data-theme="dark"] .ti-rays{transform:rotate(90deg) scale(.4);opacity:0}
+@media (prefers-reduced-motion:reduce){.ti-core,.ti-cut,.ti-rays{transition:none}}
+
+/* smooth page-to-page transition */
+@view-transition{navigation:auto}
+@keyframes vt-out{to{opacity:0;transform:translateY(-28px) scale(.99)}}
+@keyframes vt-in{from{opacity:0;transform:translateY(36px)}}
+::view-transition-old(root){animation:vt-out .3s ease both}
+::view-transition-new(root){animation:vt-in .55s cubic-bezier(.2,.7,.2,1) both}
+@media (prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
+
+/* end-of-page resume teaser */
+#next.wrap{padding-top:0;padding-bottom:clamp(48px,7vw,80px)}
+.nextcard{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(20px,4vw,34px);border-radius:18px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:0 0 0 calc(var(--p,0)*7px) color-mix(in srgb,var(--signal) 18%,transparent),var(--glass-shadow);color:var(--ink);text-decoration:none;transform:translateY(calc(var(--p,0)*-6px));transition:border-color .25s;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.nextcard:hover,.nextcard:focus-visible{border-color:var(--signal)}
+.nextcard .nt{display:grid;gap:6px;min-width:0}
+.nextcard strong{font:600 clamp(1.5rem,3.4vw,2.1rem)/1.15 var(--display)}
+.nextcard .nt>span{color:var(--muted);max-width:52ch}
+.nextcard small{color:var(--signal);font-weight:600;font-size:.9rem}
+.nextcard small:empty{display:none}
+.ring{flex:none;width:64px;height:64px}
+.ring circle{fill:none;stroke-width:3}
+.ring .tr{stroke:var(--line)}
+.ring .pg{stroke:var(--signal);stroke-linecap:round;stroke-dasharray:151;stroke-dashoffset:calc(151 - 151*var(--p,0));transform:rotate(-90deg);transform-box:fill-box;transform-origin:center}
+.ring path{fill:none;stroke:var(--signal);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nextcard.seen .ar{animation:nudge 1.6s ease-in-out 3}
+@keyframes nudge{50%{transform:translateX(5px)}}
+.veil{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none;visibility:hidden;background:var(--wash),var(--bg);transform:translateY(calc((1 - var(--p,0))*100%))}
+.veil.on{visibility:visible}
+.veil b{font:500 clamp(2.2rem,7vw,3.6rem)/1 var(--display);color:var(--ink);opacity:clamp(0,calc(var(--p,0)*1.6 - .3),1)}
+@media (max-width:760px){.nextcard{background:var(--glass-solid);-webkit-backdrop-filter:none;backdrop-filter:none;gap:16px}.ring{width:52px;height:52px}}
+@media print{.next,.veil{display:none!important}}
+
+/* animated wave band, top of page only */
+main{position:relative;isolation:isolate}
+.waves{position:absolute;inset:0 0 auto 0;height:230px;overflow:hidden;z-index:-1;pointer-events:none}
+.w{position:absolute;top:0;left:0;width:200%;will-change:transform;animation:wave 26s linear infinite}
+.w path{fill:var(--wc)}
+.w1{height:230px;--wc:rgba(47,196,178,.12);animation-duration:34s;animation-direction:reverse}
+.w2{height:190px;--wc:rgba(139,124,246,.15);animation-duration:26s}
+.w3{height:150px;--wc:rgba(79,123,255,.2);animation-duration:19s}
+:root[data-theme="dark"] .w1{--wc:rgba(79,209,197,.12)}
+:root[data-theme="dark"] .w2{--wc:rgba(139,124,246,.17)}
+:root[data-theme="dark"] .w3{--wc:rgba(124,155,255,.22)}
+@keyframes wave{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.w{animation:none}}
+@media print{.waves{display:none}}
+
+/* waves run beneath the frosted banner */
+:root{--hh:64px}
+.waves{top:calc(var(--hh) * -1);height:calc(230px + var(--hh));will-change:transform,opacity}
+.w1{height:calc(230px + var(--hh))}.w2{height:calc(190px + var(--hh))}.w3{height:calc(150px + var(--hh))}
+header{-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:0 1px 0 color-mix(in srgb,var(--signal) 22%,transparent),0 8px 24px -16px color-mix(in srgb,var(--signal) 55%,transparent)}
+@media (max-width:760px){header{background:color-mix(in srgb,var(--glass-solid) 72%,transparent);-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* typed role: easier to read in both themes */
+.hero .role{display:flex;align-items:center;width:fit-content;min-width:16em;max-width:100%;min-height:0;padding:7px 16px;border-radius:999px;font:700 .9rem/1.4 var(--body);letter-spacing:.16em;text-transform:uppercase;color:#2F5BEA;background:rgba(47,91,234,.09);border:1px solid rgba(47,91,234,.28)}
+:root[data-theme="dark"] .hero .role{color:#D9E3FF;background:rgba(124,155,255,.18);border-color:rgba(165,190,255,.5);box-shadow:0 0 28px rgba(124,155,255,.28)}
+.hero .role .caret{background:currentColor;height:1.05em}
+
+/* typed role pill: fixed size so the page never shifts while typing */
+.hero .role{box-sizing:border-box;width:min(100%,19em);min-width:0;height:2.7em;padding:0;overflow:hidden;white-space:nowrap;background:none;border:0;border-radius:0;box-shadow:none}
+:root[data-theme="dark"] .hero .role{background:none;border:0;box-shadow:none}
+.hero .role #typed{display:inline-block;min-height:1.4em;line-height:1.4;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -142,16 +232,17 @@ h3{font-weight:600}
 <a href="#contact">Contact</a>
 <a href="resume.html">Resume</a>
 </nav>
-<button class="toggle" id="theme" type="button" aria-label="Switch between light and dark theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+<button class="toggle" id="theme" type="button" aria-label="Switch between light and dark theme"><svg viewBox="0 0 24 24" aria-hidden="true"><mask id="tm"><rect width="24" height="24" fill="#fff"/><circle class="ti-cut" cx="17" cy="7" r="6.5" fill="#000"/></mask><g class="ti-core"><circle cx="12" cy="12" r="8" fill="currentColor" mask="url(#tm)"/></g><g class="ti-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.3 12h2.5M17.87 17.87l1.77 1.77M12 20.3v2.5M6.13 17.87l-1.77 1.77M3.7 12H1.2M6.13 6.13 4.36 4.36M12 3.7V1.2M17.87 6.13l1.77-1.77"/></g></svg></button>
 </div>
 <div class="progress" id="progress"></div>
 </header>
 <main id="top">
 <div class="orbs" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<div class="waves" aria-hidden="true"><svg class="w w1" viewBox="0 0 2400 200" preserveAspectRatio="none"><path d="M0 100C200 40 400 40 600 100S1000 160 1200 100S1600 40 1800 100S2200 160 2400 100V0H0Z"/></svg><svg class="w w2" viewBox="0 0 2400 200" preserveAspectRatio="none"><path d="M0 100C200 40 400 40 600 100S1000 160 1200 100S1600 40 1800 100S2200 160 2400 100V0H0Z"/></svg><svg class="w w3" viewBox="0 0 2400 200" preserveAspectRatio="none"><path d="M0 100C200 40 400 40 600 100S1000 160 1200 100S1600 40 1800 100S2200 160 2400 100V0H0Z"/></svg></div>
 <div class="wrap hero">
 <div>
 <p class="role"><span id="typed">Data Scientist</span><span class="caret" aria-hidden="true"></span></p>
-<h1>Software that learns, <em>built to last.</em></h1>
+<h1>Intelligence engineered <em>for the real world.</em></h1>
 <p>Lead Consultant at ITC Infotech, with a B.Tech from NIT Tiruchirappalli and a Master’s in Data Science and AI from IISER Tirupati. I build ML models, ETL pipelines and apps, and take them from notebook to production.</p>
 <div class="btns">
 <a class="btn primary" href="#projects">View projects</a>
@@ -229,10 +320,17 @@ h3{font-weight:600}
 <div class="status" id="status" role="status" aria-live="polite"></div>
 </form><noscript><p>The form needs JavaScript. Email me at haridevsivaraman@gmail.com instead.</p></noscript></div></div>
 </section>
+<section id="next" class="next wrap">
+<a class="nextcard" id="next-link" href="resume.html">
+<span class="nt"><strong>Continue to the resume</strong><span>Experience at ITC Infotech, education from NIT Tiruchirappalli and IISER Tirupati, skills and certifications.</span><small id="next-hint"></small></span>
+<svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="tr" cx="32" cy="32" r="24"/><circle class="pg" cx="32" cy="32" r="24"/><g class="ar"><path d="M24 32h16M34 26l6 6-6 6"/></g></svg>
+</a>
+</section>
 </main>
 <footer>
-<div class="wrap"><span>© <span id="year"></span> Haridev S. All rights reserved.</span><span><a id="gh-foot" href="#" target="_blank" rel="noopener">GitHub</a> · <a id="li-foot" href="#" target="_blank" rel="noopener">LinkedIn</a> · <a id="md-foot" href="#" target="_blank" rel="noopener">Medium</a></span></div>
+<div class="wrap"><span>© <span id="year"></span> Haridev S. All rights reserved.</span><nav class="social" aria-label="Social links"><a id="gh-foot" href="#" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a><a id="li-foot" href="#" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a><a id="md-foot" href="#" target="_blank" rel="noopener" aria-label="Medium" title="Medium"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.38-6.42 3.39 2.88 3.39 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></a></nav></div>
 </footer>
+<div class="veil" id="veil" aria-hidden="true"><b>Resume</b></div>
 <dialog id="demo" aria-label="Live demo">
 <div class="bar">
 <strong id="demo-title"></strong>
@@ -401,10 +499,11 @@ $("#contact-form").addEventListener("submit", async e => {
 
 /* theme toggle */
 const root = document.documentElement, tg = $("#theme");
+tg.setAttribute("aria-label", root.dataset.theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
 tg.addEventListener("click", () => {
   const next = root.dataset.theme === "dark" ? "light" : "dark";
   root.dataset.theme = next;
-  tg.classList.toggle("spin");
+  tg.setAttribute("aria-label", next === "dark" ? "Switch to light theme" : "Switch to dark theme");
   try { localStorage.setItem("theme", next); } catch (e) {}
 });
 const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -487,6 +586,62 @@ if (matchMedia("(hover:hover)").matches) {
     if (seen && !document.hidden && !dlg.open && Date.now() > hold) go(idx + 1);
   }, 5000);
 })();
+</script>
+<script>
+/* scroll past the end of the page to open the resume */
+(() => {
+  const link = document.getElementById("next-link"), veil = document.getElementById("veil"), hint = document.getElementById("next-hint");
+  if (!link || !veil) return;
+  const root = document.documentElement, coarse = matchMedia("(pointer:coarse)").matches;
+  hint.textContent = coarse ? "Keep pulling up to open it" : "Keep scrolling to open it";
+  const WHEEL = 800, TOUCH = 150;
+  let p = 0, since = 0, idle = 0, go = false, touching = false, t0 = null, raf = 0;
+  const now = () => performance.now();
+  const bottom = () => innerHeight + scrollY >= root.scrollHeight - 2;
+  const set = v => { p = Math.max(0, Math.min(1, v)); root.style.setProperty("--p", p.toFixed(3)); veil.classList.toggle("on", p > .01); };
+  const loop = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(function tick() {
+      raf = 0; if (go) return;
+      if (p > 0 && !touching && now() - idle > 450) set(p - .05);
+      if (p > 0) raf = requestAnimationFrame(tick);
+    });
+  };
+  const open = () => { if (go) return; go = true; set(1); location.assign(link.href); };
+  const blocked = e => document.querySelector("dialog[open]") || (e.target.closest && e.target.closest("textarea"));
+  const check = () => { if (bottom()) { if (!since) since = now(); } else { since = 0; if (p) set(0); } };
+  addEventListener("scroll", check, { passive: true }); check();
+  addEventListener("wheel", e => {
+    if (go || e.ctrlKey || blocked(e)) return;
+    if (e.deltaY > 0 && bottom() && since && now() - since > 500) { idle = now(); set(p + e.deltaY / WHEEL); loop(); if (p >= 1) open(); }
+    else if (e.deltaY < 0 && p) set(0);
+  }, { passive: true });
+  addEventListener("touchstart", e => {
+    touching = true;
+    t0 = bottom() && since && now() - since > 300 ? e.touches[0].clientY : null;
+  }, { passive: true });
+  addEventListener("touchmove", e => {
+    if (t0 == null || go || blocked(e)) return;
+    const dy = t0 - e.touches[0].clientY;
+    if (dy > 0 && bottom()) { set(dy / TOUCH); if (p >= 1) open(); } else set(0);
+  }, { passive: true });
+  const end = () => { touching = false; t0 = null; idle = 0; if (!go) loop(); };
+  addEventListener("touchend", end, { passive: true });
+  addEventListener("touchcancel", end, { passive: true });
+  addEventListener("pageshow", () => { go = false; set(0); });
+  new IntersectionObserver((es, io) => {
+    if (!es[0].isIntersecting) return;
+    link.classList.add("seen");
+    const l = document.createElement("link"); l.rel = "prefetch"; l.href = link.href; document.head.appendChild(l);
+    io.disconnect();
+  }, { threshold: .6 }).observe(link);
+})();
+</script>
+<script>
+/* waves drift down and fade as the page scrolls beneath the banner */
+(()=>{const w=document.querySelector(".waves");if(!w||matchMedia("(prefers-reduced-motion:reduce)").matches)return;let t=0;
+const f=()=>{t=0;const y=Math.min(scrollY,700);w.style.transform="translateY("+(y*.3).toFixed(1)+"px)";w.style.opacity=(1-y/760).toFixed(3)};
+addEventListener("scroll",()=>{if(!t)t=requestAnimationFrame(f)},{passive:true});f()})();
 </script>
 </body>
 </html>

@@ -1,4 +1,147 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Page not found | Haridev S</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;font:1rem/1.6 system-ui,sans-serif;background:#F5F7FA;color:#14213D;text-align:center;padding:24px}h1{font-size:2rem;margin:0 0 8px}a{display:inline-block;margin-top:16px;padding:10px 20px;border-radius:10px;background:#2F5BEA;color:#fff;text-decoration:none;font-weight:600}@media(prefers-color-scheme:dark){body{background:#0E1626;color:#E8EDF6}a{background:#7C9BFF;color:#0E1626}}</style></head>
-<body><main><h1>Page not found</h1><p>That page doesn’t exist.</p><a href="/">Back to home</a></main></body></html>
+<script>try{var t=localStorage.getItem("theme")}catch(e){}document.documentElement.dataset.theme=t==="dark"||t==="light"?t:(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light")</script>
+<style>
+:root{--ink:#14213D;--muted:#5B6578;--accent:#2F5BEA;--on-accent:#fff;--card:#fff;--line:#D9DEE8;--snake:#2F5BEA;--food:#0E9F8E}
+:root[data-theme="dark"]{color-scheme:dark;--ink:#E8EDF6;--muted:#A3AFC4;--accent:#7C9BFF;--on-accent:#0E1626;--card:#162238;--line:#27344D;--snake:#7C9BFF;--food:#4FD1C5}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;font:1rem/1.6 system-ui,sans-serif;background:linear-gradient(160deg,#E6EEFF,#EFEBFF 50%,#E3F5F2) fixed,#F5F7FA;color:var(--ink);text-align:center;padding:24px}
+:root[data-theme="dark"] body{background:linear-gradient(160deg,#0F1B38,#17183A 50%,#0C2230) fixed,#0E1626}
+main{width:100%;max-width:360px}
+h1{font-size:2rem;margin:0 0 8px}
+p{margin:0 0 16px;color:var(--muted)}
+.stats{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+canvas{display:block;width:100%;height:auto;aspect-ratio:1;background:var(--card);border:1px solid var(--line);border-radius:14px;touch-action:none}
+canvas:focus-visible,.btn:focus-visible,.pad button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+#msg{min-height:1.6em;margin:12px 0}
+.btn{display:inline-block;margin:0 4px;padding:10px 20px;border-radius:10px;border:1.5px solid var(--accent);background:var(--accent);color:var(--on-accent);text-decoration:none;font:600 1rem/1.3 system-ui,sans-serif;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.pad{display:none;grid-template-columns:repeat(3,56px);gap:8px;justify-content:center;margin:16px 0 0}
+.pad button{width:56px;height:56px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1.3rem;touch-action:manipulation}
+.pad .u{grid-column:2}.pad .l{grid-column:1;grid-row:2}.pad .d{grid-column:2;grid-row:2}.pad .r{grid-column:3;grid-row:2}
+@media(pointer:coarse){.pad{display:grid}}
+.actions{margin-top:16px}
+.toggle{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:5;width:40px;height:40px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 80%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#E8940A;cursor:pointer;transition:border-color .25s,box-shadow .25s,transform .2s,color .35s}
+:root[data-theme="dark"] .toggle{color:#C7D4FF}
+.toggle:hover{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
+.toggle:active{transform:scale(.92)}
+.toggle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.toggle svg{width:22px;height:22px;overflow:visible}
+
+/* theme toggle: sun and moon morph */
+.ti-core{transform-box:fill-box;transform-origin:center;transform:scale(.7);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.ti-cut{transform:translate(10px,-10px);transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.ti-rays{transform-box:fill-box;transform-origin:center;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .35s}
+:root[data-theme="dark"] .ti-core{transform:none}
+:root[data-theme="dark"] .ti-cut{transform:none}
+:root[data-theme="dark"] .ti-rays{transform:rotate(90deg) scale(.4);opacity:0}
+@media (prefers-reduced-motion:reduce){.ti-core,.ti-cut,.ti-rays{transition:none}}
+</style></head>
+<body><button class="toggle" id="theme" type="button" aria-label="Switch to dark theme"><svg viewBox="0 0 24 24" aria-hidden="true"><mask id="tm"><rect width="24" height="24" fill="#fff"/><circle class="ti-cut" cx="17" cy="7" r="6.5" fill="#000"/></mask><g class="ti-core"><circle cx="12" cy="12" r="8" fill="currentColor" mask="url(#tm)"/></g><g class="ti-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.3 12h2.5M17.87 17.87l1.77 1.77M12 20.3v2.5M6.13 17.87l-1.77 1.77M3.7 12H1.2M6.13 6.13 4.36 4.36M12 3.7V1.2M17.87 6.13l1.77-1.77"/></g></svg></button><main>
+<h1>Page not found</h1>
+<p>That page doesn’t exist. Eat some data while you’re here.</p>
+<div class="stats"><span>Score <b id="score">0</b></span><span>Best <b id="best">0</b></span></div>
+<canvas id="c" width="320" height="320" tabindex="0" aria-label="Snake game. Steer with the arrow keys, WASD, or by swiping."></canvas>
+<p id="msg" role="status">Press Space or tap Start. Steer with arrow keys or swipe.</p>
+<div class="pad" aria-label="Direction controls">
+<button class="u" type="button" data-d="u" aria-label="Up">↑</button>
+<button class="l" type="button" data-d="l" aria-label="Left">←</button>
+<button class="d" type="button" data-d="d" aria-label="Down">↓</button>
+<button class="r" type="button" data-d="r" aria-label="Right">→</button>
+</div>
+<div class="actions"><button class="btn" id="go" type="button">Start</button><a class="btn ghost" href="/">Back to home</a></div>
+</main>
+<script>
+(function(){
+var N=16,cv=document.getElementById("c"),g=cv.getContext("2d"),S=cv.width/N;
+var $=function(i){return document.getElementById(i)};
+var V={u:{x:0,y:-1},d:{x:0,y:1},l:{x:-1,y:0},r:{x:1,y:0}};
+var snake,dir,next,food,score=0,best=0,state="idle",timer;
+try{best=+localStorage.getItem("snake-best")||0}catch(e){}
+$("best").textContent=best;
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function reset(){
+  snake=[{x:8,y:8},{x:7,y:8},{x:6,y:8}];dir=next=V.r;score=0;$("score").textContent=0;place();
+}
+function place(){
+  do{food={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)}}
+  while(snake.some(function(s){return s.x===food.x&&s.y===food.y}));
+}
+function draw(){
+  g.clearRect(0,0,cv.width,cv.height);
+  g.fillStyle=css("--line");
+  for(var i=0;i<N;i++)for(var j=0;j<N;j++){g.fillRect(i*S+S/2-1,j*S+S/2-1,2,2)}
+  g.fillStyle=css("--food");g.beginPath();g.arc(food.x*S+S/2,food.y*S+S/2,S*.32,0,7);g.fill();
+  g.fillStyle=css("--snake");
+  snake.forEach(function(s,i){
+    g.globalAlpha=i===0?1:Math.max(.45,1-i*.03);
+    g.beginPath();g.roundRect(s.x*S+2,s.y*S+2,S-4,S-4,6);g.fill();
+  });
+  g.globalAlpha=1;
+}
+function step(){
+  dir=next;
+  var h=snake[0],n={x:(h.x+dir.x+N)%N,y:(h.y+dir.y+N)%N};
+  var eat=n.x===food.x&&n.y===food.y;
+  var body=eat?snake:snake.slice(0,-1);
+  if(body.some(function(s){return s.x===n.x&&s.y===n.y})){return over()}
+  snake.unshift(n);
+  if(eat){score++;$("score").textContent=score;place()}else{snake.pop()}
+  draw();
+  timer=setTimeout(step,Math.max(60,130-score*3));
+}
+function start(){
+  clearTimeout(timer);
+  if(state!=="paused"){reset()}
+  state="play";$("go").textContent="Pause";$("msg").textContent="Eat the teal dots. Don’t hit yourself.";
+  draw();timer=setTimeout(step,130);
+}
+function pause(){
+  clearTimeout(timer);state="paused";$("go").textContent="Resume";$("msg").textContent="Paused. Press Space to resume.";
+}
+function over(){
+  state="over";$("go").textContent="Play again";
+  if(score>best){best=score;$("best").textContent=best;try{localStorage.setItem("snake-best",best)}catch(e){}}
+  $("msg").textContent="Game over. You ate "+score+" data point"+(score===1?"":"s")+".";
+  draw();
+}
+function toggle(){state==="play"?pause():start()}
+function turn(d){
+  var v=V[d];if(!v||state!=="play")return;
+  if(v.x===-dir.x&&v.y===-dir.y)return;
+  next=v;
+}
+var keys={ArrowUp:"u",ArrowDown:"d",ArrowLeft:"l",ArrowRight:"r",w:"u",s:"d",a:"l",d:"r",W:"u",S:"d",A:"l",D:"r"};
+addEventListener("keydown",function(e){
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  if(keys[e.key]){
+    e.preventDefault();
+    if(state==="idle"||state==="over"||state==="paused"){if(e.target===cv){start()}}
+    turn(keys[e.key]);return;
+  }
+  var onCtl=e.target.closest&&e.target.closest("a,button");
+  if((e.key===" "||e.key==="Enter")&&!onCtl){e.preventDefault();toggle()}
+});
+$("go").addEventListener("click",toggle);
+document.querySelectorAll(".pad button").forEach(function(b){
+  b.addEventListener("pointerdown",function(e){e.preventDefault();turn(b.dataset.d)});
+});
+var t0;
+cv.addEventListener("touchstart",function(e){t0=e.touches[0]},{passive:true});
+cv.addEventListener("touchend",function(e){
+  if(!t0)return;var t=e.changedTouches[0],dx=t.clientX-t0.clientX,dy=t.clientY-t0.clientY;t0=null;
+  if(Math.abs(dx)<24&&Math.abs(dy)<24){if(state!=="play")start();return}
+  if(state!=="play"){start()}
+  turn(Math.abs(dx)>Math.abs(dy)?(dx>0?"r":"l"):(dy>0?"d":"u"));
+});
+document.addEventListener("visibilitychange",function(){if(document.hidden&&state==="play")pause()});
+var root=document.documentElement,tg=$("theme");
+function lab(){tg.setAttribute("aria-label",root.dataset.theme==="dark"?"Switch to light theme":"Switch to dark theme")}
+lab();
+tg.addEventListener("click",function(){var n=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=n;try{localStorage.setItem("theme",n)}catch(e){}lab();draw()});
+addEventListener("storage",function(e){if(e.key==="theme"&&(e.newValue==="dark"||e.newValue==="light")){root.dataset.theme=e.newValue;lab();draw()}});
+reset();draw();
+})();
+</script>
+</body></html>
