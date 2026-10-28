@@ -240,7 +240,7 @@ header{-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16
 .hero .role #typed{display:inline-block;min-height:1.4em;line-height:1.4;white-space:nowrap}
 
 /* name line inside the h1, so the page heading carries the full name */
-h1 .nm{display:block;margin-bottom:12px;font:600 clamp(1.15rem,2.6vw,1.5rem)/1.2 var(--display);letter-spacing:0;color:var(--muted)}
+h1 .nm{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
@@ -263,7 +263,7 @@ h1 .nm{display:block;margin-bottom:12px;font:600 clamp(1.15rem,2.6vw,1.5rem)/1.2
 <div class="wrap hero">
 <div>
 <p class="role"><span id="typed">Data Scientist</span><span class="caret" aria-hidden="true"></span></p>
-<h1><span class="nm">Haridev Sivaraman</span>Intelligence engineered <em>for the real world.</em></h1>
+<h1><span class="nm">Haridev Sivaraman: </span>Intelligence engineered <em>for the real world.</em></h1>
 <p>I’m Haridev Sivaraman (Haridev S), a Lead Consultant at ITC Infotech with a B.Tech from NIT Tiruchirappalli and a Master’s in Data Science and AI from IISER Tirupati. I build ML models, ETL pipelines and apps, and take them from notebook to production.</p>
 <div class="btns">
 <a class="btn primary" href="#projects">View projects</a>
