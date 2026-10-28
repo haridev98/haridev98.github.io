@@ -219,6 +219,14 @@ header{-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16
 /* typed role pill: fixed size so the page never shifts while typing */
 .hero .role{box-sizing:border-box;width:min(100%,19em);min-width:0;height:2.7em;padding:0;overflow:hidden;white-space:nowrap;background:none;border:0;border-radius:0;box-shadow:none}
 :root[data-theme="dark"] .hero .role{background:none;border:0;box-shadow:none}
+
+/* contact form: clearly visible fields in light mode */
+.cform input,.cform textarea{background:#fff;border:1.5px solid #B9C2D6;box-shadow:0 1px 2px rgba(20,33,61,.06)}
+.cform input:hover,.cform textarea:hover{border-color:#8F9BB5}
+.cform input:focus,.cform textarea:focus{border-color:var(--signal);box-shadow:0 0 0 4px rgba(47,91,234,.2)}
+:root[data-theme="dark"] .cform input,:root[data-theme="dark"] .cform textarea{background:var(--bg);border:1.5px solid rgba(255,255,255,.22);box-shadow:none}
+:root[data-theme="dark"] .cform input:hover,:root[data-theme="dark"] .cform textarea:hover{border-color:rgba(255,255,255,.4)}
+:root[data-theme="dark"] .cform input:focus,:root[data-theme="dark"] .cform textarea:focus{border-color:var(--signal);box-shadow:0 0 0 4px rgba(124,155,255,.28)}
 .hero .role #typed{display:inline-block;min-height:1.4em;line-height:1.4;white-space:nowrap}
 </style>
 </head>
