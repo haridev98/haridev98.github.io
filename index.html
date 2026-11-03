@@ -467,7 +467,7 @@ $("#project-list").innerHTML = PROJECTS.map((p, i) => {
   </article>`;
 }).join("");
 
-$("#post-list").innerHTML = BLOG.map((c, i) => `<details class="cat"${i === 0 ? " open" : ""}><summary>${esc(c.category)}<span class="n">${c.posts.length} ${c.posts.length === 1 ? "post" : "posts"}</span></summary>${c.desc ? `<p class="desc">${esc(c.desc)}</p>` : ""}<ul>${c.posts.map(p => `<li><a href="${safeHref(p.url)}">${esc(p.title)}<span>${esc(p.date)}</span></a></li>`).join("")}</ul></details>`).join("");
+$("#post-list").innerHTML = BLOG.map((c, i) => `<details class="cat"${i === 0 ? " open" : ""}><summary>${esc(c.category)}<span class="n">${c.posts.length} ${c.posts.length === 1 ? "post" : "posts"}</span></summary>${c.desc ? `<p class="desc">${esc(c.desc)}</p>` : ""}<ul>${c.posts.map(p => `<li><a href="${esc(p.url)}">${esc(p.title)}<span>${esc(p.date)}</span></a></li>`).join("")}</ul></details>`).join("");
 
 const dlg = $("#demo"), frame = $("#demo-frame");
 $("#project-list").addEventListener("click", e => {
