@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>pandas mastery: lessons and interview quiz</title>
+<title>pandas mastery : end to end</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 :root{--bg:#f6f4fa;--ink:#1d1533;--mut:#5b5073;--grid:#e3dcef;--card:#fff;--acc:#6a35d9;--ok:#137a4b;--bad:#c2303f;--code:#1d1533;--ct:#eee8fb;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -52,11 +52,14 @@ pre.out{background:var(--grid);color:var(--ink);margin-top:6px}dd pre{margin:6px
 #learn{grid-template-columns:240px 1fr}.toc{max-height:calc(100vh - 32px);overflow:hidden;padding:0}.th{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 8px 14px;border-bottom:1px solid var(--grid)}.th b{font-size:14px}#tg{padding:4px 10px;line-height:1.2;font-size:16px}
 #tl{display:flex;flex-direction:column;flex:1;min-height:0;overflow-y:auto;padding:8px;gap:1px}.toc a{padding:5px 8px}.toc a.on{background:color-mix(in srgb,var(--acc) 14%,var(--card));color:var(--acc);font-weight:600}
 .fn dt code{background:color-mix(in srgb,var(--acc) 14%,var(--card));color:var(--acc)}#fab{display:none}
-@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}#learn{transition:grid-template-columns .2s}}
+html{scroll-behavior:auto}@media(prefers-reduced-motion:no-preference){#learn{transition:grid-template-columns .2s}}
 @media(min-width:821px){#learn.min{grid-template-columns:52px 1fr}#learn.min .th{justify-content:center;padding:8px 4px;border-bottom:0}#learn.min .th b,#learn.min #tl{display:none}}
 @media(max-width:820px){.toc{display:flex;flex-direction:column;position:fixed;z-index:30;top:0;bottom:0;left:0;width:min(290px,85vw);max-height:none;border-radius:0 12px 12px 0;box-shadow:0 0 40px rgba(0,0,0,.3);padding-top:env(safe-area-inset-top,0px);transition:transform .2s}#learn.min .toc{transform:translateX(-105%);box-shadow:none;visibility:hidden}#fab{position:fixed;z-index:20;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--acc);color:var(--bg);border-color:var(--acc);border-radius:99px;padding:10px 16px;box-shadow:0 4px 16px rgba(0,0,0,.25)}#learn.min #fab{display:block}}
+#fab{position:fixed;z-index:20;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--acc);color:var(--bg);border-color:var(--acc);border-radius:99px;padding:10px 18px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.28);display:none}#learn.min #fab{display:block}
+@media(min-width:821px){#learn.min{grid-template-columns:0 1fr;column-gap:0}#learn.min .toc{display:none}}
+.bk .danger{margin-left:auto;color:var(--bad);border-color:var(--bad);background:var(--card)}.bk .danger:hover{background:color-mix(in srgb,var(--bad) 14%,var(--card))}.bk .danger.sure{background:var(--bad);color:var(--bg)}
 </style></head><body>
-<header><h1>pandas, end to end</h1>
+<header><h1>pandas mastery : end to end</h1>
 <p class="lead">Twenty checklist sections where every one of the 247 functions has syntax, an explanation of its arguments, a worked example, real printed output, a copy-or-view note and a link to the official docs, then <b id="cnt"></b> unique quiz questions. Filter by category, difficulty (easy, medium, hard) and type (concept or data-manipulation scenario). No question repeats within a quiz.</p>
 <div class="tabs"><button data-t="learn" class="on">Learn</button><button data-t="quiz">Quiz</button><button data-t="an">Progress</button><span id="prog"></span></div></header>
 <main><div id="learn"><nav class="toc" id="toc" aria-label="Contents"><div class="th"><b>Contents</b><button id="tg" aria-controls="tl" aria-expanded="true" title="Minimize contents">«</button></div><div id="tl"></div></nav><div id="lessons"></div><button id="fab" aria-controls="toc">☰ Contents</button></div>
@@ -66,7 +69,7 @@ pre.out{background:var(--grid);color:var(--ink);margin-top:6px}dd pre{margin:6px
 <label>Type<select id="qt"><option value="">All<option value="f">Concept<option value="s">Scenario</select></label>
 <label>Questions<select id="qn"><option>10<option>25<option selected>50<option>100</select></label>
 <button class="go" id="st">Start quiz</button></div><div id="qa" class="card" hidden></div></div>
-<div id="an" hidden><div id="st2"></div><div class="card bk" id="bk"><h4>Backup and restore progress</h4><p class="use">Export your ticked sections and quiz accuracy as JSON to move them to another browser or keep a safe copy. Import replaces the current progress.</p><div class="acts"><button class="go" id="ex">Export</button><button id="cp">Copy</button><button id="im">Import from text</button><label class="pick">Import from file<input type="file" id="fi" accept=".json,application/json"></label></div><textarea id="bt" aria-label="Progress JSON" spellcheck="false" placeholder="Export puts your progress here. To import, paste a saved export here and press Import from text."></textarea><p class="meta" id="bm" role="status"></p></div></div></main>
+<div id="an" hidden><div id="st2"></div><div class="card bk" id="bk"><h4>Backup and restore progress</h4><p class="use">Export your ticked sections and quiz accuracy as JSON to move them to another browser or keep a safe copy. Import replaces the current progress.</p><div class="acts"><button class="go" id="ex">Export</button><button id="cp">Copy</button><button id="im">Import from text</button><label class="pick">Import from file<input type="file" id="fi" accept=".json,application/json"></label><button class="danger" id="rs">Reset all progress</button></div><textarea id="bt" aria-label="Progress JSON" spellcheck="false" placeholder="Export puts your progress here. To import, paste a saved export here and press Import from text."></textarea><p class="meta" id="bm" role="status"></p></div></div></main>
 <script>
 const S=`Core objects|essential|Series (1-D) and DataFrame (2-D) are labeled containers; most operations return a new object.
 Reading and writing|essential|Pin dtypes and dates on read; prefer binary formats for speed and fidelity.
@@ -690,4 +693,6 @@ MQ.onchange=e=>setMin(e.matches||!!ld("pd_toc").min);
 addEventListener("click",e=>{if(!LN.classList.contains("min")&&e.target.closest&&!e.target.closest("#toc,#fab"))setMin(true)});
 addEventListener("keydown",e=>{if(e.key=="Escape"&&MQ.matches)setMin(true)});
 if(window.IntersectionObserver){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)document.querySelectorAll("#tl a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")=="#"+x.target.id))}),{rootMargin:"-15% 0px -75% 0px"});document.querySelectorAll("#lessons .sec[id^=s]").forEach(x=>io.observe(x))}
+let rt;$("#rs").onclick=()=>{const b=$("#rs");if(!b.classList.contains("sure")){b.classList.add("sure");b.textContent="Click again to confirm reset";clearTimeout(rt);rt=setTimeout(()=>{b.classList.remove("sure");b.textContent="Reset all progress"},4000);return}
+clearTimeout(rt);b.classList.remove("sure");b.textContent="Reset all progress";for(const k in tk)delete tk[k];sv("pd_ticks",tk);sv("pd_stats",{});document.querySelectorAll("#lessons input[data-i]").forEach(c=>c.checked=false);prog();stats();$("#bm").textContent="Progress reset. Export first next time if you want a backup."};
 </script></body></html>
