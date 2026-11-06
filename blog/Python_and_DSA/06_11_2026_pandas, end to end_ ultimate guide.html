@@ -1,0 +1,693 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>pandas mastery: lessons and interview quiz</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--bg:#f6f4fa;--ink:#1d1533;--mut:#5b5073;--grid:#e3dcef;--card:#fff;--acc:#6a35d9;--ok:#137a4b;--bad:#c2303f;--code:#1d1533;--ct:#eee8fb;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#130e22;--ink:#ece6fa;--mut:#aa9fc6;--grid:#251b3d;--card:#1b1330;--acc:#a98bff;--ok:#4cc38a;--bad:#ff7b88;--code:#0b0716;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#130e22;--ink:#ece6fa;--mut:#aa9fc6;--grid:#251b3d;--card:#1b1330;--acc:#a98bff;--ok:#4cc38a;--bad:#ff7b88;--code:#0b0716;color-scheme:dark}
+*{box-sizing:inherit}[hidden]{display:none!important}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font:17px/1.6 "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+header,main{max-width:1100px;margin:0 auto;padding:0 20px}header{padding-top:36px}
+h1{font-size:clamp(36px,7vw,68px);line-height:1;letter-spacing:-.035em;margin:0 0 14px;font-weight:800}
+.lead{max-width:64ch;color:var(--mut);margin:0 0 20px}
+.tabs{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+button{font:inherit;cursor:pointer;border:1px solid var(--grid);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 14px}
+.tabs .on,.go{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+#prog{color:var(--mut);margin-left:auto}
+#learn{display:grid;grid-template-columns:210px 1fr;gap:24px;align-items:start}
+.toc{position:sticky;top:16px;display:flex;flex-direction:column;font-size:14px;background:var(--card);border:1px solid var(--grid);border-radius:10px;padding:10px}
+.toc a{color:var(--ink);text-decoration:none;padding:3px 6px;border-radius:5px}.toc a:hover{background:var(--grid)}
+.sec,.card{background:var(--card);border:1px solid var(--grid);border-radius:10px;padding:22px;margin:0 0 20px}
+h2{margin:0 0 6px;font-size:25px;letter-spacing:-.02em}
+.tag{font-size:13px;font-weight:400;color:var(--mut);border:1px solid var(--grid);border-radius:99px;padding:1px 10px;margin-left:10px;vertical-align:middle}
+pre{background:var(--code);color:var(--ct);padding:12px 14px;border-radius:8px;overflow-x:auto;font:13.5px/1.55 "JetBrains Mono",ui-monospace,monospace;margin:10px 0 0}
+code{font:.9em "JetBrains Mono",ui-monospace,monospace;background:var(--grid);padding:1px 5px;border-radius:4px}
+dl{margin:10px 0}dt{margin-top:8px}dd{margin:2px 0 0;color:var(--mut)}.use{color:var(--mut);margin:0}
+.ex{border:1px solid var(--grid);border-left:4px solid var(--acc);border-radius:8px;padding:10px 14px;margin:10px 0}.ex h5{margin:0;font-size:15px}
+.tk{display:flex;gap:8px;align-items:center;margin-top:12px;color:var(--mut);font-size:15px}
+#quiz{max-width:780px;margin:0 auto}
+.ctl{display:flex;gap:14px;flex-wrap:wrap;align-items:end;margin-bottom:16px}.ctl label{display:flex;flex-direction:column;font-size:14px;color:var(--mut)}
+select{font:inherit;padding:8px;border-radius:8px;border:1px solid var(--grid);background:var(--card);color:var(--ink);max-width:100%}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;font:14.5px "Bricolage Grotesque",system-ui,sans-serif}.opt.m{font-family:"JetBrains Mono",ui-monospace,monospace}
+.opt:disabled{cursor:default;color:var(--ink)}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 16%,var(--card))}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 16%,var(--card))}
+h3{font-size:20px;line-height:1.4;margin:6px 0 14px;white-space:pre-wrap}.meta{color:var(--mut);font-size:14px;margin:8px 0}
+progress{width:100%;height:8px;accent-color:var(--acc)}.good{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid var(--grid);padding:6px 9px;text-align:left}th{background:var(--grid)}.tw{overflow-x:auto}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+pre.out{background:var(--grid);color:var(--ink);margin-top:6px}dd pre{margin:6px 0 0}
+.bd{display:inline-block;font:600 12px/1.5 inherit;border-radius:99px;padding:1px 10px;border:1px solid;margin-right:6px}.bd.view{color:var(--acc)}.bd.copy{color:var(--ok)}.bd.new{color:var(--mut)}.bd.inplace{color:var(--bad)}
+@media(max-width:820px){#learn{display:block}.toc{display:none}}
+.fn{border-top:1px solid var(--grid);padding:14px 0 6px;margin-top:8px}.fn dt{margin:0}.fn dt code{font-size:1.05em;font-weight:600;background:var(--ct);color:var(--acc);padding:2px 8px}.fn dd{margin:6px 0 0;color:var(--ink)}
+.lb{font:600 11px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:14px 0 4px}.ex pre{margin:0}.ex pre.out{margin-top:6px}
+.foot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 0;color:var(--mut);font-size:14px}.doc{margin-left:auto;color:var(--acc);font-weight:600;text-decoration:none;border:1px solid var(--grid);border-radius:99px;padding:2px 12px}.doc:hover{background:var(--grid)}
+.row{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin-bottom:6px}
+#find{width:100%;font:inherit;padding:10px 14px;border:1px solid var(--grid);border-radius:10px;background:var(--card);color:var(--ink);margin:0 0 18px}
+.sum{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 18px}.sum div{flex:1 1 150px;background:var(--card);border:1px solid var(--grid);border-radius:10px;padding:12px 16px}.sum b{display:block;font-size:28px;letter-spacing:-.02em}.sum span{color:var(--mut);font-size:14px}
+#an h4{margin:22px 0 8px;font-size:17px}#an .card>h4:first-child{margin-top:0}#an .card{padding:20px}
+.bk .acts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 12px}.bk .pick{position:relative;display:inline-flex;align-items:center;border:1px dashed var(--acc);color:var(--acc);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}.bk .pick input{position:absolute;inset:0;opacity:0;cursor:pointer}.bk .pick:focus-within{outline:3px solid var(--acc);outline-offset:2px}
+.bk textarea{display:block;width:100%;min-height:150px;resize:vertical;font:13px/1.55 "JetBrains Mono",ui-monospace,monospace;background:var(--code);color:var(--ct);border:1px solid var(--grid);border-radius:8px;padding:12px 14px}.bk .meta{min-height:1.4em;margin:10px 0 0}
+#learn{grid-template-columns:240px 1fr}.toc{max-height:calc(100vh - 32px);overflow:hidden;padding:0}.th{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 8px 14px;border-bottom:1px solid var(--grid)}.th b{font-size:14px}#tg{padding:4px 10px;line-height:1.2;font-size:16px}
+#tl{display:flex;flex-direction:column;flex:1;min-height:0;overflow-y:auto;padding:8px;gap:1px}.toc a{padding:5px 8px}.toc a.on{background:color-mix(in srgb,var(--acc) 14%,var(--card));color:var(--acc);font-weight:600}
+.fn dt code{background:color-mix(in srgb,var(--acc) 14%,var(--card));color:var(--acc)}#fab{display:none}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}#learn{transition:grid-template-columns .2s}}
+@media(min-width:821px){#learn.min{grid-template-columns:52px 1fr}#learn.min .th{justify-content:center;padding:8px 4px;border-bottom:0}#learn.min .th b,#learn.min #tl{display:none}}
+@media(max-width:820px){.toc{display:flex;flex-direction:column;position:fixed;z-index:30;top:0;bottom:0;left:0;width:min(290px,85vw);max-height:none;border-radius:0 12px 12px 0;box-shadow:0 0 40px rgba(0,0,0,.3);padding-top:env(safe-area-inset-top,0px);transition:transform .2s}#learn.min .toc{transform:translateX(-105%);box-shadow:none;visibility:hidden}#fab{position:fixed;z-index:20;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--acc);color:var(--bg);border-color:var(--acc);border-radius:99px;padding:10px 16px;box-shadow:0 4px 16px rgba(0,0,0,.25)}#learn.min #fab{display:block}}
+</style></head><body>
+<header><h1>pandas, end to end</h1>
+<p class="lead">Twenty checklist sections where every one of the 247 functions has syntax, an explanation of its arguments, a worked example, real printed output, a copy-or-view note and a link to the official docs, then <b id="cnt"></b> unique quiz questions. Filter by category, difficulty (easy, medium, hard) and type (concept or data-manipulation scenario). No question repeats within a quiz.</p>
+<div class="tabs"><button data-t="learn" class="on">Learn</button><button data-t="quiz">Quiz</button><button data-t="an">Progress</button><span id="prog"></span></div></header>
+<main><div id="learn"><nav class="toc" id="toc" aria-label="Contents"><div class="th"><b>Contents</b><button id="tg" aria-controls="tl" aria-expanded="true" title="Minimize contents">«</button></div><div id="tl"></div></nav><div id="lessons"></div><button id="fab" aria-controls="toc">☰ Contents</button></div>
+<div id="quiz" hidden><div class="ctl">
+<label>Category<select id="qc"></select></label>
+<label>Difficulty<select id="qd"><option value="">All<option value="e">Easy<option value="m">Medium<option value="h">Hard</select></label>
+<label>Type<select id="qt"><option value="">All<option value="f">Concept<option value="s">Scenario</select></label>
+<label>Questions<select id="qn"><option>10<option>25<option selected>50<option>100</select></label>
+<button class="go" id="st">Start quiz</button></div><div id="qa" class="card" hidden></div></div>
+<div id="an" hidden><div id="st2"></div><div class="card bk" id="bk"><h4>Backup and restore progress</h4><p class="use">Export your ticked sections and quiz accuracy as JSON to move them to another browser or keep a safe copy. Import replaces the current progress.</p><div class="acts"><button class="go" id="ex">Export</button><button id="cp">Copy</button><button id="im">Import from text</button><label class="pick">Import from file<input type="file" id="fi" accept=".json,application/json"></label></div><textarea id="bt" aria-label="Progress JSON" spellcheck="false" placeholder="Export puts your progress here. To import, paste a saved export here and press Import from text."></textarea><p class="meta" id="bm" role="status"></p></div></div></main>
+<script>
+const S=`Core objects|essential|Series (1-D) and DataFrame (2-D) are labeled containers; most operations return a new object.
+Reading and writing|essential|Pin dtypes and dates on read; prefer binary formats for speed and fidelity.
+Selection and indexing|essential|.loc is label-based and end-inclusive, .iloc is positional; combine masks with & | ~ in parentheses.
+Columns|essential|Create, rename, drop and reorder columns; assign() keeps code chainable.
+Missing data|essential|Detect, then deliberately drop, fill, interpolate or flag.
+Data types|essential|Convert safely, and use nullable and category dtypes to save memory.
+Strings|essential|The .str accessor is vectorised and NaN-safe.
+Datetime|essential|.dt parts, DatetimeIndex, resample, shift and time zones.
+GroupBy and aggregation|essential|Split-apply-combine with agg, transform and filter.
+Combining DataFrames|essential|concat stacks, merge joins on keys; validate cardinality.
+Reshaping|essential|pivot, melt, stack, unstack, crosstab.
+Sorting and ranking|essential|sort_values, rank, nlargest and nsmallest.
+Apply and vectorization|essential|Vectorise first; row-wise apply is the last resort.
+Duplicates and uniqueness|essential|duplicated, drop_duplicates, unique, value_counts.
+Window operations|important|rolling, expanding, ewm, diff, pct_change, cumulative functions.
+Categorical data|important|category dtype, cut, qcut, get_dummies.
+MultiIndex|important|Hierarchical labels: select, swap, sort and flatten.
+Performance and memory|important|Measure memory, copy deliberately, read with dtypes.
+Plotting|useful|Quick exploratory charts via Matplotlib.
+Good habits|essential|Inspect early, avoid chained assignment, validate every merge.`.split("\n").map(r=>r.split("|"));
+const F=String.raw`0|e|df.head()|shows the first rows of a frame
+0|e|df.tail()|shows the last rows of a frame
+0|e|df.sample()|draws random rows
+0|e|df.info()|prints dtypes, non-null counts and memory in one summary
+0|e|df.describe()|gives count, mean, std and quartiles for numeric columns
+0|e|df.shape|returns the (rows, columns) tuple
+0|m|df.size|returns the total number of elements
+0|m|df.ndim|returns the number of dimensions
+0|h|df.index|exposes the immutable row labels
+1|e|pd.read_csv()|loads delimited text into a DataFrame
+1|e|df.to_csv(index=False)|writes text without the row labels
+1|m|usecols=|loads only the listed columns
+1|m|parse_dates=|parses the named columns as datetimes while reading
+1|m|na_values=|adds custom strings that are treated as missing on read
+1|m|nrows=|reads only the first n rows of a file
+1|h|chunksize=|returns an iterator of DataFrames for out-of-core reads
+1|m|pd.read_parquet()|loads a compressed columnar binary file
+1|m|pd.read_sql_query()|runs a SQL query over a connection into a DataFrame
+1|h|pd.read_html()|returns a list of DataFrames, one per HTML table
+2|e|df.loc|selects by label, with the end label included
+2|e|df.iloc|selects by integer position, with the end excluded
+2|m|df.at[]|reads one scalar quickly by label
+2|m|df.iat[]|reads one scalar quickly by position
+2|e|.isin()|tests membership in a list of values
+2|m|df.query()|filters rows with a string expression
+2|m|~ operator|negates a Boolean mask
+2|h|df.where()|keeps values where the condition holds and sets the rest to NaN
+2|h|df.loc[mask, cols]|filters rows and picks columns in one step that is safe for assignment
+3|e|df.assign()|adds columns and returns a new frame for chaining
+3|e|df.rename()|changes column or index labels using a mapping
+3|e|df.drop(columns=)|removes columns by name
+3|m|df.insert()|places a new column at a chosen position
+3|m|df.set_index()|turns a column into the row index
+3|e|df.reset_index()|moves the index back into a column and restores a RangeIndex
+3|h|reset_index(drop=True)|restores a RangeIndex and discards the old index
+4|e|df.isna()|flags missing values as True
+4|e|df.isna().sum()|counts missing values per column
+4|e|df.dropna()|removes rows or columns that contain missing values
+4|m|dropna(thresh=n)|keeps rows with at least n non-null values
+4|m|dropna(subset=)|checks for missing values only in selected columns
+4|e|df.fillna()|replaces missing values with a scalar, dict or Series
+4|m|df.ffill()|carries the last valid value forward
+4|m|df.interpolate()|estimates numeric gaps from neighbouring values
+4|m|df.replace()|swaps chosen values for others, not only NaN
+4|h|pd.NA|is the missing marker used by nullable dtypes
+5|e|df.astype()|converts columns to a given dtype
+5|m|pd.to_numeric(errors="coerce")|converts to numbers and turns unparseable strings into NaN
+5|m|pd.to_datetime()|parses strings into datetime64
+5|h|"Int64" dtype|is a nullable integer type that can hold missing values
+5|m|astype("category")|stores low-cardinality text as integer codes
+5|h|memory_usage(deep=True)|counts the real size of object columns
+5|h|downcast=|shrinks a numeric dtype to the smallest that fits
+6|e|.str.strip()|removes leading and trailing whitespace
+6|e|.str.lower()|converts text to lowercase
+6|m|.str.contains()|tests each string for a substring or regex
+6|m|.str.extract()|pulls regex capture groups into columns
+6|h|.str.extractall()|returns every regex match as a MultiIndex result
+6|m|.str.split(expand=True)|splits strings into separate columns
+6|m|.str.replace()|substitutes text, with regex support
+6|e|.str.len()|counts characters in each string
+6|m|.str.zfill()|left-pads text with zeros
+6|m|.str.startswith()|tests whether each string begins with a prefix
+7|e|.dt.year|extracts the year from datetimes
+7|m|.dt.dayofweek|returns Monday=0 through Sunday=6
+7|e|pd.date_range()|generates a regular sequence of dates
+7|m|.resample("D")|regroups a time series to a new frequency
+7|m|.shift()|moves values forward or backward in time
+7|h|.dt.tz_localize()|attaches a time zone to naive timestamps
+7|h|.dt.tz_convert()|converts aware timestamps to another zone
+7|m|pd.Timedelta|represents a duration between timestamps
+7|m|pd.DateOffset|adds calendar-aware steps such as one month
+8|e|df.groupby()|splits rows into groups by key
+8|e|.agg()|applies one or several aggregation functions
+8|m|.size()|counts rows per group, including NaN
+8|m|.count()|counts non-null values per group
+8|m|.nunique()|counts distinct values per group
+8|m|.transform()|returns group results aligned to the original rows
+8|m|.filter()|keeps or drops whole groups by a group-level condition
+8|h|as_index=False|keeps group keys as ordinary columns
+8|h|agg(total=("x","sum"))|is named aggregation that sets output column names
+8|h|groupby().apply()|runs arbitrary group-wise logic, usually the slowest route
+9|e|pd.concat()|stacks frames along rows or columns
+9|e|pd.merge()|joins frames on key columns, SQL style
+9|m|df.join()|joins on the index by default
+9|h|validate="one_to_many"|raises if the merge keys break the expected cardinality
+9|m|how="left"|keeps every left row and fills unmatched right values with NaN
+9|m|how="outer"|keeps rows from both sides
+9|h|combine_first()|fills gaps in one frame from another
+9|m|ignore_index=True|renumbers rows after concatenation
+9|h|indicator=True|adds a _merge column showing where each row came from
+10|e|df.pivot_table()|reshapes to wide while aggregating duplicates
+10|m|df.pivot()|reshapes to wide without aggregation and errors on duplicates
+10|e|pd.melt()|unpivots wide columns into long rows
+10|m|.unstack()|moves an index level into columns
+10|m|.stack()|moves columns into an index level
+10|e|pd.crosstab()|builds a frequency table of two categorical columns
+10|h|aggfunc=|replaces pivot_table's default mean
+10|e|df.T|swaps rows and columns
+11|e|sort_values()|orders rows by one or more columns
+11|m|sort_index()|orders rows by their labels
+11|m|.rank()|assigns ranks with a chosen tie method
+11|m|.nlargest()|returns the n biggest rows by a column
+11|m|.nsmallest()|returns the n lowest rows by a column
+11|h|rank(method="dense")|gives ties the same rank with no gaps
+12|e|Series.map()|applies a function or mapping element-wise
+12|m|.apply(axis=1)|runs a function on each row, usually the slowest option
+12|m|np.where()|creates a column from one if/else condition
+12|h|np.select()|builds a column from several ordered conditions
+12|m|.pipe()|chains custom functions in a readable pipeline
+13|e|.duplicated()|flags repeated rows
+13|e|.drop_duplicates()|removes repeated rows
+13|m|keep=False|marks every member of a duplicate set
+13|e|.unique()|returns distinct values as an array
+13|e|.value_counts()|counts how often each value occurs
+13|m|normalize=True|turns counts into proportions
+14|e|.rolling(3).mean()|computes a moving average over a fixed window
+14|m|.expanding()|computes statistics over all rows up to the current one
+14|m|.ewm(span=)|weights recent observations more heavily
+14|e|.cumsum()|returns running totals
+14|e|.diff()|gives the change from the previous row
+14|e|.pct_change()|gives the fractional change from the previous row
+14|h|min_periods=|allows rolling output with fewer observations than the window
+15|m|pd.cut()|bins values using fixed edges
+15|m|pd.qcut()|bins values into equal-sized quantile groups
+15|e|pd.get_dummies()|one-hot encodes categorical columns
+15|m|.cat.codes|returns the integer code behind each category
+15|h|ordered=True|lets categories be compared and sorted by their order
+15|h|remove_unused_categories()|drops categories that no longer appear
+16|m|MultiIndex.from_product()|builds an index from every combination of iterables
+16|m|.swaplevel()|swaps two index levels
+16|h|df.xs()|takes a cross-section at one index level
+16|h|sort_index(level=)|sorts by a chosen index level
+16|m|MultiIndex.from_tuples()|builds an index from a list of tuples
+17|m|df.copy()|creates an independent object that does not share data
+17|h|SettingWithCopyWarning|warns that a chained assignment may not modify the original
+17|m|df.eval()|evaluates expressions with a fast engine
+17|h|dtype= on read|fixes column types at load time and avoids inference
+18|e|df.plot()|draws a quick exploratory chart through Matplotlib
+18|m|.plot.hist()|draws a histogram of a numeric column
+18|m|.plot.box()|draws quartiles and outliers
+18|m|.plot.scatter()|plots one numeric column against another
+18|e|.plot.bar()|compares categories with rectangular bars
+19|h|.loc[df.a>0,"b"]=1|is the safe replacement for chained assignment
+19|m|df.pipe(f)|keeps a pipeline testable and readable
+19|e|df.isna().sum() after load|is the habit of checking missingness immediately
+0|e|df.dtypes|lists the data type of every column
+0|e|df.columns|exposes the column labels as an Index
+0|e|pd.DataFrame()|builds a 2-D table from dicts, lists or arrays
+0|e|pd.Series()|builds a labeled 1-D array
+0|m|df.select_dtypes()|keeps only the columns of the requested dtypes
+0|e|df.mean()|computes the average of each column, skipping NaN
+0|e|df.sum()|adds up the values of each column, skipping NaN
+0|e|df.median()|returns the middle value of each column
+0|m|df.std()|computes the sample standard deviation
+0|m|df.quantile()|returns the value below which a given fraction of data falls
+0|m|df.corr()|builds the pairwise correlation matrix of numeric columns
+0|m|df.mode()|returns the most frequent value of each column
+0|m|df.idxmax()|returns the index label of the largest value
+0|e|df.round()|rounds numbers to a chosen number of decimals
+0|m|df.clip()|limits values to a lower and upper bound
+1|m|df.to_dict()|converts a frame into plain Python dicts
+1|m|pd.read_json()|loads JSON text or a file into a DataFrame
+2|e|.between()|tests whether values lie inside a range
+2|m|df.filter()|selects columns or index labels by name
+3|e|df.drop(index=)|removes rows by index label
+3|m|df.pop()|removes a column and returns it as a Series
+3|m|df.reindex()|conforms the frame to a new set of labels
+4|e|df.notna()|flags non-missing cells as True
+4|m|df.bfill()|fills each gap with the next valid value below it
+5|m|df.convert_dtypes()|upgrades columns to the best nullable dtypes
+6|e|.str.upper()|converts text to upper case
+6|m|.str.cat()|joins strings together
+7|e|.dt.month|returns the month number from 1 to 12
+7|m|.dt.strftime()|formats datetimes as text
+7|m|.dt.day_name()|returns the weekday name as text
+8|m|.cumcount()|numbers the rows inside each group from 0
+9|h|pd.merge_asof()|joins each row to the nearest earlier key
+10|m|df.explode()|turns each list element into its own row
+12|m|df.map()|applies a function to every cell
+14|e|.cummax()|keeps the running maximum
+16|m|.droplevel()|removes one level from a MultiIndex
+17|e|df.to_numpy()|returns the data as a NumPy array
+0|e|df.max()|returns the largest value of each column
+0|e|df.min()|returns the smallest value of each column
+0|m|df.var()|computes the sample variance
+0|e|df.abs()|returns the absolute value of each number
+0|e|df.count()|counts the non-missing values in each column
+0|e|df.empty|tells whether the frame has no rows or no columns
+2|m|df.mask()|replaces values where the condition is True, the opposite of where
+12|m|df.iterrows()|loops over rows as (label, Series) pairs
+12|m|df.itertuples()|loops over rows as named tuples, faster than iterrows
+12|m|df.add()|adds with control over alignment and missing values
+19|m|df.equals()|tests whether two objects have the same shape, labels and values
+1|e|pd.read_excel()|loads a worksheet from an Excel file
+1|e|df.to_excel()|writes a frame to an Excel sheet
+1|m|df.to_json()|serializes a frame to JSON
+1|m|df.to_parquet()|writes a compressed columnar binary file
+1|m|pd.read_feather()|loads a Feather file
+1|m|df.to_feather()|writes a frame to a Feather file
+1|m|pd.read_sql()|runs a SQL query or reads a table into a DataFrame
+1|e|sep=|sets the delimiter used when reading text
+1|e|header=|chooses which row holds the column names
+1|e|names=|supplies column names while reading
+2|e|df["col"]|selects one column as a Series
+2|e|df[["a", "b"]]|selects several columns as a DataFrame
+2|e|df.col|selects a column by attribute access
+2|e|df[mask]|keeps the rows where a Boolean Series is True
+2|e|& operator|combines Boolean masks with logical and
+2|m|partial date slicing|slices a DatetimeIndex with partial date strings
+3|e|df["new"] = ...|creates or overwrites a column by assignment
+3|e|df[new_order]|reorders columns using a list of names
+4|e|df.isnull()|is the alias of isna()
+4|e|df.notnull()|is the alias of notna()
+5|m|"boolean" dtype|stores True, False and missing together
+5|m|"string" dtype|stores text with <NA> for missing values
+6|e|.str.title()|capitalizes the first letter of each word
+6|e|.str.endswith()|tests whether text ends with a suffix
+6|m|.str.match()|tests whether text matches a regex from its start
+6|m|.str.slice()|cuts part of each string by position
+6|m|.str.pad()|pads strings to a fixed width
+7|e|.dt.day|returns the day of the month
+7|e|.dt.hour|returns the hour from 0 to 23
+7|m|pd.DatetimeIndex()|builds an index of timestamps for time series
+7|m|datetime subtraction|gives a Timedelta when two timestamps are subtracted
+8|e|for name, group in df.groupby()|loops over each group as (key, sub-frame)
+8|e|groupby().sum()|totals values within each group
+8|e|groupby().mean()|averages values within each group
+8|e|groupby().min()|takes the smallest value within each group
+8|e|groupby().max()|takes the largest value within each group
+9|e|how="inner"|keeps only the keys present in both frames
+9|e|how="right"|keeps every key from the right frame
+9|e|on=|names the key column present in both frames
+9|m|left_on= and right_on=|joins on key columns with different names
+9|m|DataFrame.append() (removed)|no longer exists; use pd.concat to add rows
+12|m|df.applymap() (legacy)|is the old name of the elementwise df.map()
+14|e|.cumprod()|keeps the running product
+14|e|.cummin()|keeps the running minimum
+15|e|.cat.categories|lists the category labels
+15|m|.cat.rename_categories()|renames categories without touching the data
+15|m|.cat.add_categories()|adds categories that have no rows yet
+15|e|pd.Categorical()|builds a categorical array with an optional order
+17|m|pd.eval()|evaluates an expression string over frames
+17|m|df.info(memory_usage="deep")|prints dtypes with the true memory of text columns
+18|e|.plot.line()|draws one line per column against the index
+0|e|pd.DataFrame(list_of_dicts)|builds a frame with one row per dict
+0|e|pd.DataFrame(2-D array)|builds a frame from a NumPy array
+0|e|inplace=True|modifies the object itself and returns None`.split("\n").map(r=>{const[c,d,n,s]=r.split("|");return{c:+c,d,n,s}});
+const Z=String.raw`2|e|Keep rows where units > 10|df[df["units"] > 10]
+2|m|Rows where region is north or product is B|df.query("region == 'north' or product == 'B'")
+2|h|Filter rows and keep only date and price in one step|df.loc[df["units"] > 10, ["date", "price"]]
+3|m|Add a revenue column and return a new frame|df.assign(revenue=df.units * df.price)
+4|e|Fill missing units with the median|df["units"].fillna(df["units"].median())
+4|m|Drop rows missing region or price|df.dropna(subset=["region", "price"])
+4|h|Forward-fill gaps within each group|df.groupby("g")["x"].ffill()
+5|m|Turn messy strings into numbers, bad ones to NaN|pd.to_numeric(df["x"], errors="coerce")
+6|e|Standardise names: trim and lowercase|df["name"].str.strip().str.lower()
+6|m|Extract the digits from IDs like ORD-123|df["id"].str.extract(r"(\d+)")
+7|m|Daily mean from timestamped data|df.set_index("ts").resample("D").mean()
+7|e|Month number from a datetime column|df["date"].dt.month
+8|e|Total units per region|df.groupby("region")["units"].sum()
+8|m|Each row's share of its region total|df["units"] / df.groupby("region")["units"].transform("sum")
+8|h|Keep only regions with more than 100 units in total|df.groupby("region").filter(lambda g: g["units"].sum() > 100)
+8|m|Total and average price per region with clean names|df.groupby("region").agg(total=("revenue", "sum"), avg=("price", "mean"))
+8|h|Latest row per customer|df.sort_values("date").groupby("cust").tail(1)
+9|h|Left-merge orders with customers and fail on duplicate customer keys|orders.merge(cust, on="id", how="left", validate="many_to_one")
+9|m|Combine monthly frames into one with a fresh index|pd.concat(frames, ignore_index=True)
+10|m|Wide table of revenue by date and region|df.pivot_table(index="date", columns="region", values="revenue", aggfunc="sum")
+10|m|Convert wide month columns to long rows|df.melt(id_vars="id", var_name="month", value_name="sales")
+11|e|Top 3 rows by revenue|df.nlargest(3, "revenue")
+11|m|Rank revenue within each region, highest first|df.groupby("region")["revenue"].rank(ascending=False)
+12|m|Label rows high or low from one condition|np.where(df["price"] > 10, "high", "low")
+13|m|Remove duplicate customers, keeping the most recent|df.sort_values("date").drop_duplicates("cust", keep="last")
+13|e|Share of rows in each category|df["cat"].value_counts(normalize=True)
+14|m|3-row rolling mean of revenue|df["revenue"].rolling(3).mean()
+14|e|Day-over-day percent change|df["revenue"].pct_change()
+15|m|Bucket price into low, mid and high|pd.cut(df["price"], bins=3, labels=["low", "mid", "high"])
+15|e|One-hot encode the product column|pd.get_dummies(df["product"])
+19|h|Safely set b to 1 for rows where a > 0|df.loc[df["a"] > 0, "b"] = 1
+0|e|Inspect the shape and dtypes|df.shape, df.dtypes
+2|e|Select just the region and units columns|df[["region", "units"]]
+8|m|Total units for each product and region pair|df.groupby(["product", "region"])["units"].sum()
+10|m|Melt a date-by-region table back to long form|wide.reset_index().melt(id_vars="date", value_name="revenue")
+14|m|Day-over-day percent change of daily revenue|df.groupby("date")["revenue"].sum().pct_change()
+1|m|Write a CSV without the index and read dates back|df.to_csv("o.csv", index=False); pd.read_csv("o.csv", parse_dates=["date"])
+15|e|List the categories of a category column|df["region"].astype("category").cat.categories
+8|e|Loop over groups and print each size|for name, g in df.groupby("region"): print(name, len(g))`.split("\n").map(r=>{const[c,d,t,k]=r.split("|");return{c:+c,d,n:t,s:k}});
+const $=s=>document.querySelector(s),esc=s=>s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+const ld=k=>{try{return JSON.parse(localStorage.getItem(k))||{}}catch(e){return{}}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const sh=a=>{a=a.slice();for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const B=[],seen=new Set();
+const G={};String.raw`df.head()|df.head(n=5)|n rows to return (default 5); a negative n means all rows except the last n.|df.head(2)|  region  units  price\n0  north   12.0   10.0\n1  south    9.0   12.5|view: leading slice of the parent; acts as a copy under CoW|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.head.html
+df.tail()|df.tail(n=5)|n rows from the end (default 5).|df.tail(1)|  region  units  price\n3  north   11.0   10.5|view: trailing slice; acts as a copy under CoW|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.tail.html
+df.shape|df.shape|A property, so no parentheses: (n_rows, n_columns).|df.shape|(4, 3)|new: a plain tuple, nothing shared|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.shape.html
+df.loc|df.loc[row_sel, col_sel]|First slot picks rows by label or Boolean mask, second picks columns; label slices include the end.|df.loc[df["units"] > 10, ["region", "price"]]|  region  price\n0  north   10.0\n3  north   10.5|copy: Boolean masks and lists copy; a pure label slice may be a view|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html
+df.iloc|df.iloc[row_pos, col_pos]|Same two slots as loc but integer positions; slices exclude the end.|df.iloc[0:2, 0:2]|  region  units\n0  north   12.0\n1  south    9.0|view: integer slices share memory; lists and masks copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html
+df.at[]|df.at[row_label, col]|Reads or writes exactly one cell by row label and column name.|df.at[1, "price"]|12.5|new: returns a scalar|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.at.html
+.isin()|s.isin(values)|values is a list, set or Series of allowed values.|df["region"].isin(["north", "east"])|0     True\n1    False\n2     True\n3     True\nName: region, dtype: bool|new: a fresh Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.isin.html
+df.query()|df.query("expr")|A string evaluated against column names; use @var for Python variables.|df.query("price > 10")|  region  units  price\n1  south    9.0   12.5\n3  north   11.0   10.5|copy: filtered rows form a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html
+df.assign()|df.assign(new_col=expr)|Each keyword is a new column name; values may be arrays or functions of the frame.|df.assign(rev=df.units * df.price)|  region  units  price    rev\n0  north   12.0   10.0  120.0\n1  south    9.0   12.5  112.5\n2   east    NaN    9.0    NaN\n3  north   11.0   10.5  115.5|new: df is untouched; unchanged columns are shared lazily under CoW|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.assign.html
+df.rename()|df.rename(columns={old: new})|columns= or index= takes a {old: new} dict or a function.|df.rename(columns={"units": "qty"}).columns.tolist()|['region', 'qty', 'price']|new: returns a new frame unless inplace=True|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html
+df.drop(columns=)|df.drop(columns=["col"])|A name or list of names to remove.|df.drop(columns="price").columns.tolist()|['region', 'units']|new: returns a new frame unless inplace=True|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html
+df.set_index()|df.set_index("col")|A column name or list becomes the index and leaves the columns.|df.set_index("region").loc["east"]|units    NaN\nprice    9.0\nName: east, dtype: float64|new: returns a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.set_index.html
+df.reset_index()|df.reset_index(drop=False)|drop=False saves the old index as a column; drop=True discards it.|df[df.price > 10].reset_index(drop=True)|  region  units  price\n0  south    9.0   12.5\n1  north   11.0   10.5|new: returns a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html
+df.isna().sum()|df.isna().sum()|isna() gives a Boolean frame; sum() counts True per column.|df.isna().sum()|region    0\nunits     1\nprice     0\ndtype: int64|new: a small result Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.isna.html
+df.dropna()|df.dropna(axis=0, how="any", thresh=None, subset=None)|axis picks rows or columns, how is "any" or "all", thresh sets a minimum non-null count, subset limits the columns checked.|df.dropna()|  region  units  price\n0  north   12.0   10.0\n1  south    9.0   12.5\n3  north   11.0   10.5|copy: returns the kept rows as a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html
+df.fillna()|s.fillna(value)|value is a scalar, a dict per column or a Series.|df["units"].fillna(df["units"].median())|0    12.0\n1     9.0\n2    11.0\n3    11.0\nName: units, dtype: float64|new: returns a new Series; assign it back to keep it|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html
+df.ffill()|s.ffill(limit=None)|Copies the previous valid value into each gap; limit caps consecutive fills.|df["units"].ffill()|0    12.0\n1     9.0\n2     9.0\n3    11.0\nName: units, dtype: float64|new: returns a new object|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ffill.html
+df.interpolate()|s.interpolate(method="linear")|method chooses how gaps are estimated ("linear" by default).|df["units"].interpolate()|0    12.0\n1     9.0\n2    10.0\n3    11.0\nName: units, dtype: float64|new: returns a new object|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html
+df.astype()|df.astype({"col": dtype})|One dtype, or a {column: dtype} dict; fails if a value cannot convert.|df["units"].astype("Int64")|0      12\n1       9\n2    <NA>\n3      11\nName: units, dtype: Int64|copy: converting dtype must build new data|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.astype.html
+pd.to_numeric(errors="coerce")|pd.to_numeric(arg, errors="raise" or "coerce")|errors="raise" stops on bad text, "coerce" makes it NaN.|pd.to_numeric(pd.Series(["1", "x", "3"]), errors="coerce")|0    1.0\n1    NaN\n2    3.0\ndtype: float64|new: returns a new Series|https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html
+pd.to_datetime()|pd.to_datetime(arg, format=None, errors="raise")|format gives the layout (faster, stricter); errors="coerce" turns bad dates into NaT.|pd.to_datetime("2024-01-05")|Timestamp('2024-01-05 00:00:00')|new: parsing builds new data|https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html
+astype("category")|s.astype("category")|Replaces repeated strings with small integer codes plus a lookup table.|df["region"].astype("category").cat.codes|0    1\n1    2\n2    0\n3    1\ndtype: int8|copy: new integer codes plus a category table|https://pandas.pydata.org/docs/user_guide/categorical.html
+.str.strip()|s.str.strip(to_strip=None)|to_strip lists characters to remove; the default is whitespace on both ends.|pd.Series([" a ", "b "]).str.strip().tolist()|['a', 'b']|new: strings are rebuilt|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.strip.html
+.str.lower()|s.str.lower()|No arguments; NaN stays NaN.|pd.Series(["North", "EAST"]).str.lower().tolist()|['north', 'east']|new: strings are rebuilt|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.lower.html
+.str.contains()|s.str.contains(pat, case=True, na=None, regex=True)|pat is text or a regex; case, na and regex=False adjust matching.|df["region"].str.contains("th").tolist()|[True, True, False, True]|new: Boolean result|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.contains.html
+.str.extract()|s.str.extract(r"(\d+)")|pat is a regex; each capture group becomes a column.|pd.Series(["ORD-123", "ORD-45"]).str.extract(r"(\d+)")|     0\n0  123\n1   45|new: one column per capture group|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.extract.html
+.str.split(expand=True)|s.str.split(pat=None, expand=False)|pat is the separator; expand=True returns one column per piece.|pd.Series(["a-b", "c-d"]).str.split("-", expand=True)|   0  1\n0  a  b\n1  c  d|new: expand=True gives a DataFrame|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.split.html
+.str.replace()|s.str.replace(pat, repl, regex=False)|pat is what to find, repl what to insert; regex=False means literal text.|pd.Series(["a.b"]).str.replace(".", "-", regex=False).tolist()|['a-b']|new: set regex=False for literal text|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.replace.html
+.dt.year|s.dt.year|A property (no parentheses); month, day and hour work the same way.|pd.to_datetime(pd.Series(["2024-01-05", "2025-03-01"])).dt.year.tolist()|[2024, 2025]|new: derived integers|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.year.html
+.dt.dayofweek|s.dt.dayofweek|A property; Monday is 0 and Sunday is 6.|pd.to_datetime(pd.Series(["2024-01-05"])).dt.dayofweek.tolist()|[4]|new: Monday=0, so Friday=4|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.dayofweek.html
+pd.date_range()|pd.date_range(start, end=None, periods=None, freq="D")|Give two of start, end, periods; freq sets the step ("D" day, "h" hour, "MS" month start).|pd.date_range("2024-01-01", periods=3).strftime("%Y-%m-%d").tolist()|['2024-01-01', '2024-01-02', '2024-01-03']|new: a fresh DatetimeIndex|https://pandas.pydata.org/docs/reference/api/pandas.date_range.html
+.shift()|s.shift(periods=1)|Positive periods moves values down, negative moves them up; gaps become NaN.|df["units"].shift(1)|0     NaN\n1    12.0\n2     9.0\n3     NaN\nName: units, dtype: float64|new: values move down; the first slot becomes NaN|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.shift.html
+df.groupby()|df.groupby(by, as_index=True)|by is the column(s) to split on; chain an aggregation to finish.|df.groupby("region")["units"].sum()|region\neast      0.0\nnorth    23.0\nsouth     9.0\nName: units, dtype: float64|new: the result is computed data; NaN sums to 0.0 by default|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html
+.agg()|g.agg(out_name=("col", "func"))|Each keyword is an output column: name=(column, function).|df.groupby("region").agg(total=("units", "sum"), avg=("price", "mean"))|        total    avg\nregion\neast      0.0   9.00\nnorth    23.0  10.25\nsouth     9.0  12.50|new: a new summary frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html
+.size()|g.size()|No arguments; counts every row in each group.|df.groupby("region").size()|region\neast     1\nnorth    2\nsouth    1\ndtype: int64|new: counts rows including NaN; count() skips NaN|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.size.html
+.transform()|g["col"].transform("sum")|A function or its name; the result has the same length as the input.|df.groupby("region")["price"].transform("sum")|0    20.5\n1    12.5\n2     9.0\n3    20.5\nName: price, dtype: float64|new: same length and index as the original|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.transform.html
+pd.concat()|pd.concat(objs, axis=0, ignore_index=False)|objs is a list of frames; axis=0 stacks rows, axis=1 sits side by side.|pd.concat([df.head(1), df.tail(1)], ignore_index=True)|  region  units  price\n0  north   12.0   10.0\n1  north   11.0   10.5|copy: builds a new frame; CoW defers the real copy until a write|https://pandas.pydata.org/docs/reference/api/pandas.concat.html
+pd.merge()|pd.merge(left, right, how="inner", on=None, validate=None)|how is the join type, on the key column(s), validate checks cardinality.|df.merge(pd.DataFrame({"region": ["north", "south"], "mgr": ["Ann", "Raj"]}), on="region", how="left")|  region  units  price  mgr\n0  north   12.0   10.0  Ann\n1  south    9.0   12.5  Raj\n2   east    NaN    9.0  NaN\n3  north   11.0   10.5  Ann|new: always a new frame; row count can grow when keys repeat|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+df.pivot_table()|df.pivot_table(index, columns, values, aggfunc="mean")|index becomes rows, columns becomes columns, values is aggregated by aggfunc (default mean).|df.pivot_table(index="region", values="price", aggfunc="sum")|        price\nregion\neast      9.0\nnorth    20.5\nsouth    12.5|new: aggregated result; the default aggfunc is mean|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html
+pd.melt()|pd.melt(frame, id_vars=None, value_vars=None, var_name=None, value_name="value")|id_vars stay as identifiers; other columns become variable/value rows.|df[["region", "units"]].melt(id_vars="region")|  region variable  value\n0  north    units   12.0\n1  south    units    9.0\n2   east    units    NaN\n3  north    units   11.0|new: wide data is rebuilt as long rows|https://pandas.pydata.org/docs/reference/api/pandas.melt.html
+sort_values()|df.sort_values(by, ascending=True, na_position="last")|by is a column or list; ascending can be a list; na_position puts NaN first or last.|df.sort_values("price", ascending=False).head(2)|  region  units  price\n1  south    9.0   12.5\n3  north   11.0   10.5|new: returns a reordered copy; the index labels travel with the rows|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html
+.nlargest()|df.nlargest(n, columns)|The n rows with the biggest values in columns.|df.nlargest(2, "price")|  region  units  price\n1  south    9.0   12.5\n3  north   11.0   10.5|new: faster than a full sort for small n|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.nlargest.html
+.rank()|s.rank(method="average", ascending=True)|method sets tie handling: average, min, dense or first.|df["price"].rank()|0    2.0\n1    4.0\n2    1.0\n3    3.0\nName: price, dtype: float64|new: ranks start at 1|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html
+np.where()|np.where(condition, x, y)|x where the condition is True, y where False.|np.where(df["price"] > 10, "high", "low")|['low' 'high' 'low' 'high']|new: returns a NumPy array, not a Series|https://numpy.org/doc/stable/reference/generated/numpy.where.html
+.duplicated()|df.duplicated(subset=None, keep="first")|subset picks columns to compare; keep="first" leaves the first occurrence unmarked.|df["region"].duplicated()|0    False\n1    False\n2    False\n3     True\nName: region, dtype: bool|new: True marks every repeat after the first|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html
+.drop_duplicates()|df.drop_duplicates(subset=None, keep="first")|subset picks columns; keep is "first", "last" or False.|df.drop_duplicates("region")|  region  units  price\n0  north   12.0   10.0\n1  south    9.0   12.5\n2   east    NaN    9.0|copy: returns the kept rows as a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html
+.unique()|s.unique()|No arguments; distinct values in order of first appearance.|df["region"].unique().tolist()|['north', 'south', 'east']|new: order of first appearance|https://pandas.pydata.org/docs/reference/api/pandas.Series.unique.html
+.value_counts()|s.value_counts(normalize=False, dropna=True)|normalize=True gives proportions; dropna=False counts NaN too.|df["region"].value_counts()|region\nnorth    2\nsouth    1\neast     1\nName: count, dtype: int64|new: sorted by count, descending|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.value_counts.html
+.rolling(3).mean()|s.rolling(window, min_periods=None).mean()|window is the number of rows; min_periods lowers the count needed; then pick a statistic.|df["price"].rolling(3).mean().round(2)|0      NaN\n1      NaN\n2    10.50\n3    10.67\nName: price, dtype: float64|new: the first window-1 rows are NaN unless min_periods is set|https://pandas.pydata.org/docs/reference/api/pandas.core.window.rolling.Rolling.mean.html
+.cumsum()|s.cumsum()|No required arguments; a running total.|df["price"].cumsum()|0    10.0\n1    22.5\n2    31.5\n3    42.0\nName: price, dtype: float64|new: running total|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.cumsum.html
+.diff()|s.diff(periods=1)|periods is how far back to subtract (default 1).|df["price"].diff()|0    NaN\n1    2.5\n2   -3.5\n3    1.5\nName: price, dtype: float64|new: row minus the previous row|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.diff.html
+.pct_change()|s.pct_change(periods=1)|periods is how far back to compare; result is (current - previous) / previous.|df["price"].pct_change().round(3)|0      NaN\n1    0.250\n2   -0.280\n3    0.167\nName: price, dtype: float64|new: (current - previous) / previous|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pct_change.html
+df.copy()|df.copy(deep=True)|deep=True (default) copies the data; deep=False shares it.|d2 = df.copy(); d2.loc[0, "units"] = 99; df.loc[0, "units"]|12.0|copy: independent object, so the parent is unchanged|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.copy.html
+df.sample()|df.sample(n=None, frac=None, random_state=None)|n rows or a frac of rows; random_state makes the draw repeatable.|df.sample(2, random_state=0)|  region  units  price\n2   east    NaN    9.0\n3  north   11.0   10.5|copy: sampled rows form a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sample.html
+df.describe()|df.describe(include=None)|Summarises numeric columns; include="all" adds text columns.|df.describe().round(2)|       units  price\ncount   3.00   4.00\nmean   10.67  10.50\nstd     1.53   1.47\nmin     9.00   9.00\n25%    10.00   9.75\n50%    11.00  10.25\n75%    11.50  11.00\nmax    12.00  12.50|new: a summary frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html
+df.index|df.index|Property: the immutable row labels; replace them with set_index or reset_index.|df.index|RangeIndex(start=0, stop=4, step=1)|view: the frame's own label object|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.index.html
+pd.read_csv()|pd.read_csv(path, sep=",", header="infer")|path may be a file, URL or buffer; sep is the delimiter; header names the header row.|pd.read_csv(io.StringIO("a,b\n1,x\n2,y"))|   a  b\n0  1  x\n1  2  y|new: builds a new frame|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+df.to_csv(index=False)|df.to_csv(path=None, index=True)|Without a path it returns the text; index=False omits row labels.|print(df.head(2).to_csv(index=False))|region,units,price\nnorth,12.0,10.0\nsouth,9.0,12.5|new: writes text, the frame is unchanged|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html
+usecols=|pd.read_csv(path, usecols=[...])|Only the listed columns are parsed, saving time and memory.|pd.read_csv(io.StringIO("a,b,c\n1,2,3"), usecols=["a", "c"])|   a  c\n0  1  3|new: only those columns|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+parse_dates=|pd.read_csv(path, parse_dates=[...])|The named columns are converted to datetime while reading.|pd.api.types.is_datetime64_any_dtype(pd.read_csv(io.StringIO("d,v\n2024-01-05,1"), parse_dates=["d"])["d"])|True|new: parsed on read|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+na_values=|pd.read_csv(path, na_values=[...])|Extra strings to treat as NaN besides defaults like "NA".|pd.read_csv(io.StringIO("a\n1\nmissing"), na_values=["missing"])["a"].isna().tolist()|[False, True]|new: parsed on read|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+nrows=|pd.read_csv(path, nrows=n)|Stops after n data rows; handy for peeking at big files.|len(pd.read_csv(io.StringIO("a\n1\n2\n3"), nrows=2))|2|new: only n rows are read|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+chunksize=|pd.read_csv(path, chunksize=n)|Returns an iterator of frames with n rows each, keeping memory small.|[len(c) for c in pd.read_csv(io.StringIO("a\n1\n2\n3"), chunksize=2)]|[2, 1]|new: each chunk is its own frame|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+~ operator|~mask|Flips True and False in a Boolean Series; parenthesise compound conditions.|df[~df["region"].isin(["north"])]|  region  units  price\n1  south    9.0   12.5\n2   east    NaN    9.0|copy: filtered rows are a new frame|https://pandas.pydata.org/docs/user_guide/indexing.html#boolean-indexing
+df.where()|df.where(cond, other=nan)|Keeps values where cond is True and replaces the rest with other.|df["units"].where(df["units"] > 10)|0    12.0\n1     NaN\n2     NaN\n3    11.0\nName: units, dtype: float64|new: same shape as the input|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.where.html
+df.loc[mask, cols]|df.loc[mask, "col"] = value|Picks rows and columns in one step, which makes assignment safe.|d = df.copy(); d.loc[d["price"] > 10, "units"] = 0; d["units"].tolist()|[12.0, 0.0, nan, 0.0]|inplace: writes into d itself|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html
+df.insert()|df.insert(loc, column, value)|loc is the position, column the name, value the data.|d = df.copy(); d.insert(1, "id", [1, 2, 3, 4]); d.columns.tolist()|['region', 'id', 'units', 'price']|inplace: changes d and returns None|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.insert.html
+reset_index(drop=True)|df.reset_index(drop=True)|drop=True throws the old index away instead of saving it as a column.|df[df.price > 10].reset_index(drop=True).index.tolist()|[0, 1]|new: returns a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html
+dropna(thresh=n)|df.dropna(thresh=n)|Keeps a row only if it has at least n non-null values.|df.dropna(thresh=3).shape|(3, 3)|copy: the kept rows|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html
+dropna(subset=)|df.dropna(subset=[...])|Looks for NaN only in the listed columns.|df.dropna(subset=["region"]).shape|(4, 3)|copy: the kept rows|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html
+df.replace()|df.replace(to_replace, value)|A dict maps old to new values; works on any value, not only NaN.|df["region"].replace({"north": "N"}).tolist()|['N', 'south', 'east', 'N']|new: returns a new object|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.replace.html
+"Int64" dtype|pd.Series(data, dtype="Int64")|Capital I means nullable integer: whole numbers and <NA> together.|pd.Series([1, None, 3], dtype="Int64")|0       1\n1    <NA>\n2       3\ndtype: Int64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Int64Dtype.html
+downcast=|pd.to_numeric(s, downcast="integer")|Picks the smallest integer or float type that holds the values.|pd.to_numeric(pd.Series([1, 2, 3]), downcast="integer").dtype.name|'int8'|copy: converting dtype rebuilds the data|https://pandas.pydata.org/docs/reference/api/pandas.to_numeric.html
+.str.len()|s.str.len()|Characters per string; NaN stays NaN.|df["region"].str.len().tolist()|[5, 5, 4, 5]|new: integers|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.len.html
+.str.zfill()|s.str.zfill(width)|Left-pads with zeros up to width characters.|pd.Series(["7", "42"]).str.zfill(3).tolist()|['007', '042']|new: strings are rebuilt|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.zfill.html
+.str.startswith()|s.str.startswith(pat)|True where the string begins with pat.|df["region"].str.startswith("n").tolist()|[True, False, False, True]|new: Boolean result|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.startswith.html
+.resample("D")|s.resample(rule).sum()|rule is the new frequency ("D", "h", "MS"); chain a statistic; needs a datetime index.|pd.Series([1, 2, 3, 4], index=pd.date_range("2024-01-01", periods=4, freq="12h")).resample("D").sum()|2024-01-01    3\n2024-01-02    7\nFreq: D, dtype: int64|new: a regrouped Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html
+pd.Timedelta|ts2 - ts1 or pd.Timedelta(value)|A duration; subtracting two timestamps produces one.|pd.Timestamp("2024-01-10") - pd.Timestamp("2024-01-05")|Timedelta('5 days 00:00:00')|new: a scalar|https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html
+pd.DateOffset|ts + pd.DateOffset(months=1)|Calendar-aware step; month ends are clipped to a valid day.|pd.Timestamp("2024-01-31") + pd.DateOffset(months=1)|Timestamp('2024-02-29 00:00:00')|new: a scalar|https://pandas.pydata.org/docs/reference/api/pandas.DateOffset.html
+.dt.tz_localize()|s.dt.tz_localize(tz)|Attaches a zone to naive times without changing the clock reading.|pd.to_datetime(pd.Series(["2024-01-05 12:00"])).dt.tz_localize("UTC").astype(str).tolist()|['2024-01-05 12:00:00+00:00']|new: a new aware Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.tz_localize.html
+.dt.tz_convert()|s.dt.tz_convert(tz)|Shows an aware time in another zone; the instant is unchanged.|pd.to_datetime(pd.Series(["2024-01-05 12:00"])).dt.tz_localize("UTC").dt.tz_convert("Asia/Kolkata").astype(str).tolist()|['2024-01-05 17:30:00+05:30']|new: a new aware Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.tz_convert.html
+.nunique()|g["col"].nunique()|Counts distinct non-null values per group.|df.groupby("region")["price"].nunique()|region\neast     1\nnorth    2\nsouth    1\nName: price, dtype: int64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.nunique.html
+.filter()|g.filter(func)|func gets each group and returns True to keep all its rows.|df.groupby("region").filter(lambda g: len(g) > 1)|  region  units  price\n0  north   12.0   10.0\n3  north   11.0   10.5|copy: the kept rows|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.filter.html
+as_index=False|df.groupby(key, as_index=False)|Keeps the group key as a normal column.|df.groupby("region", as_index=False)["price"].sum()|  region  price\n0   east    9.0\n1  north   20.5\n2  south   12.5|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html
+agg(total=("x","sum"))|g.agg(name=(column, func))|Named aggregation: each keyword becomes an output column.|df.groupby("region").agg(total=("units", "sum"))|        total\nregion\neast      0.0\nnorth    23.0\nsouth     9.0|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html
+groupby().apply()|g.apply(func)|Runs func on every group; flexible but slower than built-ins.|df.groupby("region")["price"].apply(lambda s: s.max() - s.min())|region\neast     0.0\nnorth    0.5\nsouth    0.0\nName: price, dtype: float64|new: results are combined|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.apply.html
+df.join()|df.join(other, how="left")|Aligns on the index by default; lsuffix or rsuffix avoid name clashes.|pd.DataFrame({"a": [1, 2]}, index=["x", "y"]).join(pd.DataFrame({"b": [3, 4]}, index=["y", "z"]))|   a    b\nx  1  NaN\ny  2  3.0|new: always a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.join.html
+validate="one_to_many"|pd.merge(l, r, on=k, validate="one_to_many")|Raises MergeError if left keys are not unique, catching accidental duplication.|pd.merge(df, pd.DataFrame({"region": ["north"], "m": [1]}), on="region", validate="one_to_many")|MergeError: Merge keys are not unique in left dataset; not a one-to-many merge\nDuplicates in left:\n region\n north ...|new: raises before building|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+how="left"|pd.merge(l, r, on=k, how="left")|Keeps every left row; unmatched right columns become NaN.|df.merge(pd.DataFrame({"region": ["north"], "m": [1]}), on="region", how="left")["m"].tolist()|[1.0, nan, nan, 1.0]|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+ignore_index=True|pd.concat(objs, ignore_index=True)|Discards old labels and numbers the result 0..n-1.|pd.concat([df.head(1), df.tail(1)], ignore_index=True).index.tolist()|[0, 1]|copy: concat builds a new frame|https://pandas.pydata.org/docs/reference/api/pandas.concat.html
+indicator=True|pd.merge(l, r, on=k, indicator=True)|Adds a _merge column: left_only, right_only or both.|pd.DataFrame({"k": [1, 2]}).merge(pd.DataFrame({"k": [2, 3]}), on="k", how="outer", indicator=True)|   k      _merge\n0  1   left_only\n1  2        both\n2  3  right_only|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+combine_first()|df.combine_first(other)|Keeps this frame's values and fills its NaN from other.|pd.DataFrame({"a": [1, None]}).combine_first(pd.DataFrame({"a": [9, 8]}))|     a\n0  1.0\n1  8.0|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.combine_first.html
+df.info()|df.info(memory_usage="deep")|Prints index range, non-null counts, dtypes and memory; it prints and returns None.|df.info()|<class 'pandas.DataFrame'>\nRangeIndex: 4 entries, 0 to 3\nData columns (total 3 columns):\n #   Column  Non-Null Count  Dtype\n---  ------  --------------  -----\n 0   region  4 non-null      str\n 1   units   3 non-null      float64\n 2   price   4 non-null      float64\ndtypes: float64(2), str(1)\nmemory usage: 228.0 bytes|new: only prints, no data returned|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.info.html
+df.size|df.size|Property: number of cells (rows x columns), NaN included.|df.size|12|new: an integer|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.size.html
+df.ndim|df.ndim|Property: 1 for a Series, 2 for a DataFrame.|df.ndim|2|new: an integer|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ndim.html
+pd.read_parquet()|pd.read_parquet(path, columns=None)|Reads a columnar binary file (needs pyarrow or fastparquet); columns limits what is loaded and dtypes are preserved.|df.head(2).to_parquet("t.parquet"); pd.read_parquet("t.parquet")|  region  units  price\n0  north   12.0   10.0\n1  south    9.0   12.5|new: builds a new frame|https://pandas.pydata.org/docs/reference/api/pandas.read_parquet.html
+pd.read_sql_query()|pd.read_sql_query(sql, con)|sql is the query text and con a database connection; the result set becomes a frame.|import sqlite3; con = sqlite3.connect(":memory:"); df.to_sql("t", con, index=False); pd.read_sql_query("SELECT region, price FROM t WHERE price > 10", con)|  region  price\n0  south   12.5\n1  north   10.5|new: rows are copied out of the database|https://pandas.pydata.org/docs/reference/api/pandas.read_sql_query.html
+pd.read_html()|pd.read_html(io, match=".+")|Returns a list of DataFrames, one per table found; needs lxml.|pd.read_html(io.StringIO("<table><tr><th>a</th></tr><tr><td>1</td></tr></table>"))[0]|   a\n0  1|new: a list of new frames|https://pandas.pydata.org/docs/reference/api/pandas.read_html.html
+df.iat[]|df.iat[row_pos, col_pos]|Like at but takes integer positions; fastest for one cell.|float(df.iat[0, 2])|10.0|new: returns a scalar|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iat.html
+df.isna()|df.isna()|True for NaN, None and NaT; notna() is the inverse.|df.isna()|   region  units  price\n0   False  False  False\n1   False  False  False\n2   False   True  False\n3   False  False  False|new: a Boolean frame of the same shape|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.isna.html
+pd.NA|pd.NA|One missing marker for nullable dtypes; comparing with it returns NA, not True or False.|pd.NA == 1|<NA>|new: a constant|https://pandas.pydata.org/docs/reference/api/pandas.NA.html
+memory_usage(deep=True)|df.memory_usage(deep=True)|deep=True measures the real size of text objects; the default counts only pointers.|df.memory_usage(deep=True)|Index     132\nregion    215\nunits      32\nprice      32\ndtype: int64|new: a Series of bytes per column|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.memory_usage.html
+.str.extractall()|s.str.extractall(pat)|One row per regex match, indexed by (original row, match number).|pd.Series(["a1b22", "c3"]).str.extractall(r"(\d+)")|          0\n  match\n0 0       1\n  1      22\n1 0       3|new: a frame with a MultiIndex|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.extractall.html
+.count()|g["col"].count()|Counts non-null values per group; size() counts rows.|df.groupby("region")["units"].count()|region\neast     0\nnorth    2\nsouth    1\nName: units, dtype: int64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.count.html
+how="outer"|pd.merge(l, r, on=k, how="outer")|Keeps keys from both sides, filling gaps with NaN.|pd.DataFrame({"k": [1, 2]}).merge(pd.DataFrame({"k": [2, 3]}), on="k", how="outer")["k"].tolist()|[1, 2, 3]|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+df.pivot()|df.pivot(index, columns, values)|Long to wide without aggregating, so each index/column pair must be unique.|pd.DataFrame({"d": [1, 1, 2, 2], "r": ["a", "b", "a", "b"], "v": [5, 6, 7, 8]}).pivot(index="d", columns="r", values="v")|r  a  b\nd\n1  5  6\n2  7  8|new: a new wide frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot.html
+.unstack()|s.unstack(level=-1)|Moves an index level into columns; level picks which one.|pd.Series([1, 2, 3, 4], index=pd.MultiIndex.from_product([["a", "b"], ["x", "y"]])).unstack()|   x  y\na  1  2\nb  3  4|new: a new wide frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.unstack.html
+.stack()|df.stack()|Moves the columns into the innermost index level, giving a longer Series.|pd.DataFrame({"x": [1, 2], "y": [3, 4]}, index=["a", "b"]).stack()|a  x    1\n   y    3\nb  x    2\n   y    4\ndtype: int64|new: a Series with a MultiIndex|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html
+pd.crosstab()|pd.crosstab(index, columns, normalize=False)|Counts co-occurrences of two columns; normalize turns counts into proportions.|pd.crosstab(df["region"], df["price"] > 10)|price   False  True\nregion\neast        1      0\nnorth       1      1\nsouth       0      1|new: a frequency table|https://pandas.pydata.org/docs/reference/api/pandas.crosstab.html
+aggfunc=|df.pivot_table(..., aggfunc="mean")|A string, function, list or dict; the default is mean, which silently changes totals if you forget it.|df.pivot_table(index="region", values="price", aggfunc=["sum", "mean"])|         sum   mean\n       price  price\nregion\neast     9.0   9.00\nnorth   20.5  10.25\nsouth   12.5  12.50|new: an aggregated frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html
+df.T|df.T|Property: swaps rows and columns; mixed dtypes become object.|df.head(2).T|            0      1\nregion  north  south\nunits    12.0    9.0\nprice    10.0   12.5|copy: usually copies; a single-dtype frame may share memory|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.T.html
+sort_index()|df.sort_index(ascending=True)|Sorts by row labels; axis=1 sorts the column labels.|df.sort_values("price").sort_index()|  region  units  price\n0  north   12.0   10.0\n1  south    9.0   12.5\n2   east    NaN    9.0\n3  north   11.0   10.5|new: a reordered copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_index.html
+.nsmallest()|df.nsmallest(n, columns)|The n rows with the lowest values in columns.|df.nsmallest(2, "price")|  region  units  price\n2   east    NaN    9.0\n0  north   12.0   10.0|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.nsmallest.html
+rank(method="dense")|s.rank(method="dense")|Tied values share a rank and the next rank has no gap.|pd.Series([10, 10, 20]).rank(method="dense")|0    1.0\n1    1.0\n2    2.0\ndtype: float64|new: floats|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html
+Series.map()|s.map(arg)|arg is a dict or function applied per element; unmapped dict keys become NaN.|df["region"].map({"north": "N", "south": "S"})|0      N\n1      S\n2    NaN\n3      N\nName: region, dtype: str|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.map.html
+.apply(axis=1)|df.apply(func, axis=1)|axis=1 passes each row to func as a Series; it loops in Python, so it is slow.|df.apply(lambda r: r["units"] * r["price"], axis=1)|0    120.0\n1    112.5\n2      NaN\n3    115.5\ndtype: float64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.apply.html
+np.select()|np.select(condlist, choicelist, default=0)|The first True condition per element picks the matching choice; default covers the rest.|np.select([df["price"] < 10, df["price"] < 12], ["low", "mid"], default="high")|['mid' 'high' 'low' 'mid']|new: a NumPy array|https://numpy.org/doc/stable/reference/generated/numpy.select.html
+.pipe()|df.pipe(func, *args)|Passes the frame to func so custom steps chain like methods.|df.pipe(lambda d: d[d["price"] > 10])|  region  units  price\n1  south    9.0   12.5\n3  north   11.0   10.5|new: whatever func returns|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pipe.html
+keep=False|df.duplicated(subset, keep=False)|keep=False marks every member of a duplicate set, not just the repeats.|df["region"].duplicated(keep=False)|0     True\n1    False\n2    False\n3     True\nName: region, dtype: bool|new: a Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html
+normalize=True|s.value_counts(normalize=True)|Returns fractions that sum to 1 instead of counts.|df["region"].value_counts(normalize=True)|region\nnorth    0.50\nsouth    0.25\neast     0.25\nName: proportion, dtype: float64|new: floats|https://pandas.pydata.org/docs/reference/api/pandas.Series.value_counts.html
+.expanding()|s.expanding(min_periods=1).mean()|The window grows from the first row to the current one.|df["price"].expanding().mean()|0    10.00\n1    11.25\n2    10.50\n3    10.50\nName: price, dtype: float64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.expanding.html
+.ewm(span=)|s.ewm(span=n).mean()|span sets the decay: recent rows weigh more than old ones.|df["price"].ewm(span=3).mean().round(3)|0    10.000\n1    11.667\n2    10.143\n3    10.333\nName: price, dtype: float64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ewm.html
+min_periods=|s.rolling(window, min_periods=1)|Minimum rows needed to emit a value, so early rows are not NaN.|df["price"].rolling(3, min_periods=1).mean().round(2)|0    10.00\n1    11.25\n2    10.50\n3    10.67\nName: price, dtype: float64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html
+pd.cut()|pd.cut(x, bins, labels=None, right=True)|bins is a count or list of edges; right=True makes intervals (a, b]; labels names them.|pd.cut(df["price"], bins=[0, 10, 12, 20], labels=["low", "mid", "high"])|0     low\n1    high\n2     low\n3     mid\nName: price, dtype: category\nCategories (3, str): ['low' < 'mid' < 'high']|new: a Categorical Series|https://pandas.pydata.org/docs/reference/api/pandas.cut.html
+pd.qcut()|pd.qcut(x, q, labels=None)|q is the number of equal-count bins or a list of quantiles.|pd.qcut(df["price"], q=2, labels=["lower", "upper"])|0    lower\n1    upper\n2    lower\n3    upper\nName: price, dtype: category\nCategories (2, str): ['lower' < 'upper']|new: a Categorical Series|https://pandas.pydata.org/docs/reference/api/pandas.qcut.html
+pd.get_dummies()|pd.get_dummies(data, columns=None, dtype=bool)|One indicator column per category; drop_first=True removes redundancy.|pd.get_dummies(df["region"], dtype=int)|   east  north  south\n0     0      1      0\n1     0      0      1\n2     1      0      0\n3     0      1      0|new: a new frame|https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html
+.cat.codes|s.cat.codes|Integer code of each category (-1 for missing), following category order.|df["region"].astype("category").cat.codes|0    1\n1    2\n2    0\n3    1\ndtype: int8|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.cat.codes.html
+ordered=True|pd.Categorical(values, categories=[...], ordered=True)|Fixes the category order so comparisons, sorting and max follow it.|pd.Series(pd.Categorical(["m", "s", "l"], categories=["s", "m", "l"], ordered=True)).max()|'l'|new: a new Categorical|https://pandas.pydata.org/docs/reference/api/pandas.CategoricalDtype.html
+remove_unused_categories()|s.cat.remove_unused_categories()|Drops categories that no longer occur in the data.|pd.Series(pd.Categorical(["a", "a"], categories=["a", "b"])).cat.remove_unused_categories().cat.categories.tolist()|['a']|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.cat.remove_unused_categories.html
+MultiIndex.from_product()|pd.MultiIndex.from_product(iterables, names=None)|Every combination of the given lists.|pd.MultiIndex.from_product([["a", "b"], [1, 2]], names=["k", "n"])|MultiIndex([('a', 1),\n            ('a', 2),\n            ('b', 1),\n            ('b', 2)],\n           names=['k', 'n'])|new: a new index|https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.from_product.html
+.swaplevel()|s.swaplevel(i=-2, j=-1)|Swaps two index levels; sort afterwards for tidy slicing.|pd.Series([1, 2], index=pd.MultiIndex.from_tuples([("a", 1), ("b", 2)])).swaplevel()|1  a    1\n2  b    2\ndtype: int64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.swaplevel.html
+df.xs()|df.xs(key, level=None)|Selects one label at a chosen level and drops that level.|pd.Series([1, 2, 3], index=pd.MultiIndex.from_tuples([("a", 1), ("a", 2), ("b", 1)])).xs(1, level=1)|a    1\nb    3\ndtype: int64|copy: a cross-section is usually a copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.xs.html
+sort_index(level=)|s.sort_index(level=n)|Sorts by the chosen index level.|pd.Series([1, 2, 3], index=pd.MultiIndex.from_tuples([("a", 2), ("a", 1), ("b", 1)])).sort_index(level=1)|a  1    2\nb  1    3\na  2    1\ndtype: int64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_index.html
+MultiIndex.from_tuples()|pd.MultiIndex.from_tuples(tuples, names=None)|Builds a hierarchical index from a list of tuples.|pd.MultiIndex.from_tuples([("a", 1), ("b", 2)], names=["k", "n"])|MultiIndex([('a', 1),\n            ('b', 2)],\n           names=['k', 'n'])|new: a new index|https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.from_tuples.html
+SettingWithCopyWarning|df[mask]["col"] = value (the bug)|Chained assignment writes to a temporary copy, so the parent is not changed; older pandas warns with this name, pandas 3 warns about chained assignment. Use .loc[mask, "col"] instead.|d = df.copy(); d[d["price"] > 10]["units"] = 0; d["units"].tolist()|[12.0, 9.0, nan, 11.0]|copy: the temporary result is a copy, so the write is lost|https://pandas.pydata.org/docs/user_guide/copy_on_write.html
+df.eval()|df.eval(expr)|Evaluates a string expression using column names; "x = ..." assigns.|df.eval("price * 2")|0    20.0\n1    25.0\n2    18.0\n3    21.0\nName: price, dtype: float64|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.eval.html
+dtype= on read|pd.read_csv(path, dtype={"col": "int8"})|Fixes column types at load time instead of letting pandas infer them.|pd.read_csv(io.StringIO("a,b\n1,x"), dtype={"a": "int8"}).dtypes["a"]|dtype('int8')|new: parsed on read|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+df.plot()|df.plot(kind="line", x=None, y=None)|kind picks the chart type, x and y pick columns; it returns a Matplotlib Axes.|len(df["price"].plot().lines)|1|new: returns a Matplotlib Axes|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html
+.plot.hist()|s.plot.hist(bins=10)|bins is the bin count or the edges.|len(df["price"].plot.hist(bins=3).patches)|3|new: returns a Matplotlib Axes|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.hist.html
+.plot.box()|df.plot.box(column=None)|One box and whisker set per numeric column.|type(df[["price"]].plot.box()).__name__|'Axes'|new: returns a Matplotlib Axes|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.box.html
+.plot.scatter()|df.plot.scatter(x, y)|x and y name the two numeric columns.|len(df.plot.scatter(x="units", y="price").collections)|1|new: returns a Matplotlib Axes|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.scatter.html
+.plot.bar()|df.plot.bar(x=None, y=None)|One bar per row for each y column.|len(df.plot.bar(x="region", y="price").patches)|4|new: returns a Matplotlib Axes|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.bar.html
+.loc[df.a>0,"b"]=1|df.loc[df.a > 0, "b"] = 1|The safe one-step assignment; it avoids chained indexing.|d = df.copy(); d.loc[d["price"] > 10, "units"] = 1; d|  region  units  price\n0  north   12.0   10.0\n1  south    1.0   12.5\n2   east    NaN    9.0\n3  north    1.0   10.5|inplace: writes into d itself|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html
+df.pipe(f)|df.pipe(f).pipe(g)|Each function takes a frame and returns a frame, giving a readable, testable pipeline.|df.pipe(lambda d: d.assign(rev=d.units * d.price)).pipe(lambda d: d[d.rev > 115])|  region  units  price    rev\n0  north   12.0   10.0  120.0\n3  north   11.0   10.5  115.5|new: each step returns a new frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pipe.html
+df.isna().sum() after load|print(df.shape, df.isna().sum().sum())|Check shape and total missing cells right after loading any dataset.|print(df.shape, df.isna().sum().sum())|(4, 3) 1|new: only reports|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.isna.html
+df.dtypes|df.dtypes|A property (no parentheses) returning a Series that maps each column name to its dtype.|df.dtypes|region        str\nunits     float64\nprice     float64\ndtype: object|new: a fresh Series of dtypes|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dtypes.html
+df.columns|df.columns|A property; assign a list to it (df.columns = [...]) to rename every column at once.|df.columns|Index(['region', 'units', 'price'], dtype='str')|view: the live Index of df, which is immutable|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.columns.html
+pd.DataFrame()|pd.DataFrame(data=None, index=None, columns=None, dtype=None)|data is a dict of columns, list of rows or array; index and columns set the labels; dtype forces one type.|pd.DataFrame({"a": [1, 2], "b": ["x", "y"]}, index=["r1", "r2"])|    a  b\nr1  1  x\nr2  2  y|new: lists are copied into fresh arrays|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+pd.Series()|pd.Series(data=None, index=None, dtype=None, name=None)|data is a list, dict or array; index gives labels; name becomes the column name inside a frame.|pd.Series([3, 5, 7], index=["a", "b", "c"], name="s")|a    3\nb    5\nc    7\nName: s, dtype: int64|new: copies list input; NumPy input may share memory|https://pandas.pydata.org/docs/reference/api/pandas.Series.html
+df.select_dtypes()|df.select_dtypes(include=None, exclude=None)|include and exclude take a dtype, its string name or a list, e.g. "number", "object", "category".|df.select_dtypes(include="number")|   units  price\n0   12.0   10.0\n1    9.0   12.5\n2    NaN    9.0\n3   11.0   10.5|copy: returns a new frame of the matching columns|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.select_dtypes.html
+df.mean()|df.mean(axis=0, skipna=True, numeric_only=False)|axis=0 works down columns, axis=1 across rows; skipna=False lets a NaN poison the result; numeric_only=True ignores text columns.|df[["units", "price"]].mean()|units    10.666667\nprice    10.500000\ndtype: float64|new: a Series of results|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html
+df.sum()|df.sum(axis=0, skipna=True, numeric_only=False, min_count=0)|min_count is the minimum number of valid values needed, otherwise the result is NaN.|df["units"].sum()|32.0|new: a scalar|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sum.html
+df.median()|df.median(axis=0, skipna=True, numeric_only=False)|Same arguments as mean(); robust to outliers.|df[["units", "price"]].median()|units    11.00\nprice    10.25\ndtype: float64|new: a Series of results|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.median.html
+df.std()|df.std(axis=0, ddof=1, skipna=True, numeric_only=False)|ddof is the divisor offset: 1 for a sample (pandas default), 0 for a population (NumPy default).|df["price"].std()|1.4719601443879744|new: a scalar|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.std.html
+df.quantile()|df.quantile(q=0.5, axis=0, numeric_only=False, interpolation="linear")|q is a number or list between 0 and 1; interpolation picks how to blend neighbours.|df["price"].quantile([0.25, 0.75])|0.25     9.75\n0.75    11.00\nName: price, dtype: float64|new: Series or frame indexed by q|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.quantile.html
+df.corr()|df.corr(method="pearson", min_periods=1, numeric_only=False)|method is "pearson", "kendall" or "spearman"; pairs use only rows where both values exist.|df[["units", "price"]].corr()|          units     price\nunits  1.000000 -0.989743\nprice -0.989743  1.000000|new: a square frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corr.html
+df.mode()|df.mode(axis=0, numeric_only=False, dropna=True)|Ties return several rows; dropna=False counts NaN as a value.|df["region"].mode()|0    north\nName: region, dtype: str|new: a Series, one row per tied mode|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mode.html
+df.idxmax()|df.idxmax(axis=0, skipna=True)|idxmin() is the opposite; it returns the first label on ties.|df["price"].idxmax()|1|new: a scalar label|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.idxmax.html
+df.round()|df.round(decimals=0)|decimals may be negative (-1 rounds to tens) or a dict per column; halves round to the nearest even number.|df["price"].round(0)|0    10.0\n1    12.0\n2     9.0\n3    10.0\nName: price, dtype: float64|new: a rounded copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.round.html
+df.clip()|df.clip(lower=None, upper=None, axis=None)|Values below lower become lower and values above upper become upper; either may be omitted.|df["price"].clip(lower=10, upper=12)|0    10.0\n1    12.0\n2    10.0\n3    10.5\nName: price, dtype: float64|new: a clipped copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.clip.html
+df.to_dict()|df.to_dict(orient="dict")|orient is "dict", "list", "records", "index", "split" or "series"; "records" gives one dict per row.|df.head(2).to_dict(orient="records")|[{'region': 'north', 'units': 12.0, 'price': 10.0}, {'region': 'south', 'units': 9.0, 'price': 12.5}]|new: nested Python objects|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_dict.html
+pd.read_json()|pd.read_json(path_or_buf, orient=None, lines=False, dtype=True)|Pass a path, URL or StringIO; lines=True reads one JSON object per line (JSON Lines).|pd.read_json(StringIO('[{"a": 1, "b": "x"}, {"a": 2, "b": "y"}]'))|   a  b\n0  1  x\n1  2  y|new: a fresh DataFrame (from io import StringIO)|https://pandas.pydata.org/docs/reference/api/pandas.read_json.html
+.between()|s.between(left, right, inclusive="both")|inclusive is "both", "neither", "left" or "right" and controls whether the end points count.|df["price"].between(10, 12)|0     True\n1    False\n2    False\n3     True\nName: price, dtype: bool|new: a Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.between.html
+df.filter()|df.filter(items=None, like=None, regex=None, axis=None)|items is an exact list, like is a substring, regex is a pattern; axis=1 for columns (default on frames).|df.filter(like="r")|  region  price\n0  north   10.0\n1  south   12.5\n2   east    9.0\n3  north   10.5|copy: a new frame of the matching columns|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.filter.html
+df.drop(index=)|df.drop(labels=None, axis=0, index=None, columns=None, errors="raise")|index= names rows to remove, columns= names columns; errors="ignore" skips labels that do not exist.|df.drop(index=[0, 2])|  region  units  price\n1  south    9.0   12.5\n3  north   11.0   10.5|new: df is untouched|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html
+df.pop()|df.pop(item)|item is the column name; the column is deleted from the frame you call it on.|df.copy().pop("units")|0    12.0\n1     9.0\n2     NaN\n3    11.0\nName: units, dtype: float64|inplace: deletes the column from the calling frame (shown on a copy)|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pop.html
+df.reindex()|df.reindex(labels=None, index=None, columns=None, fill_value=nan, method=None)|Labels not in the original appear as NaN (or fill_value); labels not requested are dropped.|df.reindex(columns=["price", "region", "tax"])|   price region  tax\n0   10.0  north  NaN\n1   12.5  south  NaN\n2    9.0   east  NaN\n3   10.5  north  NaN|new: a reordered copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reindex.html
+df.notna()|df.notna()|The mirror image of isna(); useful as a Boolean filter, df[df["a"].notna()].|df["units"].notna()|0     True\n1     True\n2    False\n3     True\nName: units, dtype: bool|new: a Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.notna.html
+df.bfill()|df.bfill(axis=0, limit=None)|limit caps how many consecutive gaps are filled; ffill() fills forwards instead.|df["units"].bfill()|0    12.0\n1     9.0\n2    11.0\n3    11.0\nName: units, dtype: float64|new: df is untouched|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.bfill.html
+df.convert_dtypes()|df.convert_dtypes(infer_objects=True, convert_string=True, convert_integer=True)|Text becomes string, integral floats become Int64, and NaN becomes <NA>.|df.convert_dtypes().dtypes|region     string\nunits       Int64\nprice     Float64\ndtype: object|new: a converted copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.convert_dtypes.html
+.str.upper()|s.str.upper()|No arguments; missing values stay missing. lower() and title() work the same way.|df["region"].str.upper()|0    NORTH\n1    SOUTH\n2     EAST\n3    NORTH\nName: region, dtype: str|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.upper.html
+.str.cat()|s.str.cat(others=None, sep=None, na_rep=None)|With others=None it joins the whole Series into one string; with others it joins elementwise; sep is the separator.|df["region"].str.cat(sep="/")|'north/south/east/north'|new: one string, or a Series when others is given|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.cat.html
+.dt.month|s.dt.month|A property on a datetime Series; .dt.month_name() returns the name instead.|dts.dt.month|0    1\n1    2\ndtype: int32|new: an integer Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.month.html
+.dt.strftime()|s.dt.strftime(date_format)|date_format uses codes: %Y year, %m month, %d day, %b short month, %H hour.|dts.dt.strftime("%d %b %Y")|0    15 Jan 2024\n1    20 Feb 2024\ndtype: str|new: a string Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.strftime.html
+.dt.day_name()|s.dt.day_name(locale=None)|locale (e.g. "fr_FR") translates the names.|dts.dt.day_name()|0     Monday\n1    Tuesday\ndtype: str|new: a string Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.day_name.html
+.cumcount()|groupby(key).cumcount(ascending=True)|ascending=False numbers from the end; handy for "first row per group" filters.|df.groupby("region").cumcount()|0    0\n1    0\n2    0\n3    1\ndtype: int64|new: a Series aligned to the original index|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.cumcount.html
+pd.merge_asof()|pd.merge_asof(left, right, on, by=None, direction="backward", tolerance=None)|Both frames must be sorted by on; direction is "backward", "forward" or "nearest"; tolerance caps the gap; by matches exact groups first.|pd.merge_asof(pd.DataFrame({"t": [1, 5, 10]}), pd.DataFrame({"t": [2, 6], "b": [20, 60]}), on="t")|    t     b\n0   1   NaN\n1   5  20.0\n2  10  60.0|new: a fresh frame|https://pandas.pydata.org/docs/reference/api/pandas.merge_asof.html
+df.explode()|df.explode(column, ignore_index=False)|column is the list-like column; other columns repeat; empty lists become NaN.|pd.DataFrame({"id": [1, 2], "tags": [["a", "b"], ["c"]]}).explode("tags")|   id tags\n0   1    a\n0   1    b\n1   2    c|new: index labels repeat unless ignore_index=True|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.explode.html
+df.map()|df.map(func, na_action=None)|func maps one value to one value; na_action="ignore" skips NaN. It replaces applymap (pandas 2.1+).|df[["units", "price"]].map(lambda v: v * 2)|   units  price\n0   24.0   20.0\n1   18.0   25.0\n2    NaN   18.0\n3   22.0   21.0|new: a transformed copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.map.html
+.cummax()|s.cummax(skipna=True)|cummin(), cumprod() and cumsum() follow the same pattern.|df["price"].cummax()|0    10.0\n1    12.5\n2    12.5\n3    12.5\nName: price, dtype: float64|new: a Series of the same length|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.cummax.html
+.droplevel()|df.droplevel(level, axis=0)|level is a position or name (or a list); axis=1 acts on columns.|pd.DataFrame({"v": [1, 2]}, index=pd.MultiIndex.from_tuples([("a", 1), ("a", 2)], names=["k", "n"])).droplevel("n")|   v\nk   \na  1\na  2|new: a frame with a shorter index|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.droplevel.html
+df.to_numpy()|df.to_numpy(dtype=None, copy=False, na_value=<no_default>)|dtype forces a type; mixed columns upcast to object; na_value replaces missing cells.|df[["units", "price"]].to_numpy()|[[12.  10. ]\n [ 9.  12.5]\n [ nan  9. ]\n [11.  10.5]]|view: single-dtype frames share memory, read-only under CoW; mixed dtypes copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_numpy.html
+df.max()|df.max(axis=0, skipna=True, numeric_only=False)|Same arguments as mean(); on text columns it compares alphabetically.|df[["units", "price"]].max()|units    12.0\nprice    12.5\ndtype: float64|new: a Series of results|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.max.html
+df.min()|df.min(axis=0, skipna=True, numeric_only=False)|Same arguments as max(); idxmin() returns the label instead of the value.|df[["units", "price"]].min()|units    9.0\nprice    9.0\ndtype: float64|new: a Series of results|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.min.html
+df.var()|df.var(axis=0, ddof=1, skipna=True, numeric_only=False)|ddof=1 divides by n-1 (sample variance); it is the square of std().|df["price"].var()|2.1666666666666665|new: a scalar|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.var.html
+df.abs()|df.abs()|Numeric data only; NaN stays NaN.|(df["units"] - 10).abs()|0    2.0\n1    1.0\n2    NaN\n3    1.0\nName: units, dtype: float64|new: a Series or frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.abs.html
+df.count()|df.count(axis=0, numeric_only=False)|Unlike len or size, NaN cells are not counted; axis=1 counts per row.|df.count()|region    4\nunits     3\nprice     4\ndtype: int64|new: a Series of counts|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.count.html
+df.empty|df.empty|A property returning True when any axis has length 0; a frame full of NaN is not empty.|df.empty|False|new: a plain bool|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.empty.html
+df.mask()|df.mask(cond, other=nan, inplace=False)|Cells where cond is True become other (NaN by default); where() keeps those cells instead.|df["price"].mask(df["price"] > 10)|0    10.0\n1     NaN\n2     9.0\n3     NaN\nName: price, dtype: float64|new: a masked copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mask.html
+df.iterrows()|df.iterrows()|Yields (index, row Series); dtypes are upcast per row and it is slow, so prefer vectorised code.|[(i, r["region"]) for i, r in df.iterrows()]|[(0, 'north'), (1, 'south'), (2, 'east'), (3, 'north')]|new: a generator; changes to row are not written back|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iterrows.html
+df.itertuples()|df.itertuples(index=True, name="Pandas")|index=False drops the label; name sets the tuple class name; fields are the column names.|[r.price for r in df.itertuples()]|[10.0, 12.5, 9.0, 10.5]|new: a generator of tuples|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.itertuples.html
+df.add()|df.add(other, axis="columns", level=None, fill_value=None)|other is a scalar, Series or frame; fill_value replaces NaN on the calling side first; sub, mul and div match.|df["units"].add(1, fill_value=0)|0    13.0\n1    10.0\n2     1.0\n3    12.0\nName: units, dtype: float64|new: a result copy|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.add.html
+df.equals()|df.equals(other)|NaN in the same place counts as equal and dtypes must match; it returns one bool, unlike ==.|df.equals(df.copy())|True|new: a plain bool|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html
+pd.read_excel()|pd.read_excel(io, sheet_name=0, header=0, usecols=None, dtype=None)|io is a path or buffer; sheet_name picks a sheet by name or position (None returns all as a dict); .xlsx needs openpyxl.|df.to_excel("t.xlsx", index=False); pd.read_excel("t.xlsx")|  region  units  price\n0  north   12.0   10.0\n1  south    9.0   12.5\n2   east    NaN    9.0\n3  north   11.0   10.5|new: a fresh DataFrame|https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html
+df.to_excel()|df.to_excel(excel_writer, sheet_name="Sheet1", index=True)|excel_writer is a path or ExcelWriter (use it to write several sheets); needs openpyxl or xlsxwriter.|df.to_excel("t.xlsx", index=False); pd.read_excel("t.xlsx").shape|(4, 3)|new: writes a file and returns None|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_excel.html
+df.to_json()|df.to_json(path_or_buf=None, orient="columns", lines=False)|orient is "columns", "records", "index", "split" or "table"; lines=True with "records" writes JSON Lines.|df.head(2).to_json(orient="records")|'[{"region":"north","units":12.0,"price":10.0},{"region":"south","units":9.0,"price":12.5}]'|new: a string when no path is given|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_json.html
+df.to_parquet()|df.to_parquet(path, engine="auto", compression="snappy", index=None)|Needs pyarrow or fastparquet; dtypes are preserved; compression may be "snappy", "gzip", "zstd" or None.|df.to_parquet("t.parquet"); pd.read_parquet("t.parquet").dtypes|region        str\nunits     float64\nprice     float64\ndtype: object|new: writes a file and returns None|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_parquet.html
+pd.read_feather()|pd.read_feather(path, columns=None)|Needs pyarrow; columns loads a subset; fast for hand-offs between Python and R.|df.to_feather("t.feather"); pd.read_feather("t.feather")|  region  units  price\n0  north   12.0   10.0\n1  south    9.0   12.5\n2   east    NaN    9.0\n3  north   11.0   10.5|new: a fresh DataFrame|https://pandas.pydata.org/docs/reference/api/pandas.read_feather.html
+df.to_feather()|df.to_feather(path)|Needs pyarrow and a default RangeIndex, so call reset_index() first when needed.|df.to_feather("t.feather"); pd.read_feather("t.feather").shape|(4, 3)|new: writes a file and returns None|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_feather.html
+pd.read_sql()|pd.read_sql(sql, con, index_col=None, params=None)|sql is a query (or a table name with SQLAlchemy); con is a connection or engine; params binds values safely.|c = sqlite3.connect(":memory:"); df.to_sql("sales", c, index=False); pd.read_sql("SELECT region, price FROM sales WHERE price > ?", c, params=(10,))|  region  price\n0  south   12.5\n1  north   10.5|new: a fresh DataFrame|https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html
+sep=|pd.read_csv(path, sep=",")|Use "\t" for tabs and ";" for many European exports; sep=None with engine="python" sniffs the delimiter.|pd.read_csv(StringIO("a;b\n1;2"), sep=";")|   a  b\n0  1  2|new: a fresh DataFrame|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+header=|pd.read_csv(path, header="infer")|header=0 uses the first row, header=None means there is no header row (columns become 0, 1, ...).|pd.read_csv(StringIO("1,2\n3,4"), header=None)|   0  1\n0  1  2\n1  3  4|new: a fresh DataFrame|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+names=|pd.read_csv(path, names=None, header="infer")|A list of names; if the file also has a header row, add header=0 to replace it.|pd.read_csv(StringIO("1,2\n3,4"), names=["a", "b"])|   a  b\n0  1  2\n1  3  4|new: a fresh DataFrame|https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html
+df["col"]|df["col"]|A label in square brackets; works for any column name, including ones with spaces or that clash with methods.|df["price"]|0    10.0\n1    12.5\n2     9.0\n3    10.5\nName: price, dtype: float64|view: shares data with df (lazy copy under CoW)|https://pandas.pydata.org/docs/user_guide/indexing.html
+df[["a", "b"]]|df[["a", "b"]]|The inner list picks and orders the columns; the double brackets are what return a frame.|df[["price", "region"]]|   price region\n0   10.0  north\n1   12.5  south\n2    9.0   east\n3   10.5  north|copy: a new frame|https://pandas.pydata.org/docs/user_guide/indexing.html
+df.col|df.col|Only works when the name is a valid identifier and not a method name; never use it to assign.|df.price|0    10.0\n1    12.5\n2     9.0\n3    10.5\nName: price, dtype: float64|view: the same Series as df["price"]|https://pandas.pydata.org/docs/user_guide/indexing.html#attribute-access
+df[mask]|df[bool_series]|The mask must align with the index; build it from a comparison such as df["price"] > 10.|df[df["price"] > 10]|  region  units  price\n1  south    9.0   12.5\n3  north   11.0   10.5|copy: Boolean masks always copy|https://pandas.pydata.org/docs/user_guide/indexing.html#boolean-indexing
+& operator|(mask_a) & (mask_b)|Use & for and and the vertical bar for or, never the words and/or; wrap each comparison in parentheses.|df[(df["units"] > 10) & (df["price"] < 11)]|  region  units  price\n0  north   12.0   10.0\n3  north   11.0   10.5|new: a Boolean Series, then a copied frame|https://pandas.pydata.org/docs/user_guide/indexing.html#boolean-indexing
+partial date slicing|s.loc["2024-01":"2024-03"]|The index must be a DatetimeIndex; "2024-01" means the whole month and both ends are included.|pd.Series([1, 2, 3, 4], index=pd.date_range("2024-01-01", periods=4, freq="MS")).loc["2024-01":"2024-03"]|2024-01-01    1\n2024-02-01    2\n2024-03-01    3\nFreq: MS, dtype: int64|view: a slice of the parent|https://pandas.pydata.org/docs/user_guide/timeseries.html#partial-string-indexing
+df["new"] = ...|df["new"] = value_or_expression|The right side may be a scalar, a list or a Series aligned on the index; this changes df itself.|d = df.copy(); d["revenue"] = d["units"] * d["price"]; d|  region  units  price  revenue\n0  north   12.0   10.0    120.0\n1  south    9.0   12.5    112.5\n2   east    NaN    9.0      NaN\n3  north   11.0   10.5    115.5|inplace: changes the frame assigned to (shown on a copy)|https://pandas.pydata.org/docs/user_guide/indexing.html
+df[new_order]|df[["c", "a", "b"]]|List the columns in the order you want; any column left out is dropped.|df[["price", "units", "region"]]|   price  units region\n0   10.0   12.0  north\n1   12.5    9.0  south\n2    9.0    NaN   east\n3   10.5   11.0  north|copy: a new frame|https://pandas.pydata.org/docs/user_guide/indexing.html
+df.isnull()|df.isnull()|Identical to isna(); both names exist for historical reasons.|df["units"].isnull()|0    False\n1    False\n2     True\n3    False\nName: units, dtype: bool|new: a Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.isnull.html
+df.notnull()|df.notnull()|Identical to notna().|df["units"].notnull()|0     True\n1     True\n2    False\n3     True\nName: units, dtype: bool|new: a Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.notnull.html
+"boolean" dtype|s.astype("boolean")|Nullable Boolean: values are True, False or <NA>; plain bool cannot hold missing values.|pd.Series([True, None, False], dtype="boolean")|0     True\n1     <NA>\n2    False\ndtype: boolean|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.BooleanDtype.html
+"string" dtype|s.astype("string")|Nullable text dtype; .str methods return nullable results, so Boolean outputs use "boolean".|pd.Series(["a", None, "c"], dtype="string")|0       a\n1    <NA>\n2       c\ndtype: string|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html
+.str.title()|s.str.title()|No arguments; lower() and upper() are the other case converters.|df["region"].str.title()|0    North\n1    South\n2     East\n3    North\nName: region, dtype: str|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.title.html
+.str.endswith()|s.str.endswith(pat, na=None)|pat is a string or tuple of strings; na sets the result for missing values.|df["region"].str.endswith("th")|0     True\n1     True\n2    False\n3     True\nName: region, dtype: bool|new: a Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.endswith.html
+.str.match()|s.str.match(pat, case=True, na=None)|Anchored at the start like re.match; use contains() to search anywhere and fullmatch() for the whole string.|df["region"].str.match("[ns]")|0     True\n1     True\n2    False\n3     True\nName: region, dtype: bool|new: a Boolean Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.match.html
+.str.slice()|s.str.slice(start=None, stop=None, step=None)|Works like Python slicing (stop excluded); s.str[:3] is shorthand.|df["region"].str.slice(0, 3)|0    nor\n1    sou\n2    eas\n3    nor\nName: region, dtype: str|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.slice.html
+.str.pad()|s.str.pad(width, side="left", fillchar=" ")|side is "left", "right" or "both"; zfill() pads numbers stored as text with zeros.|df["region"].str.pad(6, side="left", fillchar="*")|0    *north\n1    *south\n2    **east\n3    *north\nName: region, dtype: str|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.str.pad.html
+.dt.day|s.dt.day|A property on a datetime Series; .dt.dayofweek gives Monday=0.|dts2.dt.day|0    15\n1    20\ndtype: int32|new: an integer Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.day.html
+.dt.hour|s.dt.hour|.dt.minute and .dt.second follow the same pattern.|dts2.dt.hour|0     9\n1    17\ndtype: int32|new: an integer Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.dt.hour.html
+pd.DatetimeIndex()|pd.DatetimeIndex(data, freq=None, tz=None)|Usually made with df.set_index("date") after parsing; it unlocks partial-string slicing and resample().|pd.DatetimeIndex(["2024-01-01", "2024-01-03"])|DatetimeIndex(['2024-01-01', '2024-01-03'], dtype='datetime64[us]', freq=None)|new: a fresh immutable Index|https://pandas.pydata.org/docs/reference/api/pandas.DatetimeIndex.html
+datetime subtraction|ts_b - ts_a|Both sides must be datetimes; on a Series use .dt.days or .dt.total_seconds() for numbers.|pd.to_datetime("2024-01-08") - pd.to_datetime("2024-01-01")|Timedelta('7 days 00:00:00')|new: a Timedelta|https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html
+for name, group in df.groupby()|for key, group in df.groupby("col"):|Each pass gives the group key and its rows as a DataFrame; good for inspection, slow for production.|[(k, len(g)) for k, g in df.groupby("region")]|[('east', 1), ('north', 2), ('south', 1)]|new: each group is a separate sub-frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html
+groupby().sum()|df.groupby(keys)[col].sum(numeric_only=False, min_count=0)|Shortcut for agg("sum"); select the value columns first so text is not summed.|df.groupby("region")["units"].sum()|region\neast      0.0\nnorth    23.0\nsouth     9.0\nName: units, dtype: float64|new: a Series indexed by group key|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.sum.html
+groupby().mean()|df.groupby(keys)[col].mean(numeric_only=False)|NaN is skipped; as_index=False keeps the key as a column.|df.groupby("region")["price"].mean()|region\neast      9.00\nnorth    10.25\nsouth    12.50\nName: price, dtype: float64|new: a Series indexed by group key|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.mean.html
+groupby().min()|df.groupby(keys)[col].min()|Same pattern as sum(); idxmin() returns the row label instead.|df.groupby("region")["price"].min()|region\neast      9.0\nnorth    10.0\nsouth    12.5\nName: price, dtype: float64|new: a Series indexed by group key|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.min.html
+groupby().max()|df.groupby(keys)[col].max()|Same pattern as sum(); idxmax() returns the row label instead.|df.groupby("region")["price"].max()|region\neast      9.0\nnorth    10.5\nsouth    12.5\nName: price, dtype: float64|new: a Series indexed by group key|https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.max.html
+how="inner"|pd.merge(left, right, how="inner", on="key")|The default join: unmatched rows from either side are dropped.|pd.DataFrame({"k": [1, 2, 3]}).merge(pd.DataFrame({"k": [2, 3, 4], "v": ["b", "c", "d"]}), on="k", how="inner")|   k  v\n0  2  b\n1  3  c|new: a fresh frame|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+how="right"|pd.merge(left, right, how="right", on="key")|Left columns become NaN for unmatched right keys; the mirror of how="left".|pd.DataFrame({"k": [1, 2, 3]}).merge(pd.DataFrame({"k": [2, 3, 4], "v": ["b", "c", "d"]}), on="k", how="right")|   k  v\n0  2  b\n1  3  c\n2  4  d|new: a fresh frame|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+on=|pd.merge(left, right, on="key")|A column name or a list of names; if omitted, pandas joins on every shared column name.|pd.DataFrame({"k": [1, 2]}).merge(pd.DataFrame({"k": [2, 1], "v": ["b", "a"]}), on="k")|   k  v\n0  1  a\n1  2  b|new: a fresh frame|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+left_on= and right_on=|pd.merge(left, right, left_on="a", right_on="b")|Both key columns stay in the result, so drop one afterwards.|pd.DataFrame({"id": [1, 2]}).merge(pd.DataFrame({"cid": [2, 1], "n": ["x", "y"]}), left_on="id", right_on="cid")|   id  cid  n\n0   1    1  y\n1   2    2  x|new: a fresh frame|https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+DataFrame.append() (removed)|pd.concat([df, new_rows], ignore_index=True)|append() was removed in pandas 2.0 because it copied on every call; collect frames in a list and concat once.|hasattr(pd.DataFrame, "append")|False|new: False means the method is gone|https://pandas.pydata.org/docs/reference/api/pandas.concat.html
+df.applymap() (legacy)|df.map(func)|Deprecated in pandas 2.1 and gone in the 3.0 release used here (hasattr is False); use DataFrame.map instead.|hasattr(pd.DataFrame, "applymap")|False|new: a plain bool|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.map.html
+.cumprod()|s.cumprod(skipna=True)|Same pattern as cumsum(); NaN stays NaN but later values continue.|df["price"].cumprod()|0       10.0\n1      125.0\n2     1125.0\n3    11812.5\nName: price, dtype: float64|new: a Series of the same length|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.cumprod.html
+.cummin()|s.cummin(skipna=True)|Mirror of cummax().|df["price"].cummin()|0    10.0\n1    10.0\n2     9.0\n3     9.0\nName: price, dtype: float64|new: a Series of the same length|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.cummin.html
+.cat.categories|s.cat.categories|An Index of labels (sorted unless an order was given); assigning a list renames them all.|df["region"].astype("category").cat.categories|Index(['east', 'north', 'south'], dtype='str')|view: the live Index of the categorical|https://pandas.pydata.org/docs/reference/api/pandas.Series.cat.categories.html
+.cat.rename_categories()|s.cat.rename_categories(new_categories)|new_categories is a list in order, or a dict mapping old to new.|df["region"].astype("category").cat.rename_categories({"north": "N"})|0        N\n1    south\n2     east\n3        N\nName: region, dtype: category\nCategories (3, str): ['east', 'N', 'south']|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.cat.rename_categories.html
+.cat.add_categories()|s.cat.add_categories(new_categories)|Needed before assigning a label that is not yet a category.|df["region"].astype("category").cat.add_categories(["central"]).cat.categories|Index(['east', 'north', 'south', 'central'], dtype='str')|new: a new Series|https://pandas.pydata.org/docs/reference/api/pandas.Series.cat.add_categories.html
+pd.Categorical()|pd.Categorical(values, categories=None, ordered=False)|categories fixes the allowed labels and their order; ordered=True enables <, > and sorting by that order.|pd.Categorical(["low", "high", "low"], categories=["low", "high"], ordered=True)|['low', 'high', 'low']\nCategories (2, str): ['low' < 'high']|new: a Categorical array|https://pandas.pydata.org/docs/reference/api/pandas.Categorical.html
+pd.eval()|pd.eval(expr, engine=None, target=None, inplace=False)|Names resolve from the calling scope; with a target and an assignment it can create a column; numexpr speeds up big arrays.|pd.eval("df.units * df.price")|0    120.0\n1    112.5\n2      NaN\n3    115.5\ndtype: float64|new: a Series|https://pandas.pydata.org/docs/reference/api/pandas.eval.html
+df.info(memory_usage="deep")|df.info(verbose=None, memory_usage=None)|"deep" inspects the values inside object and text columns, so the size is honest; the default can underestimate.|df.info(memory_usage="deep")|<class 'pandas.DataFrame'>\nRangeIndex: 4 entries, 0 to 3\nData columns (total 3 columns):\n #   Column  Non-Null Count  Dtype  \n---  ------  --------------  -----  \n 0   region  4 non-null      str    \n 1   units   3 non-null      float64\n 2   price   4 non-null      float64\ndtypes: float64(2), str(1)\nmemory usage: 411.0 bytes|new: prints only and returns None|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.info.html
+.plot.line()|df.plot.line(x=None, y=None, **kwargs)|Same as df.plot(kind="line"); x and y choose columns; returns a Matplotlib Axes.|len(df["price"].plot.line().lines)|1|new: a Matplotlib Axes|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.line.html
+pd.DataFrame(list_of_dicts)|pd.DataFrame([{"a": 1}, {"a": 2}])|Each dict is a row and its keys are columns; a missing key becomes NaN.|pd.DataFrame([{"a": 1, "b": "x"}, {"a": 2}])|   a    b\n0  1    x\n1  2  NaN|new: a fresh frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+pd.DataFrame(2-D array)|pd.DataFrame(array, columns=["a", "b"])|Rows follow the array rows; columns names the columns; the array is copied by default in pandas 3.|pd.DataFrame(np.arange(6).reshape(3, 2), columns=["a", "b"])|   a  b\n0  0  1\n1  2  3\n2  4  5|new: a fresh frame|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+inplace=True|df.drop(index=0, inplace=True)|Available on many methods; since it returns None, never chain or assign it. It is usually not faster, so prefer reassigning.|df.copy().drop(index=0, inplace=True)|None|inplace: changes the object it is called on|https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html`.split("\n").forEach(r=>{const[n,a,x,b,c,m,u]=r.split("|");G[n]=[a,x,b,c.replace(/\\n/g,"\n"),m,u]});
+const gx=n=>{const g=G[n];if(!g)return"";const[k,t]=g[4].split(/: (.*)/);return`<div class="lb">Syntax</div><pre>${esc(g[0])}</pre><div class="lb">Arguments</div><p class="use">${esc(g[1])}</p><div class="lb">Example and output</div><div class="ex"><pre>${esc(g[2])}</pre><pre class="out">${esc(g[3])}</pre></div><p class="foot"><span class="bd ${k}">${k}</span>${esc(t)}<a class="doc" href="${g[5]}" target="_blank" rel="noopener">Official docs ↗</a></p>`};
+const INTRO=`<section class="sec" id="cv"><h2>Shared setup and copy vs view</h2><p class="use">Every example below uses this frame, and outputs are shown as pandas prints them.</p><pre>import numpy as np
+import pandas as pd
+df = pd.DataFrame({"region": ["north", "south", "east", "north"],
+                   "units": [12, 9, np.nan, 11],
+                   "price": [10.0, 12.5, 9.0, 10.5]})</pre><pre class="out">  region  units  price
+0  north   12.0   10.0
+1  south    9.0   12.5
+2   east    NaN    9.0
+3  north   11.0   10.5</pre><h4>Copy vs view</h4><p class="use">A view shares memory with its parent; a copy does not. Under Copy-on-Write (the default in pandas 3.0, opt-in on 2.x with <code>pd.options.mode.copy_on_write = True</code>) every result behaves as an independent copy: writing to it never changes the parent, and memory is shared lazily until the first write. Before CoW, basic slices could be true views, so writing to one could change the parent or raise SettingWithCopyWarning. Check with <code>np.shares_memory(a, b)</code>.</p><div class="tw"><table><tr><th>Operation</th><th>Memory</th><th>Note</th></tr><tr><td><code>df["col"]</code></td><td>view</td><td>Lazy copy under CoW</td></tr><tr><td><code>df.iloc[0:2]</code>, <code>df.head()</code></td><td>view</td><td>Slices share memory</td></tr><tr><td><code>df[mask]</code>, <code>df.loc[mask]</code>, <code>df.iloc[[0, 2]]</code></td><td>copy</td><td>Masks and lists always copy</td></tr><tr><td><code>assign</code>, <code>rename</code>, <code>drop</code>, <code>sort_values</code>, <code>merge</code>, <code>concat</code></td><td>new object</td><td>Parent untouched</td></tr><tr><td><code>df.copy()</code></td><td>copy</td><td>Deep copy by default</td></tr><tr><td><code>df.to_numpy()</code></td><td>view or copy</td><td>View for one dtype, copy for mixed; read-only under CoW</td></tr><tr><td><code>inplace=True</code></td><td>in place</td><td>Modifies the object; usually not faster, so avoid it</td></tr></table></div></section>`;
+const dis=(L,x,f)=>{const o=L.filter(r=>f(r)!==f(x)),s=sh(o.filter(r=>r.c===x.c)).concat(sh(o.filter(r=>r.c!==x.c))),u=[];for(const r of s){const v=f(r);if(!u.includes(v))u.push(v);if(u.length==3)break}return u};
+const mk=(L,t,qf,af,ef,m)=>L.forEach(x=>{const q=qf(x);if(seen.has(q))return;seen.add(q);const ok=af(x),o=sh([ok,...dis(L,x,af)]);B.push({q,o,a:o.indexOf(ok),c:x.c,d:x.d,t,m,e:ef(x)})});
+mk(F,"f",x=>`Which of these ${x.s}?`,x=>x.n,x=>`${x.n} ${x.s}.`,1);
+mk(F,"f",x=>`Which statement about ${x.n} is correct?`,x=>"It "+x.s,x=>`${x.n} ${x.s}.`,0);
+mk(Z,"s",x=>`Scenario: ${x.n}. Which code does this?`,x=>x.s,x=>`${x.n}: ${x.s}`,1);
+mk(Z,"s",x=>`What does this code do?\n${x.s}`,x=>x.n,x=>`${x.s} → ${x.n}`,0);
+$("#cnt").textContent=B.length.toLocaleString();
+const DN={e:"Easy",m:"Medium",h:"Hard"},TN={f:"Concept",s:"Scenario"};
+/* learn */
+const tk=ld("pd_ticks");$("#tl").innerHTML=S.map((s,i)=>`<a href="#s${i}">${i+1}. ${s[0]}</a>`).join("");
+$("#lessons").innerHTML='<input id="find" type="search" placeholder="Search 247 functions, e.g. merge, rolling, str.extract" aria-label="Search functions">'+INTRO+S.map((s,i)=>`<section class="sec" id="s${i}"><h2>${i+1}. ${s[0]}<span class="tag">${s[1]}</span></h2><p class="use">${esc(s[2])}</p><dl>${F.filter(r=>r.c==i).map(r=>`<div class="fn"><dt><code>${esc(r.n)}</code></dt><dd>${esc(r.s[0].toUpperCase()+r.s.slice(1))}.${gx(r.n)}</dd></div>`).join("")}</dl>${Z.filter(r=>r.c==i).map(r=>`<div class="ex"><h5>${esc(r.n)}</h5><pre>${esc(r.s)}</pre></div>`).join("")}<label class="tk"><input type="checkbox" data-i="${i}" ${tk[i]?"checked":""}> I can do this from a blank cell</label></section>`).join("");
+const prog=()=>$("#prog").textContent=`${Object.values(tk).filter(Boolean).length}/${S.length} sections ticked`;prog();
+$("#lessons").addEventListener("change",e=>{tk[e.target.dataset.i]=e.target.checked;sv("pd_ticks",tk);prog()});
+/* tabs */
+document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{["learn","quiz","an"].forEach(t=>$("#"+t).hidden=t!=b.dataset.t);document.querySelectorAll("[data-t]").forEach(x=>x.classList.toggle("on",x==b));if(b.dataset.t=="an")stats()});
+/* quiz */
+$("#qc").innerHTML='<option value="">All categories</option>'+S.map((s,i)=>`<option value="${i}">${s[0]}</option>`).join("");
+let Q=[],i=0,sc=0;
+$("#st").onclick=()=>{const c=$("#qc").value,d=$("#qd").value,t=$("#qt").value;Q=sh(B.filter(x=>(c===""||x.c==c)&&(!d||x.d==d)&&(!t||x.t==t))).slice(0,+$("#qn").value);i=sc=0;$("#qa").hidden=false;Q.length?show():$("#qa").innerHTML="<p>No questions match those filters. Try widening them.</p>"};
+function show(){const x=Q[i],qa=$("#qa");qa.innerHTML=`<div class="row"><span>Question ${i+1} of ${Q.length}</span><span>Score ${sc}</span></div><progress max="${Q.length}" value="${i}"></progress><p class="meta">${S[x.c][0]} · ${DN[x.d]} · ${TN[x.t]}</p><h3></h3><div id="os"></div><div id="fb"></div>`;qa.querySelector("h3").textContent=x.q;
+x.o.forEach((o,j)=>{const b=document.createElement("button");b.className="opt"+(x.m?" m":"");b.textContent=o;b.onclick=()=>pick(j);$("#os").append(b)})}
+function pick(j){const x=Q[i],ok=j==x.a;if(ok)sc++;document.querySelectorAll(".opt").forEach((b,k)=>{b.disabled=true;if(k==x.a)b.classList.add("ok");else if(k==j)b.classList.add("no")});
+const s=ld("pd_stats"),keys=["c"+x.c,"d"+x.d,"t"+x.t];keys.forEach(k=>{s[k]=s[k]||[0,0];s[k][ok?0:1]++});sv("pd_stats",s);
+const fb=$("#fb");fb.innerHTML=`<p class="${ok?"good":"bad"}">${ok?"Correct.":"Not quite."}</p><p class="meta"></p>`;fb.querySelector(".meta").textContent=x.e;
+const n=document.createElement("button");n.className="go";n.textContent=i+1<Q.length?"Next question":"See results";n.onclick=()=>{i++;i<Q.length?show():end()};fb.append(n)}
+function end(){const p=Math.round(100*sc/Q.length);$("#qa").innerHTML=`<h3>${sc} / ${Q.length} (${p}%)</h3><p class="${p>=90?"good":"meta"}">${p>=90?"Interview-ready on this set.":"Aim for 90% or higher, then raise the difficulty."}</p>`;const b=document.createElement("button");b.className="go";b.textContent="New quiz";b.onclick=()=>$("#st").click();$("#qa").append(b)}
+/* progress */
+function stats(){const s=ld("pd_stats"),tot=[0,0];Object.keys(s).filter(k=>k[0]=="d").forEach(k=>{tot[0]+=s[k][0];tot[1]+=s[k][1]});const n=tot[0]+tot[1],row=(l,k)=>{const[r,w]=s[k]||[0,0];return`<tr><td>${l}</td><td>${r+w}</td><td>${r+w?Math.round(100*r/(r+w))+"%":"-"}</td></tr>`},blk=(h,a)=>`<h4>${h}</h4><div class="tw"><table><tr><th>${h.slice(3)}</th><th>Answered</th><th>Accuracy</th></tr>${a.join("")}</table></div>`;
+$("#st2").innerHTML=`<div class="sum"><div><b>${n}</b><span>questions answered</span></div><div><b>${n?Math.round(100*tot[0]/n)+"%":"-"}</b><span>overall accuracy</span></div><div><b>${Object.values(tk).filter(Boolean).length}/${S.length}</b><span>sections ticked</span></div></div><div class="card">${blk("By difficulty",Object.keys(DN).map(k=>row(DN[k],"d"+k)))}${blk("By type",Object.keys(TN).map(k=>row(TN[k],"t"+k)))}${blk("By category",S.map((x,k)=>row(x[0],"c"+k)))}</div>`}
+/* backup */
+const BK=()=>JSON.stringify({app:"pandas-guide",v:1,saved:new Date().toISOString(),ticks:tk,stats:ld("pd_stats")},null,1);
+function applyBK(txt){let o;try{o=JSON.parse(txt)}catch(e){return"That text is not valid JSON."}
+const isO=v=>v&&typeof v==="object"&&!Array.isArray(v);
+if(!isO(o)||o.app!=="pandas-guide"||!isO(o.ticks)||!isO(o.stats))return"This is not a pandas guide progress export.";
+for(const k in tk)delete tk[k];
+Object.keys(o.ticks).forEach(k=>{if(+k>=0&&+k<S.length&&o.ticks[k]===true)tk[k]=true});
+const st={};Object.keys(o.stats).forEach(k=>{const v=o.stats[k];if(/^[cdt]\w+$/.test(k)&&Array.isArray(v)&&v.length==2&&v.every(n=>Number.isInteger(n)&&n>=0))st[k]=v});
+sv("pd_ticks",tk);sv("pd_stats",st);
+document.querySelectorAll("#lessons input[data-i]").forEach(c=>c.checked=!!tk[c.dataset.i]);prog();stats();return""}
+$("#ex").onclick=()=>{const t=BK();$("#bt").value=t;try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"application/json"}));a.download="pandas-guide-progress.json";a.click()}catch(e){}$("#bm").textContent="Exported. Copy the text below to keep it; a .json file also downloads where the browser allows it."};
+$("#cp").onclick=async()=>{const t=$("#bt");if(!t.value)t.value=BK();t.select();try{await navigator.clipboard.writeText(t.value);$("#bm").textContent="Copied to the clipboard."}catch(e){try{document.execCommand("copy");$("#bm").textContent="Copied to the clipboard."}catch(_){$("#bm").textContent="Select the text and copy it manually."}}};
+$("#im").onclick=()=>{const m=applyBK($("#bt").value);$("#bm").textContent=m||"Progress imported."};
+$("#fi").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$("#bt").value=r.result;const m=applyBK(r.result);$("#bm").textContent=m||"Progress imported from the file."};r.readAsText(f);e.target.value=""};
+$("#find").oninput=e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll("#lessons .fn").forEach(f=>f.hidden=!!q&&!f.textContent.toLowerCase().includes(q));document.querySelectorAll("#lessons .sec[id^=s]").forEach(x=>x.hidden=!!q&&!x.querySelector(".fn:not([hidden])"));$("#cv").hidden=!!q};
+/* sidebar */
+const LN=$("#learn"),MQ=matchMedia("(max-width:820px)"),tg=$("#tg");
+const setMin=(m,save)=>{LN.classList.toggle("min",m);tg.textContent=m?"»":"«";tg.setAttribute("aria-expanded",String(!m));tg.title=m?"Expand contents":"Minimize contents";if(save&&!MQ.matches)sv("pd_toc",{min:m})};
+setMin(MQ.matches||!!ld("pd_toc").min);
+tg.onclick=()=>setMin(!LN.classList.contains("min"),1);
+$("#fab").onclick=()=>setMin(false);
+$("#tl").onclick=e=>{if(e.target.closest("a")&&MQ.matches)setMin(true)};
+MQ.onchange=e=>setMin(e.matches||!!ld("pd_toc").min);
+addEventListener("click",e=>{if(!LN.classList.contains("min")&&e.target.closest&&!e.target.closest("#toc,#fab"))setMin(true)});
+addEventListener("keydown",e=>{if(e.key=="Escape"&&MQ.matches)setMin(true)});
+if(window.IntersectionObserver){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)document.querySelectorAll("#tl a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")=="#"+x.target.id))}),{rootMargin:"-15% 0px -75% 0px"});document.querySelectorAll("#lessons .sec[id^=s]").forEach(x=>io.observe(x))}
+</script></body></html>
